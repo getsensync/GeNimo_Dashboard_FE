@@ -100,7 +100,6 @@ const Page = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8
         }}
       >
         <Container maxWidth="xl">
@@ -156,7 +155,6 @@ const Page = () => {
                 </Button>
               </div>
             </Stack>
-            {/* Search */}
             {isFormOpen.status && (
               <CustomersForm 
                 isFormOpen={isFormOpen}
@@ -165,6 +163,7 @@ const Page = () => {
                 setFormData={setFormData}
               />
             )}
+            {/* Search */}
             {/* <CustomersSearch /> */}
             <CustomersTable
               count={data.length}
