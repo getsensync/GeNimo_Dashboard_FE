@@ -13,6 +13,12 @@ import {
   Typography
 } from '@mui/material';
 
+import { baseUrl } from 'src/utils/backend-url';
+import axios from 'axios';
+
+const addUserUrl = baseUrl + "/createNew/user";
+const editUrl = baseUrl + "/updateData/user/byId/";
+
 export const CustomersForm = (props) => {
   const {
     isFormOpen,
@@ -39,7 +45,7 @@ export const CustomersForm = (props) => {
       // 1/1/1940 as a Date object is new Date(0)
       dob: Yup
         .date('Must be a valid date')
-        .min(new Date(1), 'Must be after 1/1/1970')
+        .min(new Date(1940, 1, 0), 'Must be after 1/1/1970')
         .max(new Date(), 'Must be before today')
         .required('Date of birth is required'),
       // balance is a number
@@ -60,14 +66,48 @@ export const CustomersForm = (props) => {
     },
     onSubmit: async (values, helpers) => {
       try {
-        // axios here
+        // get all values to a variable
+        const uuid = values.uuid;
+        const name = values.name;
+        const dob = new Date(values.dob);
+        const balance = values.balance;
+        const type = values.type;
+        const active = formData.active;
+        const last_modified = new Date();
+        const resultData = { 
+          uuid: uuid,
+          name: name,
+          dob: dob,
+          balance: balance,
+          encryption: type,
+          active: active,
+          last_modified: last_modified, 
+        };
+        console.log(resultData);
         if (isFormOpen.editOrAdd === 'edit') {
-          const uuid = isFormOpen.uuid;
-          // edit
+          const uuid = isFormOpen._id;
+          const editUserUrl = editUrl + uuid;
+          // edit using axios at editUserUrl
+          axios
+            .patch(editUserUrl, resultData)
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         } else if (isFormOpen.editOrAdd === 'add') {
-          // add
+          // add using axios at addUserUrl
+          axios
+            .post(addUserUrl, resultData)
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((error) => {
+              console.log(error);
+            }
+            );
         }
-        console.log(values);
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
         resetForm();
@@ -84,13 +124,14 @@ export const CustomersForm = (props) => {
   };
 
   const resetForm = () => {
-    setIsFormOpen({ status: false, editOrAdd: null, uuid: null });
+    setIsFormOpen({ status: false, editOrAdd: null, _id: null });
     setFormData({
       uuid: '',
       name: '',
-      dob: new Date(0),
+      dob: 'dd/mm/yyyy',
       balance: '',
       type: '',
+      active: false,
     });
   };
 

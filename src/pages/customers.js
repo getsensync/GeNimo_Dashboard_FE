@@ -14,7 +14,6 @@ import { applyPagination } from 'src/utils/apply-pagination';
 import axios from "axios";
 import { customersData, } from 'src/utils/data';
 import { baseUrl } from 'src/utils/backend-url';
-import { set } from 'nprogress';
 
 const useCustomers = (data, page, rowsPerPage) => {
   return useMemo(
@@ -28,7 +27,7 @@ const useCustomers = (data, page, rowsPerPage) => {
 const useCustomerIds = (customers) => {
   return useMemo(
     () => {
-      return customers.map((customer) => customer.id);
+      return customers.map((customer) => customer.uuid);
     },
     [customers]
   );
@@ -37,14 +36,15 @@ const useCustomerIds = (customers) => {
 const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [data, setData] = useState(customersData);
-  const [isFormOpen, setIsFormOpen] = useState({ status: false, editOrAdd: null, uuid: null });
+  const [data, setData] = useState([]);
+  const [isFormOpen, setIsFormOpen] = useState({ status: false, editOrAdd: null, _id: null });
   const [formData, setFormData] = useState({
     uuid: '',
     name: '',
-    dob: new Date(0),
+    dob: 'dd/mm/yyyy',
     balance: '',
     type: '',
+    active: false,
   });
 
   const customers = useCustomers(data, page, rowsPerPage);
@@ -52,16 +52,16 @@ const Page = () => {
   const customersSelection = useSelection(customersIds);
   const url = baseUrl + "/getData/user/all";
 
-  // useEffect(() => {
-  //   axios
-  //   .get(url)
-  //   .then((res) => {
-  //     setData(res.data);
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-  // }, []);
+  useEffect(() => {
+    axios
+    .get(url)
+    .then((res) => {
+      setData(res.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }, []);
 
   const handlePageChange = useCallback(
     (event, value) => {
@@ -81,11 +81,12 @@ const Page = () => {
     setFormData({
       uuid: '',
       name: '',
-      dob: new Date(0),
+      dob: 'dd/mm/yyyy',
       balance: '',
       type: '',
+      active: false,
     });
-    setIsFormOpen({ status: true, editOrAdd: 'add', uuid: null });
+    setIsFormOpen({ status: true, editOrAdd: 'add', _id: null });
   }, []);
 
   return (

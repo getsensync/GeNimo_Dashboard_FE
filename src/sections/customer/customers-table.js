@@ -18,7 +18,7 @@ import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/ic
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 
-import { dateToString } from 'src/utils/function';
+import { dateToString, dateToDateString, dateToDateStringSlash } from 'src/utils/function';
 import axios from 'axios';
 
 export const CustomersTable = (props) => {
@@ -43,23 +43,19 @@ export const CustomersTable = (props) => {
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
 
-  const handleEditClick = (id) => {
-    // const editCustomer = items.find((customer) => customer.id === id);
+  const handleEditClick = (_id) => {
+    const editCustomer = items.find((customer) => customer._id === _id);
     setFormData(
       {
-        uuid: "abcdefgh",
-        name: "stanley cha",
-        dob: new Date(2),
-        balance: 50000,
-        type: "DES",
-        // uuid: editCustomer.uuid,
-        // name: editCustomer.name,
-        // dob: editCustomer.dob,
-        // balance: editCustomer.balance,
-        // type: editCustomer.encryption,
+        uuid: editCustomer.uuid,
+        name: editCustomer.name,
+        dob: dateToDateString(editCustomer.dob),
+        balance: editCustomer.balance,
+        type: editCustomer.encryption,
+        active: editCustomer.active,
       }
     )
-    setIsFormOpen({ status: true, editOrAdd: 'edit', uuid: id });
+    setIsFormOpen({ status: true, editOrAdd: 'edit', _id: editCustomer._id });
     console.log('Edit customer');
   };
 
@@ -126,8 +122,9 @@ export const CustomersTable = (props) => {
             </TableHead>
             <TableBody>
               {items.map((customer, index) => {
-                const isSelected = selected.includes(customer.id);
-                const createdAt = customer.last_modified ? dateToString(customer.last_modified) : 'N/A';
+                const isSelected = selected.includes(customer.uuid);
+                const dOB = customer.dob ? dateToDateString(customer.dob) : 'N/A'; 
+                const lastModified = customer.last_modified ? dateToString(customer.last_modified) : 'N/A';
                 return (
                   <TableRow
                     hover
@@ -139,15 +136,15 @@ export const CustomersTable = (props) => {
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(customer.id);
+                            onSelectOne?.(customer.uuid);
                           } else {
-                            onDeselectOne?.(customer.id);
+                            onDeselectOne?.(customer.uuid);
                           }
                         }}
                       />
                     </TableCell>
                     <TableCell>
-                      UUid
+                      {customer.uuid}
                     </TableCell>
                     <TableCell>
                       <Stack
@@ -164,20 +161,20 @@ export const CustomersTable = (props) => {
                       </Stack>
                     </TableCell>
                     <TableCell align="center">
-                      dd/mm/yyyy
+                      {dOB}
                     </TableCell>
                     <TableCell align="right">
-                      10.000
+                      {customer.balance}
                     </TableCell>
                     <TableCell align="center">
-                      AES
+                      {customer.encryption}
                     </TableCell>
                     <TableCell align="center">
                       {/* Use &#x2705; as Yes and &#x274C; as No */}
                       &#x2705;
                     </TableCell>
                     <TableCell align="center">
-                      {createdAt}
+                      {lastModified}
                     </TableCell>
                     <TableCell align="center"
                     >
@@ -198,7 +195,7 @@ export const CustomersTable = (props) => {
                         <IconButton
                           aria-label="edit"
                           color='warning'
-                          onClick={() => handleEditClick(1)}
+                          onClick={() => handleEditClick(customer._id)}
                         >
                           <EditIcon />
                         </IconButton>
