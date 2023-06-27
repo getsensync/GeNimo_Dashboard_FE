@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
+import userAuth from 'src/utils/userAuth';
 
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
@@ -128,7 +129,9 @@ export const AuthProvider = (props) => {
   };
 
   const signIn = async (email, password) => {
-    if (email !== 'demo@devias.io' || password !== 'Password123!') {
+    const userExist = userAuth.find((user) => user.email === email);
+    const samePassword = userExist && userExist.password === password;
+    if (!userExist || !samePassword) {
       throw new Error('Please check your email and password');
     }
 

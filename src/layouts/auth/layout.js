@@ -16,6 +16,7 @@ export const Layout = (props) => {
         flex: '1 1 auto'
       }}
     >
+      {/* Left Content */}
       <Grid
         container
         sx={{ flex: '1 1 auto' }}
@@ -54,6 +55,8 @@ export const Layout = (props) => {
           </Box>
           {children}
         </Grid>
+
+        {/* Right Content */}
         <Grid
           xs={12}
           lg={6}
@@ -85,7 +88,7 @@ export const Layout = (props) => {
                 sx={{ color: '#15B79E' }}
                 target="_blank"
               >
-                Devias Kit
+                GeNimo Dashboard
               </Box>
             </Typography>
             <Typography
@@ -93,7 +96,7 @@ export const Layout = (props) => {
               sx={{ mb: 3 }}
               variant="subtitle1"
             >
-              A professional kit that comes with ready-to-use MUI components.
+              Manage GeNimo transaction, users, spots, and more
             </Typography>
             <img
               alt=""
