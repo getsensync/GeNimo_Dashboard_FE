@@ -14,7 +14,9 @@ import {
   TableRow,
   Typography,
   Button,
+  IconButton,
 } from '@mui/material';
+import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/icons-material';
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 
@@ -140,33 +142,34 @@ export const CustomersTable = (props) => {
                     <TableCell align="center">
                       {createdAt}
                     </TableCell>
-                    <TableCell>
-                      {/* 3 buttons : activate, edit, delete using stack */}
+                    <TableCell align="center"
+                    >
                       <Stack
                         direction="row"
-                        spacing={1}
                       >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="small"
-                        >
-                          De/Activate
-                        </Button>
-                        <Button
-                          variant="contained"
+                        <IconButton
+                          aria-label="activate"
                           color="success"
-                          size="small"
                         >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="contained"
+                          <PlayArrow />
+                        </IconButton>
+                        <IconButton
+                          aria-label="deactivate"
+                        >
+                          <Stop />
+                        </IconButton>
+                        <IconButton
+                          aria-label="edit"
+                          color='warning'
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
                           color="error"
-                          size="small"
                         >
-                          Delete
-                        </Button>
+                          <DeleteIcon />
+                        </IconButton>
                       </Stack>
                     </TableCell>
                   </TableRow>

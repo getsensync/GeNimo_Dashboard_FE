@@ -8,6 +8,7 @@ import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { CustomersTable } from 'src/sections/customer/customers-table';
 import { CustomersSearch } from 'src/sections/customer/customers-search';
+import { CustomersForm } from 'src/sections/customer/customers-form';
 import { applyPagination } from 'src/utils/apply-pagination';
 
 import axios from "axios";
@@ -36,6 +37,15 @@ const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [data, setData] = useState(customersData);
+  const [isFormOpen, setIsFormOpen] = useState({ status: false, for: '', uuid: '' });
+  const [formData, setFormData] = useState({
+    uuid: '',
+    name: '',
+    dob: new Date(0),
+    balance: '',
+    type: '',
+  });
+
   const customers = useCustomers(data, page, rowsPerPage);
   const customersIds = useCustomerIds(customers);
   const customersSelection = useSelection(customersIds);
@@ -66,11 +76,15 @@ const Page = () => {
     []
   );
 
+  const handleAddClick = useCallback(() => {
+    setIsFormOpen({ status: true, for: 'add', uuid: '' });
+  }, []);
+
   return (
     <>
       <Head>
         <title>
-          Customers | Devias Kit
+          Customers | GeNimo
         </title>
       </Head>
       <Box
@@ -127,12 +141,21 @@ const Page = () => {
                     </SvgIcon>
                   )}
                   variant="contained"
+                  onClick={handleAddClick}
                 >
                   Add
                 </Button>
               </div>
             </Stack>
             {/* Search */}
+            {isFormOpen.status && (
+              <CustomersForm 
+                isFormOpen={isFormOpen}
+                setIsFormOpen={setIsFormOpen}
+                formData={formData}
+                setFormData={setFormData}
+              />
+            )}
             {/* <CustomersSearch /> */}
             <CustomersTable
               count={data.length}
