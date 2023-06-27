@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { format } from 'date-fns';
 import {
   Avatar,
   Box,
@@ -13,7 +12,6 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  Button,
   IconButton,
 } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/icons-material';
@@ -21,6 +19,7 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 
 import { dateToString } from 'src/utils/function';
+import axios from 'axios';
 
 export const CustomersTable = (props) => {
   const {
@@ -34,11 +33,50 @@ export const CustomersTable = (props) => {
     onSelectOne,
     page = 0,
     rowsPerPage = 0,
-    selected = []
+    selected = [],
+    isFormOpen,
+    setIsFormOpen,
+    formData,
+    setFormData,
   } = props;
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
+
+  const handleEditClick = (id) => {
+    // const editCustomer = items.find((customer) => customer.id === id);
+    setFormData(
+      {
+        uuid: "abcdefgh",
+        name: "stanley cha",
+        dob: new Date(2),
+        balance: 50000,
+        type: "DES",
+        // uuid: editCustomer.uuid,
+        // name: editCustomer.name,
+        // dob: editCustomer.dob,
+        // balance: editCustomer.balance,
+        // type: editCustomer.encryption,
+      }
+    )
+    setIsFormOpen({ status: true, editOrAdd: 'edit', uuid: id });
+    console.log('Edit customer');
+  };
+
+  const handleDeleteClick = (id) => {
+    //
+    console.log('Delete customer', id);
+  };
+
+  const handleStartClick = (id) => {
+    //
+    console.log('Start customer', id);
+  };
+
+  const handleStopClick = (id) => {
+    //
+    console.log('Stop customer', id);
+  };
 
   return (
     <Card>
@@ -87,14 +125,13 @@ export const CustomersTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((customer) => {
+              {items.map((customer, index) => {
                 const isSelected = selected.includes(customer.id);
                 const createdAt = customer.last_modified ? dateToString(customer.last_modified) : 'N/A';
-
                 return (
                   <TableRow
                     hover
-                    key={customer.id}
+                    key={index}
                     selected={isSelected}
                   >
                     <TableCell padding="checkbox">
@@ -161,6 +198,7 @@ export const CustomersTable = (props) => {
                         <IconButton
                           aria-label="edit"
                           color='warning'
+                          onClick={() => handleEditClick(1)}
                         >
                           <EditIcon />
                         </IconButton>
@@ -203,5 +241,9 @@ CustomersTable.propTypes = {
   onSelectOne: PropTypes.func,
   page: PropTypes.number,
   rowsPerPage: PropTypes.number,
-  selected: PropTypes.array
+  selected: PropTypes.array,
+  isFormOpen: PropTypes.object.isRequired,
+  setIsFormOpen: PropTypes.func.isRequired,
+  formData: PropTypes.object.isRequired,
+  setFormData: PropTypes.func.isRequired,
 };
