@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -7,12 +7,20 @@ import {
   Stack,
   TextField,
   InputLabel,
+  FormControl,
   Select,
   MenuItem,
   Typography
 } from '@mui/material';
 
-export const CustomersForm = ({isFormOpen, setIsFormOpen, formData, setFormData,}) => {
+export const CustomersForm = (props) => {
+  const {
+    isFormOpen,
+    setIsFormOpen,
+    formData,
+    setFormData,
+  } = props;
+  
   const formik = useFormik({
     initialValues: {
       uuid: '',
@@ -33,9 +41,12 @@ export const CustomersForm = ({isFormOpen, setIsFormOpen, formData, setFormData,
         .min(1)
         .max(255)
         .required('Name is required'),
-      // dob is a date
+      // dob is a date and > 0
+      // 1/1/1940 as a Date object is new Date(0)
       dob: Yup
         .date('Must be a valid date')
+        .min(new Date(1), 'Must be after 1/1/1970')
+        .max(new Date(), 'Must be before today')
         .required('Date of birth is required'),
       // balance is a number
       balance: Yup
@@ -146,6 +157,7 @@ export const CustomersForm = ({isFormOpen, setIsFormOpen, formData, setFormData,
                   onChange={formik.handleChange}
                   type="uuid"
                   value={formik.values.uuid}
+                  required
                 />
                 <TextField
                   error={!!(formik.touched.name && formik.errors.name)}
@@ -157,6 +169,7 @@ export const CustomersForm = ({isFormOpen, setIsFormOpen, formData, setFormData,
                   onChange={formik.handleChange}
                   type="name"
                   value={formik.values.name}
+                  required
                 />
                 <TextField
                   error={!!(formik.touched.dob && formik.errors.dob)}
@@ -168,6 +181,7 @@ export const CustomersForm = ({isFormOpen, setIsFormOpen, formData, setFormData,
                   onChange={formik.handleChange}
                   type="date"
                   value={formik.values.dob}
+                  required
                 />
                 <TextField
                   error={!!(formik.touched.balance && formik.errors.balance)}
@@ -179,22 +193,31 @@ export const CustomersForm = ({isFormOpen, setIsFormOpen, formData, setFormData,
                   onChange={formik.handleChange}
                   type="number"
                   value={formik.values.balance}
+                  required
                 />
                 {/* type is a select with 3 options */}
-                <InputLabel id="type">Encryption type</InputLabel>
-                <Select
-                  error={!!(formik.touched.type && formik.errors.type)}
+                <FormControl
                   fullWidth
-                  helperText={formik.touched.type && formik.errors.type}
-                  name="type"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  value={formik.values.type}
+                  required
                 >
-                  <MenuItem value="AES">AES</MenuItem>
-                  <MenuItem value="DES">DES</MenuItem>
-                  <MenuItem value="3DES">3DES</MenuItem>
-                </Select>                                
+                  <InputLabel id="type">Encryption</InputLabel>
+                  <Select
+                    labelId="type"
+                    error={!!(formik.touched.type && formik.errors.type)}
+                    fullWidth
+                    helperText={formik.touched.type && formik.errors.type}
+                    label="Type"
+                    name="type"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    value={formik.values.type}
+                  >
+                    <MenuItem value="AES">AES</MenuItem>
+                    <MenuItem value="DES">DES</MenuItem>
+                    <MenuItem value="3DES">3DES</MenuItem>
+                  </Select>
+                </FormControl>
+                
               </Stack>
               {formik.errors.submit && (
                 <Typography
@@ -241,4 +264,9 @@ export const CustomersForm = ({isFormOpen, setIsFormOpen, formData, setFormData,
   );
 };
 
-export default CustomersForm;
+CustomersForm.propTypes = {
+  isFormOpen: PropTypes.object.isRequired,
+  setIsFormOpen: PropTypes.func.isRequired,
+  formData: PropTypes.object.isRequired,
+  setFormData: PropTypes.func.isRequired,
+};
