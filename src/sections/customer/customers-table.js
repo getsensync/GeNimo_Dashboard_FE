@@ -12,10 +12,13 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography
+  Typography,
+  Button,
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
+
+import { dateToString } from 'src/utils/function';
 
 export const CustomersTable = (props) => {
   const {
@@ -56,26 +59,35 @@ export const CustomersTable = (props) => {
                   />
                 </TableCell>
                 <TableCell>
+                  UUID
+                </TableCell>
+                <TableCell align="center">
                   Name
                 </TableCell>
-                <TableCell>
-                  Email
+                <TableCell align="center">
+                  Date of Birth
                 </TableCell>
-                <TableCell>
-                  Location
+                <TableCell align="center">
+                  Balance
                 </TableCell>
-                <TableCell>
-                  Phone
+                <TableCell align="center">
+                  Type
                 </TableCell>
-                <TableCell>
-                  Signed Up
+                <TableCell align="center">
+                  Active
+                </TableCell>
+                <TableCell align="center">
+                  Last Modified
+                </TableCell>
+                <TableCell align="center">
+                  Action
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {items.map((customer) => {
                 const isSelected = selected.includes(customer.id);
-                const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
+                const createdAt = customer.last_modified ? dateToString(customer.last_modified) : 'N/A';
 
                 return (
                   <TableRow
@@ -96,6 +108,9 @@ export const CustomersTable = (props) => {
                       />
                     </TableCell>
                     <TableCell>
+                      UUid
+                    </TableCell>
+                    <TableCell>
                       <Stack
                         alignItems="center"
                         direction="row"
@@ -109,17 +124,50 @@ export const CustomersTable = (props) => {
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>
-                      {customer.email}
+                    <TableCell align="center">
+                      dd/mm/yyyy
                     </TableCell>
-                    <TableCell>
-                      {customer.address.city}, {customer.address.state}, {customer.address.country}
+                    <TableCell align="right">
+                      10.000
                     </TableCell>
-                    <TableCell>
-                      {customer.phone}
+                    <TableCell align="center">
+                      AES
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
+                      {/* Use &#x2705; as Yes and &#x274C; as No */}
+                      &#x2705;
+                    </TableCell>
+                    <TableCell align="center">
                       {createdAt}
+                    </TableCell>
+                    <TableCell>
+                      {/* 3 buttons : activate, edit, delete using stack */}
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                      >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="small"
+                        >
+                          De/Activate
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="success"
+                          size="small"
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          size="small"
+                        >
+                          Delete
+                        </Button>
+                      </Stack>
                     </TableCell>
                   </TableRow>
                 );
