@@ -22,13 +22,7 @@ export const CustomersForm = (props) => {
   } = props;
   
   const formik = useFormik({
-    initialValues: {
-      uuid: '',
-      name: '',
-      dob: new Date(0),
-      balance: '',
-      type: '',
-    },
+    initialValues: formData,
     validationSchema: Yup.object({
       // uuid is a string with 8 characters
       uuid: Yup
@@ -90,7 +84,7 @@ export const CustomersForm = (props) => {
   };
 
   const resetForm = () => {
-    setIsFormOpen({ status: false, editOrAdd: '', uuid: '' });
+    setIsFormOpen({ status: false, editOrAdd: null, uuid: null });
     setFormData({
       uuid: '',
       name: '',

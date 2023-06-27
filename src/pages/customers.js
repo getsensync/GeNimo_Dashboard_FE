@@ -14,6 +14,7 @@ import { applyPagination } from 'src/utils/apply-pagination';
 import axios from "axios";
 import { customersData, } from 'src/utils/data';
 import { baseUrl } from 'src/utils/backend-url';
+import { set } from 'nprogress';
 
 const useCustomers = (data, page, rowsPerPage) => {
   return useMemo(
@@ -37,7 +38,7 @@ const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [data, setData] = useState(customersData);
-  const [isFormOpen, setIsFormOpen] = useState({ status: false, for: '', uuid: '' });
+  const [isFormOpen, setIsFormOpen] = useState({ status: false, editOrAdd: null, uuid: null });
   const [formData, setFormData] = useState({
     uuid: '',
     name: '',
@@ -77,7 +78,14 @@ const Page = () => {
   );
 
   const handleAddClick = useCallback(() => {
-    setIsFormOpen({ status: true, for: 'add', uuid: '' });
+    setFormData({
+      uuid: '',
+      name: '',
+      dob: new Date(0),
+      balance: '',
+      type: '',
+    });
+    setIsFormOpen({ status: true, editOrAdd: 'add', uuid: null });
   }, []);
 
   return (
@@ -169,6 +177,10 @@ const Page = () => {
               page={page}
               rowsPerPage={rowsPerPage}
               selected={customersSelection.selected}
+              isFormOpen={isFormOpen}
+              setIsFormOpen={setIsFormOpen}
+              formData={formData}
+              setFormData={setFormData}
             />
           </Stack>
         </Container>
