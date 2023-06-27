@@ -18,8 +18,12 @@ import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/ic
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 
-import { dateToString, dateToDateString, dateToDateStringSlash } from 'src/utils/function';
+import { dateToString, dateToDateString } from 'src/utils/function';
 import axios from 'axios';
+import { baseUrl } from 'src/utils/backend-url';
+
+const deleteUrl = baseUrl + "/deleteData/user/byId/";
+const activationUrl = baseUrl + "/updateData/user/";
 
 export const CustomersTable = (props) => {
   const {
@@ -59,19 +63,33 @@ export const CustomersTable = (props) => {
     console.log('Edit customer');
   };
 
-  const handleDeleteClick = (id) => {
-    //
+  const handleDeleteClick = (_id) => {
+    const deleteUserUrl = deleteUrl + _id;
+    axios
+      .delete(deleteUserUrl)
+      .then((res) => {
+        console.log(res);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     console.log('Delete customer', id);
   };
 
-  const handleStartClick = (id) => {
-    //
-    console.log('Start customer', id);
-  };
-
-  const handleStopClick = (id) => {
-    //
-    console.log('Stop customer', id);
+  const handleActivationClick = (uuid, current) => {
+    const activateUrl = activationUrl + "activate/" + uuid;
+    const deactivateUrl = activationUrl + "deactivate/" + uuid;
+    const url = current ? deactivateUrl : activateUrl;
+    axios
+      .patch(url)
+      .then((res) => {
+        console.log(res);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -171,7 +189,7 @@ export const CustomersTable = (props) => {
                     </TableCell>
                     <TableCell align="center">
                       {/* Use &#x2705; as Yes and &#x274C; as No */}
-                      &#x2705;
+                      {customer.active ? <span>&#x2705;</span> : <span>&#x274C;</span>}
                     </TableCell>
                     <TableCell align="center">
                       {lastModified}
@@ -181,17 +199,24 @@ export const CustomersTable = (props) => {
                       <Stack
                         direction="row"
                       >
-                        <IconButton
-                          aria-label="activate"
-                          color="success"
-                        >
-                          <PlayArrow />
-                        </IconButton>
-                        <IconButton
-                          aria-label="deactivate"
-                        >
-                          <Stop />
-                        </IconButton>
+                        {!customer.active && (
+                          <IconButton
+                            aria-label="activate"
+                            color="success"
+                            onClick={() => handleActivationClick(customer.uuid, customer.active)}
+                          >
+                            <PlayArrow />
+                          </IconButton>
+                        )}
+                        {customer.active && (
+                          <IconButton
+                            aria-label="deactivate"
+                            color="error"
+                            onClick={() => handleActivationClick(customer.uuid, customer.active)}
+                          >
+                            <Stop />
+                          </IconButton>
+                        )}
                         <IconButton
                           aria-label="edit"
                           color='warning'
@@ -201,7 +226,7 @@ export const CustomersTable = (props) => {
                         </IconButton>
                         <IconButton
                           aria-label="delete"
-                          color="error"
+                          onClick={() => handleDeleteClick(customer._id)}
                         >
                           <DeleteIcon />
                         </IconButton>

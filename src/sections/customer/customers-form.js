@@ -111,11 +111,13 @@ export const CustomersForm = (props) => {
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
         resetForm();
+        window.location.reload();
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
       }
+      
     }
   });
 
