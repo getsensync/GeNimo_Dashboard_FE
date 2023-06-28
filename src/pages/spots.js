@@ -4,16 +4,15 @@ import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { CustomersTable } from 'src/sections/customer/customers-table';
-import { CustomersSearch } from 'src/sections/customer/customers-search';
-import { CustomersForm } from 'src/sections/customer/customers-form';
+import { SpotsTable } from 'src/sections/spot/spots-table';
+// import { SpotsSearch } from 'src/sections/spot/spots-search';
+import { SpotsForm } from 'src/sections/spot/spots-form';
 import { applyPagination } from 'src/utils/apply-pagination';
 
 import axios from "axios";
-import { customersData, } from 'src/utils/data';
 import { baseUrl } from 'src/utils/backend-url';
 
-const useCustomers = (data, page, rowsPerPage) => {
+const useSpots = (data, page, rowsPerPage) => {
   return useMemo(
     () => {
       return applyPagination(data, page, rowsPerPage);
@@ -22,12 +21,12 @@ const useCustomers = (data, page, rowsPerPage) => {
   );
 };
 
-const useCustomerIds = (customers) => {
+const useSpotIds = (spots) => {
   return useMemo(
     () => {
-      return customers.map((customer) => customer.uuid);
+      return spots.map((spot) => spot.uuid);
     },
-    [customers]
+    [spots]
   );
 };
 
@@ -39,16 +38,14 @@ const Page = () => {
   const [formData, setFormData] = useState({
     uuid: '',
     name: '',
-    dob: 'dd/mm/yyyy',
-    balance: '',
-    type: '',
+    price: '',
     active: false,
   });
 
-  const customers = useCustomers(data, page, rowsPerPage);
-  const customersIds = useCustomerIds(customers);
-  const customersSelection = useSelection(customersIds);
-  const url = baseUrl + "/getData/user/all";
+  const spots = useSpots(data, page, rowsPerPage);
+  const spotsIds = useSpotIds(spots);
+  const spotsSelection = useSelection(spotsIds);
+  const url = baseUrl + "/getData/spot/all";
 
   useEffect(() => {
     axios
@@ -79,9 +76,7 @@ const Page = () => {
     setFormData({
       uuid: '',
       name: '',
-      dob: 'dd/mm/yyyy',
-      balance: '',
-      type: '',
+      price: '',
       active: false,
     });
     setIsFormOpen({ status: true, editOrAdd: 'add', _id: null });
@@ -91,7 +86,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Customers | GeNimo
+          Spots | GeNimo
         </title>
       </Head>
       <Box
@@ -109,7 +104,7 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h4">
-                  Customers
+                  Spots
                 </Typography>
                 {/* Import & Export Data */}
                 {/* <Stack
@@ -154,7 +149,7 @@ const Page = () => {
               </div>
             </Stack>
             {isFormOpen.status && (
-              <CustomersForm 
+              <SpotsForm 
                 isFormOpen={isFormOpen}
                 setIsFormOpen={setIsFormOpen}
                 formData={formData}
@@ -162,19 +157,19 @@ const Page = () => {
               />
             )}
             {/* Search */}
-            {/* <CustomersSearch /> */}
-            <CustomersTable
+            {/* <SpotsSearch /> */}
+            <SpotsTable
               count={data.length}
-              items={customers}
-              onDeselectAll={customersSelection.handleDeselectAll}
-              onDeselectOne={customersSelection.handleDeselectOne}
+              items={spots}
+              onDeselectAll={spotsSelection.handleDeselectAll}
+              onDeselectOne={spotsSelection.handleDeselectOne}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={customersSelection.handleSelectAll}
-              onSelectOne={customersSelection.handleSelectOne}
+              onSelectAll={spotsSelection.handleSelectAll}
+              onSelectOne={spotsSelection.handleSelectOne}
               page={page}
               rowsPerPage={rowsPerPage}
-              selected={customersSelection.selected}
+              selected={spotsSelection.selected}
               isFormOpen={isFormOpen}
               setIsFormOpen={setIsFormOpen}
               formData={formData}
