@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
+import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
@@ -10,7 +11,6 @@ import { CustomersForm } from 'src/sections/customer/customers-form';
 import { applyPagination } from 'src/utils/apply-pagination';
 
 import axios from "axios";
-import { customersData, } from 'src/utils/data';
 import { baseUrl } from 'src/utils/backend-url';
 
 const useCustomers = (data, page, rowsPerPage) => {
@@ -25,42 +25,14 @@ const useCustomers = (data, page, rowsPerPage) => {
 const useCustomerIds = (customers) => {
   return useMemo(
     () => {
-      return customers.map((customer) => customer.uuid);
+      return customers.map((item) => item.customerid);
     },
     [customers]
   );
 };
 
 const Page = () => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [data, setData] = useState([]);
-  const [isFormOpen, setIsFormOpen] = useState({ status: false, editOrAdd: null, _id: null });
-  const [formData, setFormData] = useState({
-    uuid: '',
-    name: '',
-    dob: 'dd/mm/yyyy',
-    balance: '',
-    type: '',
-    active: false,
-  });
-
-  const customers = useCustomers(data, page, rowsPerPage);
-  const customersIds = useCustomerIds(customers);
-  const customersSelection = useSelection(customersIds);
-  const url = baseUrl + "/getData/user/all";
-
-  useEffect(() => {
-    axios
-    .get(url)
-    .then((res) => {
-      setData(res.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }, []);
-
+  // Inner Functions
   const handlePageChange = useCallback(
     (event, value) => {
       setPage(value);
@@ -84,8 +56,38 @@ const Page = () => {
       type: '',
       active: false,
     });
-    setIsFormOpen({ status: true, editOrAdd: 'add', _id: null });
+    setIsFormOpen({ status: true, editOrAdd: 'add', id: null });
   }, []);
+
+  // Inner States & Logics
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [data, setData] = useState([]);
+  const [isFormOpen, setIsFormOpen] = useState({ status: false, editOrAdd: null, id: null });
+  const [formData, setFormData] = useState({
+    uuid: '',
+    name: '',
+    dob: 'dd/mm/yyyy',
+    balance: '',
+    type: '',
+    active: false,
+  });
+  const customers = useCustomers(data, page, rowsPerPage);
+  const customersIds = useCustomerIds(customers);
+  const customersSelection = useSelection(customersIds);
+  const url = baseUrl + "/management/customers/all";
+  
+  useEffect(() => {
+    axios
+    .get(url)
+    .then((res) => {
+      setData(res.data);
+      console.log("get customers data");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }, [url]);
 
   return (
     <>
@@ -139,7 +141,24 @@ const Page = () => {
                   </Button>
                 </Stack> */}
               </Stack>
-              <div>
+              <Stack
+                direction="row"
+                spacing={2}
+              >
+                {/* add Refresh button that will load window */}
+                <Button
+                  color="secondary"
+                  startIcon={(
+                    <SvgIcon fontSize="small">
+                      {/* arrow-path icon */}
+                      <ArrowPathIcon />
+                    </SvgIcon>
+                  )}
+                  variant="contained"
+                  onClick={() => window.location.reload()}
+                >
+                  Refresh
+                </Button>
                 <Button
                   startIcon={(
                     <SvgIcon fontSize="small">
@@ -151,7 +170,7 @@ const Page = () => {
                 >
                   Add
                 </Button>
-              </div>
+              </Stack>
             </Stack>
             {isFormOpen.status && (
               <CustomersForm 

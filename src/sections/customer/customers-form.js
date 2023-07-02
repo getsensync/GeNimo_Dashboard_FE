@@ -16,8 +16,8 @@ import {
 import { baseUrl } from 'src/utils/backend-url';
 import axios from 'axios';
 
-const addUserUrl = baseUrl + "/createNew/user";
-const editUrl = baseUrl + "/updateData/user/byId/";
+const addUserUrl = baseUrl + "/management/customers/add";
+const editUrl = baseUrl + "/management/customers/update/";
 
 export const CustomersForm = (props) => {
   const {
@@ -45,7 +45,7 @@ export const CustomersForm = (props) => {
       // 1/1/1940 as a Date object is new Date(0)
       dob: Yup
         .date('Must be a valid date')
-        .min(new Date(1940, 1, 0), 'Must be after 1/1/1970')
+        .min(new Date(1940, 0, 1), 'Must be after 1/1/1940')
         .max(new Date(), 'Must be before today')
         .required('Date of birth is required'),
       // balance is a number
@@ -70,26 +70,22 @@ export const CustomersForm = (props) => {
         const uuid = values.uuid;
         const name = values.name;
         const dob = new Date(values.dob);
-        const balance = values.balance;
         const type = values.type;
-        const active = formData.active;
-        const last_modified = new Date();
+        const balance = values.balance;
         const resultData = { 
           uuid: uuid,
           name: name,
           dob: dob,
+          type: type,
           balance: balance,
-          encryption: type,
-          active: active,
-          last_modified: last_modified, 
         };
         console.log(resultData);
         if (isFormOpen.editOrAdd === 'edit') {
-          const uuid = isFormOpen._id;
-          const editUserUrl = editUrl + uuid;
-          // edit using axios at editUserUrl
+          const id = isFormOpen.id;
+          const editUserUrl = editUrl + id;
+          // edit using axios at editUserUrl (put method)
           axios
-            .patch(editUserUrl, resultData)
+            .put(editUserUrl, resultData)
             .then((response) => {
               console.log(response);
             })
@@ -97,7 +93,6 @@ export const CustomersForm = (props) => {
               console.log(error);
             });
         } else if (isFormOpen.editOrAdd === 'add') {
-          // add using axios at addUserUrl
           axios
             .post(addUserUrl, resultData)
             .then((response) => {
@@ -111,7 +106,7 @@ export const CustomersForm = (props) => {
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
         resetForm();
-        window.location.reload();
+        // window.location.reload();
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -126,7 +121,7 @@ export const CustomersForm = (props) => {
   };
 
   const resetForm = () => {
-    setIsFormOpen({ status: false, editOrAdd: null, _id: null });
+    setIsFormOpen({ status: false, editOrAdd: null, id: null });
     setFormData({
       uuid: '',
       name: '',

@@ -22,8 +22,8 @@ import { dateToString, dateToDateString } from 'src/utils/function';
 import axios from 'axios';
 import { baseUrl } from 'src/utils/backend-url';
 
-const deleteUrl = baseUrl + "/deleteData/user/byId/";
-const activationUrl = baseUrl + "/updateData/user/";
+const deleteUrl = baseUrl + "/management/customers/delete/";
+const activationUrl = baseUrl + "/activation/customer/";
 
 export const CustomersTable = (props) => {
   const {
@@ -47,45 +47,43 @@ export const CustomersTable = (props) => {
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
 
-  const handleEditClick = (_id) => {
-    const editCustomer = items.find((customer) => customer._id === _id);
+  const handleEditClick = (customerid) => {
+    const edited = items.find((item) => item.customerid === customerid);
     setFormData(
       {
-        uuid: editCustomer.uuid,
-        name: editCustomer.name,
-        dob: dateToDateString(editCustomer.dob),
-        balance: editCustomer.balance,
-        type: editCustomer.encryption,
-        active: editCustomer.active,
+        uuid: edited.customeruuid,
+        name: edited.customername,
+        dob: dateToDateString(edited.dateofbirth),
+        balance: edited.balance,
+        type: edited.encryptiontype,
+        active: edited.isactive,
       }
     )
-    setIsFormOpen({ status: true, editOrAdd: 'edit', _id: editCustomer._id });
+    setIsFormOpen({ status: true, editOrAdd: 'edit', id: edited.customerid });
     console.log('Edit customer');
   };
 
-  const handleDeleteClick = (_id) => {
-    const deleteUserUrl = deleteUrl + _id;
+  const handleDeleteClick = (customerid) => {
+    const deleteUserUrl = deleteUrl + customerid;
     axios
       .delete(deleteUserUrl)
       .then((res) => {
         console.log(res);
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((error) => {
         console.log(error);
       });
-    console.log('Delete customer', id);
+    console.log('Delete customer', customerid);
   };
 
-  const handleActivationClick = (uuid, current) => {
-    const activateUrl = activationUrl + "activate/" + uuid;
-    const deactivateUrl = activationUrl + "deactivate/" + uuid;
-    const url = current ? deactivateUrl : activateUrl;
+  const handleActivationClick = (customerid, current) => {
+    const url = activationUrl + customerid;
     axios
-      .patch(url)
+      .put(url, { new_status: !current })
       .then((res) => {
         console.log(res);
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -139,10 +137,11 @@ export const CustomersTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((customer, index) => {
-                const isSelected = selected.includes(customer.uuid);
-                const dOB = customer.dob ? dateToDateString(customer.dob) : 'N/A'; 
-                const lastModified = customer.last_modified ? dateToString(customer.last_modified) : 'N/A';
+              {items.map((item, index) => {
+                const isSelected = selected.includes(item.customerid);
+                const dOB = item.dateofbirth ? dateToDateString(item.dateofbirth) : 'N/A';
+                const createdAT = item.createdat ? dateToDateString(item.createdat) : 'N/A';
+                const lastModified = item.lastmodified ? dateToString(item.lastmodified) : 'N/A';
                 return (
                   <TableRow
                     hover
@@ -154,15 +153,15 @@ export const CustomersTable = (props) => {
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(customer.uuid);
+                            onSelectOne?.(item.customerid);
                           } else {
-                            onDeselectOne?.(customer.uuid);
+                            onDeselectOne?.(item.customerid);
                           }
                         }}
                       />
                     </TableCell>
                     <TableCell>
-                      {customer.uuid}
+                      {item.customeruuid}
                     </TableCell>
                     <TableCell>
                       <Stack
@@ -170,11 +169,11 @@ export const CustomersTable = (props) => {
                         direction="row"
                         spacing={2}
                       >
-                        <Avatar src={customer.avatar}>
-                          {getInitials(customer.name)}
+                        <Avatar src={item.avatar}>
+                          {getInitials(item.customername)}
                         </Avatar>
                         <Typography variant="subtitle2">
-                          {customer.name}
+                          {item.customername}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -182,14 +181,14 @@ export const CustomersTable = (props) => {
                       {dOB}
                     </TableCell>
                     <TableCell align="right">
-                      {customer.balance}
+                      {item.balance}
                     </TableCell>
                     <TableCell align="center">
-                      {customer.encryption}
+                      {item.encryptiontype}
                     </TableCell>
                     <TableCell align="center">
                       {/* Use &#x2705; as Yes and &#x274C; as No */}
-                      {customer.active ? <span>&#x2705;</span> : <span>&#x274C;</span>}
+                      {item.isactive ? <span>&#x2705;</span> : <span>&#x274C;</span>}
                     </TableCell>
                     <TableCell align="center">
                       {lastModified}
@@ -199,20 +198,20 @@ export const CustomersTable = (props) => {
                       <Stack
                         direction="row"
                       >
-                        {!customer.active && (
+                        {!item.isactive && (
                           <IconButton
                             aria-label="activate"
                             color="success"
-                            onClick={() => handleActivationClick(customer.uuid, customer.active)}
+                            onClick={() => handleActivationClick(item.customerid, item.isactive)}
                           >
                             <PlayArrow />
                           </IconButton>
                         )}
-                        {customer.active && (
+                        {item.isactive && (
                           <IconButton
                             aria-label="deactivate"
                             color="error"
-                            onClick={() => handleActivationClick(customer.uuid, customer.active)}
+                            onClick={() => handleActivationClick(item.customerid, item.isactive)}
                           >
                             <Stop />
                           </IconButton>
@@ -220,13 +219,13 @@ export const CustomersTable = (props) => {
                         <IconButton
                           aria-label="edit"
                           color='warning'
-                          onClick={() => handleEditClick(customer._id)}
+                          onClick={() => handleEditClick(item.customerid)}
                         >
                           <EditIcon />
                         </IconButton>
                         <IconButton
                           aria-label="delete"
-                          onClick={() => handleDeleteClick(customer._id)}
+                          onClick={() => handleDeleteClick(item.customerid)}
                         >
                           <DeleteIcon />
                         </IconButton>
