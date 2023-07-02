@@ -18,7 +18,7 @@ import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/ic
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 
-import { dateToString, dateToDateString } from 'src/utils/function';
+import { toFullString, toDateString } from 'src/utils/function';
 import axios from 'axios';
 import { baseUrl } from 'src/utils/backend-url';
 
@@ -53,7 +53,7 @@ export const CustomersTable = (props) => {
       {
         uuid: edited.customeruuid,
         name: edited.customername,
-        dob: dateToDateString(edited.dateofbirth),
+        dob: toDateString(edited.dateofbirth),
         balance: edited.balance,
         type: edited.encryptiontype,
         active: edited.isactive,
@@ -139,9 +139,9 @@ export const CustomersTable = (props) => {
             <TableBody>
               {items.map((item, index) => {
                 const isSelected = selected.includes(item.customerid);
-                const dOB = item.dateofbirth ? dateToDateString(item.dateofbirth) : 'N/A';
-                const createdAT = item.createdat ? dateToDateString(item.createdat) : 'N/A';
-                const lastModified = item.lastmodified ? dateToString(item.lastmodified) : 'N/A';
+                const dOB = item.dateofbirth ? toDateString(item.dateofbirth) : 'N/A';
+                const createdAT = item.createdat ? toDateString(item.createdat) : 'N/A';
+                const lastModified = item.lastmodified ? toFullString(item.lastmodified) : 'N/A';
                 return (
                   <TableRow
                     hover
@@ -177,7 +177,7 @@ export const CustomersTable = (props) => {
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell align="right">
                       {dOB}
                     </TableCell>
                     <TableCell align="right">
@@ -193,10 +193,10 @@ export const CustomersTable = (props) => {
                     <TableCell align="center">
                       {lastModified}
                     </TableCell>
-                    <TableCell align="center"
-                    >
+                    <TableCell>
                       <Stack
                         direction="row"
+                        justifyContent="center"
                       >
                         {!item.isactive && (
                           <IconButton

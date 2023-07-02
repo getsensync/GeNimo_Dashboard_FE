@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
+import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
@@ -24,41 +25,15 @@ const useSpots = (data, page, rowsPerPage) => {
 const useSpotIds = (spots) => {
   return useMemo(
     () => {
-      return spots.map((spot) => spot.uuid);
+      return spots.map((item) => item.spotid);
     },
     [spots]
   );
 };
 
 const Page = () => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [data, setData] = useState([]);
-  const [isFormOpen, setIsFormOpen] = useState({ status: false, editOrAdd: null, _id: null });
-  const [formData, setFormData] = useState({
-    uuid: '',
-    name: '',
-    price: '',
-    active: false,
-  });
-
-  const spots = useSpots(data, page, rowsPerPage);
-  const spotsIds = useSpotIds(spots);
-  const spotsSelection = useSelection(spotsIds);
-  const url = baseUrl + "/getData/spot/all";
-
-  useEffect(() => {
-    axios
-    .get(url)
-    .then((res) => {
-      setData(res.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }, []);
-
-  const handlePageChange = useCallback(
+  // Inner Functions
+    const handlePageChange = useCallback(
     (event, value) => {
       setPage(value);
     },
@@ -79,8 +54,37 @@ const Page = () => {
       price: '',
       active: false,
     });
-    setIsFormOpen({ status: true, editOrAdd: 'add', _id: null });
+    setIsFormOpen({ status: true, editOrAdd: 'add', id: null });
   }, []);
+
+  // Inner States & Logics
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [data, setData] = useState([]);
+  const [isFormOpen, setIsFormOpen] = useState({ status: false, editOrAdd: null, id: null });
+  const [formData, setFormData] = useState({
+    uuid: '',
+    name: '',
+    price: '',
+    active: false,
+  });
+
+  const spots = useSpots(data, page, rowsPerPage);
+  const spotsIds = useSpotIds(spots);
+  const spotsSelection = useSelection(spotsIds);
+  const url = baseUrl + "/management/spots/all";
+
+  useEffect(() => {
+    axios
+    .get(url)
+    .then((res) => {
+      setData(res.data);
+      console.log("get spots data");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }, [url]);
 
   return (
     <>
@@ -134,7 +138,24 @@ const Page = () => {
                   </Button>
                 </Stack> */}
               </Stack>
-              <div>
+              <Stack
+                direction="row"
+                spacing={2}
+              >
+                {/* add Refresh button that will load window */}
+                <Button
+                  color="secondary"
+                  startIcon={(
+                    <SvgIcon fontSize="small">
+                      {/* arrow-path icon */}
+                      <ArrowPathIcon />
+                    </SvgIcon>
+                  )}
+                  variant="contained"
+                  onClick={() => window.location.reload()}
+                >
+                  Refresh
+                </Button>
                 <Button
                   startIcon={(
                     <SvgIcon fontSize="small">
@@ -146,7 +167,7 @@ const Page = () => {
                 >
                   Add
                 </Button>
-              </div>
+              </Stack>
             </Stack>
             {isFormOpen.status && (
               <SpotsForm 

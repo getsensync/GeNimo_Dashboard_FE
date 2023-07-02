@@ -18,12 +18,12 @@ import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/ic
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 
-import { dateToString, dateToDateString } from 'src/utils/function';
+import { toFullString, toDateString } from 'src/utils/function';
 import axios from 'axios';
 import { baseUrl } from 'src/utils/backend-url';
 
-const deleteUrl = baseUrl + "/deleteData/spot/byId/";
-const activationUrl = baseUrl + "/updateData/spot/";
+const deleteUrl = baseUrl + "/management/spots/delete/";
+const activationUrl = baseUrl + "/activation/spot/";
 
 export const SpotsTable = (props) => {
   const {
@@ -47,43 +47,41 @@ export const SpotsTable = (props) => {
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
 
-  const handleEditClick = (_id) => {
-    const editSpot = items.find((spot) => spot._id === _id);
+  const handleEditClick = (spotid) => {
+    const edited = items.find((item) => item.spotid === spotid);
     setFormData(
       {
-        uuid: editSpot.uuid,
-        name: editSpot.name,
-        price: editSpot.price,
-        active: editSpot.active,
+        uuid: edited.spotuuid,
+        name: edited.spotname,
+        price: edited.price,
+        active: edited.isactive,
       }
     )
-    setIsFormOpen({ status: true, editOrAdd: 'edit', _id: editSpot._id });
+    setIsFormOpen({ status: true, editOrAdd: 'edit', id: edited.spotid });
     console.log('Edit spot');
   };
 
-  const handleDeleteClick = (_id) => {
-    const deleteUserUrl = deleteUrl + _id;
+  const handleDeleteClick = (spotid) => {
+    const deleteUserUrl = deleteUrl + spotid;
     axios
       .delete(deleteUserUrl)
       .then((res) => {
         console.log(res);
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((error) => {
         console.log(error);
       });
-    console.log('Delete spot', id);
+    console.log('Delete spot', spotid);
   };
 
-  const handleActivationClick = (uuid, current) => {
-    const activateUrl = activationUrl + "activate/" + uuid;
-    const deactivateUrl = activationUrl + "deactivate/" + uuid;
-    const url = current ? deactivateUrl : activateUrl;
+  const handleActivationClick = (spotid, current) => {
+    const url = activationUrl + spotid;
     axios
-      .patch(url)
+      .put(url, { new_status: !current })
       .then((res) => {
         console.log(res);
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -115,16 +113,10 @@ export const SpotsTable = (props) => {
                 </TableCell>
                 <TableCell align="center">
                   Name
-                </TableCell>
-                <TableCell align="center">
-                  Date of Birth
-                </TableCell>
+                </TableCell>                
                 <TableCell align="center">
                   Price
-                </TableCell>
-                <TableCell align="center">
-                  Type
-                </TableCell>
+                </TableCell>                
                 <TableCell align="center">
                   Active
                 </TableCell>
@@ -137,10 +129,9 @@ export const SpotsTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((spot, index) => {
-                const isSelected = selected.includes(spot.uuid);
-                const dOB = spot.dob ? dateToDateString(spot.dob) : 'N/A'; 
-                const lastModified = spot.last_modified ? dateToString(spot.last_modified) : 'N/A';
+              {items.map((item, index) => {
+                const isSelected = selected.includes(item.spotid);
+                const lastModified = item.lastmodified ? toFullString(item.lastmodified) : 'N/A';
                 return (
                   <TableRow
                     hover
@@ -152,15 +143,15 @@ export const SpotsTable = (props) => {
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(spot.uuid);
+                            onSelectOne?.(item.spotid);
                           } else {
-                            onDeselectOne?.(spot.uuid);
+                            onDeselectOne?.(item.spotid);
                           }
                         }}
                       />
                     </TableCell>
                     <TableCell>
-                      {spot.uuid}
+                      {item.spotuuid}
                     </TableCell>
                     <TableCell>
                       <Stack
@@ -168,49 +159,43 @@ export const SpotsTable = (props) => {
                         direction="row"
                         spacing={2}
                       >
-                        <Avatar src={spot.avatar}>
-                          {getInitials(spot.name)}
+                        <Avatar src={item.avatar}>
+                          {getInitials(item.spotname)}
                         </Avatar>
                         <Typography variant="subtitle2">
-                          {spot.name}
+                          {item.spotname}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell align="center">
-                      {dOB}
-                    </TableCell>
                     <TableCell align="right">
-                      {spot.price}
-                    </TableCell>
-                    <TableCell align="center">
-                      {spot.encryption}
+                      {item.price}
                     </TableCell>
                     <TableCell align="center">
                       {/* Use &#x2705; as Yes and &#x274C; as No */}
-                      {spot.active ? <span>&#x2705;</span> : <span>&#x274C;</span>}
+                      {item.isactive ? <span>&#x2705;</span> : <span>&#x274C;</span>}
                     </TableCell>
                     <TableCell align="center">
                       {lastModified}
                     </TableCell>
-                    <TableCell align="center"
-                    >
+                    <TableCell>
                       <Stack
                         direction="row"
+                        justifyContent="center"
                       >
-                        {!spot.active && (
+                        {!item.isactive && (
                           <IconButton
                             aria-label="activate"
                             color="success"
-                            onClick={() => handleActivationClick(spot.uuid, spot.active)}
+                            onClick={() => handleActivationClick(item.spotid, item.isactive)}
                           >
                             <PlayArrow />
                           </IconButton>
                         )}
-                        {spot.active && (
+                        {item.isactive && (
                           <IconButton
                             aria-label="deactivate"
                             color="error"
-                            onClick={() => handleActivationClick(spot.uuid, spot.active)}
+                            onClick={() => handleActivationClick(item.spotid, item.isactive)}
                           >
                             <Stop />
                           </IconButton>
@@ -218,13 +203,13 @@ export const SpotsTable = (props) => {
                         <IconButton
                           aria-label="edit"
                           color='warning'
-                          onClick={() => handleEditClick(spot._id)}
+                          onClick={() => handleEditClick(item.spotid)}
                         >
                           <EditIcon />
                         </IconButton>
                         <IconButton
                           aria-label="delete"
-                          onClick={() => handleDeleteClick(spot._id)}
+                          onClick={() => handleDeleteClick(item.spotid)}
                         >
                           <DeleteIcon />
                         </IconButton>

@@ -12,8 +12,8 @@ import {
 import { baseUrl } from 'src/utils/backend-url';
 import axios from 'axios';
 
-const addSpotUrl = baseUrl + "/createNew/spot";
-const editUrl = baseUrl + "/updateData/spot/byId/";
+const addSpotUrl = baseUrl + "/management/spots/add";
+const editUrl = baseUrl + "/management/spots/update/";
 
 export const SpotsForm = (props) => {
   const {
@@ -54,22 +54,18 @@ export const SpotsForm = (props) => {
         const uuid = values.uuid;
         const name = values.name;
         const price = values.price;
-        const active = formData.active;
-        const last_modified = new Date();
         const resultData = { 
           uuid: uuid,
           name: name,
           price: price,
-          active: active,
-          last_modified: last_modified, 
         };
         console.log(resultData);
         if (isFormOpen.editOrAdd === 'edit') {
-          const uuid = isFormOpen._id;
-          const editSpotUrl = editUrl + uuid;
+          const id = isFormOpen.id;
+          const editSpotUrl = editUrl + id;
           // edit using axios at editSpotUrl
           axios
-            .patch(editSpotUrl, resultData)
+            .put(editSpotUrl, resultData)
             .then((response) => {
               console.log(response);
             })
@@ -91,7 +87,7 @@ export const SpotsForm = (props) => {
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
         resetForm();
-        window.location.reload();
+        // window.location.reload();
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -106,7 +102,7 @@ export const SpotsForm = (props) => {
   };
 
   const resetForm = () => {
-    setIsFormOpen({ status: false, editOrAdd: null, _id: null });
+    setIsFormOpen({ status: false, editOrAdd: null, id: null });
     setFormData({
       uuid: '',
       name: '',
