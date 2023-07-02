@@ -24,7 +24,6 @@ const Page = () => (
       component="main"
       sx={{
         flexGrow: 1,
-        py: 8
       }}
     >
       <Container maxWidth="xl">
@@ -32,6 +31,7 @@ const Page = () => (
           container
           spacing={3}
         >
+          {/* First Row */}
           <Grid
             xs={12}
             sm={6}
@@ -76,9 +76,10 @@ const Page = () => (
               value="$15k"
             />
           </Grid>
-          <Grid
+          
+          {/* Second Row */}
+          {/* <Grid
             xs={12}
-            lg={8}
           >
             <OverviewSales
               chartSeries={[
@@ -93,18 +94,18 @@ const Page = () => (
               ]}
               sx={{ height: '100%' }}
             />
-          </Grid>
+          </Grid> */}
+          
+          {/* Third Row */}
           <Grid
             xs={12}
-            md={6}
-            lg={4}
           >
             <OverviewTraffic
-              chartSeries={[63, 15, 22]}
-              labels={['Desktop', 'Tablet', 'Phone']}
               sx={{ height: '100%' }}
             />
           </Grid>
+
+          {/* Fourth Row */}
           <Grid
             xs={12}
             md={6}
