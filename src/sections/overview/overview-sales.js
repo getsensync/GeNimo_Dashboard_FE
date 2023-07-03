@@ -24,16 +24,16 @@ export const OverviewSales = (props) => {
   const thisYearSaleUrl = baseUrl + '/payments/count/annual/' + new Date().getFullYear();
   const lastYearSaleUrl = baseUrl + '/payments/count/annual/' + (new Date().getFullYear() - 1);
   const [chartSeries, setChartSeries] = useState([]);
-
-  useEffect(() => {
+  
+  const FetchData = () => {
     axios
       .get(thisYearSaleUrl)
       .then((response) => {
-        const thisYearSale = response.data;
+        const thisYear = response.data;
         const thisYearData = monthNumber.map((month) => {
-          const monthSale = thisYearSale.findIndex((sale) => sale.month === month);
+          const monthSale = thisYear.findIndex((sale) => sale.month === month);
           if (monthSale !== -1) {
-            return thisYearSale[monthSale].count;
+            return thisYear[monthSale].count;
           } else {
             // return 0;
             return Math.floor(Math.random() * 40) + 1;
@@ -42,11 +42,11 @@ export const OverviewSales = (props) => {
         axios
           .get(lastYearSaleUrl)
           .then((response) => {
-            const lastYearSale = response.data;
+            const lastYear = response.data;
             const lastYearData = monthNumber.map((month) => {
-              const monthSale = lastYearSale.findIndex((sale) => sale.month === month);
+              const monthSale = lastYear.findIndex((sale) => sale.month === month);
               if (monthSale !== -1) {
-                return lastYearSale[monthSale].count;
+                return lastYear[monthSale].count;
               } else {
                 // return 0;
                 return Math.floor(Math.random() * 40) + 1;
@@ -70,6 +70,11 @@ export const OverviewSales = (props) => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+
+  useEffect(() => {
+    FetchData();
   }, []);
 
   return (
@@ -84,6 +89,7 @@ export const OverviewSales = (props) => {
                 <ArrowPathIcon />
               </SvgIcon>
             )}
+            onClick={FetchData}
           >
             Sync
           </Button>
