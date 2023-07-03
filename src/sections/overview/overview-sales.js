@@ -8,50 +8,68 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  Stack,
   SvgIcon
 } from '@mui/material';
-import { alpha, useTheme } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import { Chart } from 'src/components/chart';
 import { baseUrl } from 'src/utils/backend-url';
 import axios from 'axios';
 
-import { monthNumber, monthString, zeroMonthCounter } from 'src/utils/data';
+import { configMonthly, configAnnual } from 'src/utils/chart-options/overview-sales';
+import { completeMonthInYear, completeDayInMonth } from 'src/utils/function';
 
 export const OverviewSales = (props) => {
   const { sx } = props;
-  const chartOptions = useChartOptions();
-  const thisYearSaleUrl = baseUrl + '/payments/count/annual/' + new Date().getFullYear();
-  const lastYearSaleUrl = baseUrl + '/payments/count/annual/' + (new Date().getFullYear() - 1);
+  const [isMonthly, setIsMonthly] = useState(false);
   const [chartSeries, setChartSeries] = useState([]);
+
+  const FetchMonthlyData = () => {
+    const thisMonthSaleUrl = baseUrl + '/payments/count/monthly/' + (new Date().getMonth() + 1);
+    const lastMonthSaleUrl = baseUrl + '/payments/count/monthly/' + (new Date().getMonth());
+    axios
+      .get(thisMonthSaleUrl)
+      .then((response) => {
+        const thisMonth = response.data;
+        const thisMonthData = completeDayInMonth(thisMonth, new Date().getMonth() + 1).map((day) => day.count);
+        axios
+          .get(lastMonthSaleUrl)
+          .then((response) => {
+            const lastMonth = response.data;
+            const lastMonthData = completeDayInMonth(lastMonth, new Date().getMonth()).map((day) => day.count);
+            setChartSeries([
+              {
+                name: "This Month",
+                data: thisMonthData
+              },
+              {
+                name: "Last Month",
+                data: lastMonthData
+              }
+            ]);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   
-  const FetchData = () => {
+  const FetchAnnualData = () => {
+    const thisYearSaleUrl = baseUrl + '/payments/count/annual/' + new Date().getFullYear();
+    const lastYearSaleUrl = baseUrl + '/payments/count/annual/' + (new Date().getFullYear() - 1);
     axios
       .get(thisYearSaleUrl)
       .then((response) => {
         const thisYear = response.data;
-        const thisYearData = monthNumber.map((month) => {
-          const monthSale = thisYear.findIndex((sale) => sale.month === month);
-          if (monthSale !== -1) {
-            return thisYear[monthSale].count;
-          } else {
-            // return 0;
-            return Math.floor(Math.random() * 40) + 1;
-          }
-        });
+        const thisYearData = completeMonthInYear(thisYear).map((month) => month.count);
         axios
           .get(lastYearSaleUrl)
           .then((response) => {
             const lastYear = response.data;
-            const lastYearData = monthNumber.map((month) => {
-              const monthSale = lastYear.findIndex((sale) => sale.month === month);
-              if (monthSale !== -1) {
-                return lastYear[monthSale].count;
-              } else {
-                // return 0;
-                return Math.floor(Math.random() * 40) + 1;
-              }
-            });
+            const lastYearData = completeMonthInYear(lastYear).map((month) => month.count);
             setChartSeries([
               {
                 name: "This Year",
@@ -72,16 +90,49 @@ export const OverviewSales = (props) => {
       });
   };
 
+  const handleType = () => {
+    setIsMonthly(!isMonthly);
+    if (isMonthly) {
+      FetchMonthlyData();
+    } else {
+      FetchAnnualData();
+    }
+  };
 
   useEffect(() => {
-    FetchData();
-  }, []);
+    if (isMonthly) {
+      FetchMonthlyData();
+    } else {
+      FetchAnnualData();
+    }
+  }, [isMonthly]);
 
   return (
     <Card sx={sx}>
       <CardHeader
         action={(
-          <Button
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              my: -1.5
+            }}
+          >
+            <Button
+              color="inherit"
+              size="small"
+              startIcon={(
+                <SvgIcon fontSize="small">
+                  <ArrowPathIcon />
+                </SvgIcon>
+              )}
+              onClick={handleType}
+            >
+              {isMonthly ? 'Annual' : 'Monthly'}
+            </Button>
+            <Button
             color="inherit"
             size="small"
             startIcon={(
@@ -89,17 +140,18 @@ export const OverviewSales = (props) => {
                 <ArrowPathIcon />
               </SvgIcon>
             )}
-            onClick={FetchData}
+            onClick={isMonthly ? FetchMonthlyData : FetchAnnualData}
           >
             Sync
           </Button>
+          </Stack>
         )}
         title="Ticket Sales"
       />
       <CardContent>
         <Chart
           height={350}
-          options={chartOptions}
+          options={isMonthly ? configMonthly : configAnnual}
           series={chartSeries}
           type="bar"
           width="100%"
@@ -121,84 +173,6 @@ export const OverviewSales = (props) => {
       </CardActions>
     </Card>
   );
-};
-
-const useChartOptions = () => {
-  const theme = useTheme();
-
-  return {
-    chart: {
-      background: 'transparent',
-      stacked: false,
-      toolbar: {
-        show: false
-      }
-    },
-    colors: [theme.palette.primary.main, alpha(theme.palette.primary.main, 0.25)],
-    dataLabels: {
-      enabled: false
-    },
-    fill: {
-      opacity: 1,
-      type: 'solid'
-    },
-    grid: {
-      borderColor: theme.palette.divider,
-      strokeDashArray: 2,
-      xaxis: {
-        lines: {
-          show: false
-        }
-      },
-      yaxis: {
-        lines: {
-          show: true
-        }
-      }
-    },
-    legend: {
-      show: false
-    },
-    plotOptions: {
-      bar: {
-        columnWidth: '40px'
-      }
-    },
-    stroke: {
-      colors: ['transparent'],
-      show: true,
-      width: 2
-    },
-    theme: {
-      mode: theme.palette.mode
-    },
-    xaxis: {
-      axisBorder: {
-        color: theme.palette.divider,
-        show: true
-      },
-      axisTicks: {
-        color: theme.palette.divider,
-        show: true
-      },
-      categories: monthString,
-      labels: {
-        offsetY: 5,
-        style: {
-          colors: theme.palette.text.secondary
-        }
-      }
-    },
-    yaxis: {
-      labels: {
-        formatter: (value) => (value > 0 ? `${value}` : `${value}`),
-        offsetX: -10,
-        style: {
-          colors: theme.palette.text.secondary
-        }
-      }
-    }
-  };
 };
 
 OverviewSales.protoTypes = {
