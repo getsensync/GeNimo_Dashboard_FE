@@ -51,7 +51,6 @@ export const SpotsTable = (props) => {
     const edited = items.find((item) => item.spotid === spotid);
     setFormData(
       {
-        uuid: edited.spotuuid,
         name: edited.spotname,
         price: edited.price,
         active: edited.isactive,
@@ -108,9 +107,6 @@ export const SpotsTable = (props) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>
-                  UUID
-                </TableCell>
                 <TableCell align="center">
                   Name
                 </TableCell>                
@@ -149,9 +145,6 @@ export const SpotsTable = (props) => {
                           }
                         }}
                       />
-                    </TableCell>
-                    <TableCell>
-                      {item.spotuuid}
                     </TableCell>
                     <TableCell>
                       <Stack

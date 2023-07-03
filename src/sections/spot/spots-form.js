@@ -26,12 +26,6 @@ export const SpotsForm = (props) => {
   const formik = useFormik({
     initialValues: formData,
     validationSchema: Yup.object({
-      // uuid is a string with 8 characters
-      uuid: Yup
-        .string()
-        .length(8)
-        .required('UUID is required'),
-      // name is a string with 1-255 characters
       name: Yup
         .string()
         .min(1)
@@ -51,11 +45,9 @@ export const SpotsForm = (props) => {
     onSubmit: async (values, helpers) => {
       try {
         // get all values to a variable
-        const uuid = values.uuid;
         const name = values.name;
         const price = values.price;
-        const resultData = { 
-          uuid: uuid,
+        const resultData = {
           name: name,
           price: price,
         };
@@ -104,7 +96,6 @@ export const SpotsForm = (props) => {
   const resetForm = () => {
     setIsFormOpen({ status: false, editOrAdd: null, id: null });
     setFormData({
-      uuid: '',
       name: '',
       price: '',
       active: false,
@@ -157,19 +148,7 @@ export const SpotsForm = (props) => {
               onSubmit={formik.handleSubmit}
             >
               <Stack spacing={3}>
-                {/* form for uuid, name, dob, price, type */}
-                <TextField
-                  error={!!(formik.touched.uuid && formik.errors.uuid)}
-                  fullWidth
-                  helperText={formik.touched.uuid && formik.errors.uuid}
-                  label="UUID"
-                  name="uuid"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  type="uuid"
-                  value={formik.values.uuid}
-                  required
-                />
+                {/* form for name, dob, price, type */}
                 <TextField
                   error={!!(formik.touched.name && formik.errors.name)}
                   fullWidth

@@ -49,7 +49,6 @@ const Page = () => {
 
   const handleAddClick = useCallback(() => {
     setFormData({
-      uuid: '',
       name: '',
       price: '',
       active: false,
@@ -63,7 +62,6 @@ const Page = () => {
   const [data, setData] = useState([]);
   const [isFormOpen, setIsFormOpen] = useState({ status: false, editOrAdd: null, id: null });
   const [formData, setFormData] = useState({
-    uuid: '',
     name: '',
     price: '',
     active: false,
