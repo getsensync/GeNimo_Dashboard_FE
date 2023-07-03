@@ -11,7 +11,111 @@ import {
   SvgIcon
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react';
 import { Chart } from 'src/components/chart';
+import { baseUrl } from 'src/utils/backend-url';
+import axios from 'axios';
+
+import { monthNumber, monthString, zeroMonthCounter } from 'src/utils/data';
+
+export const OverviewSales = (props) => {
+  const { sx } = props;
+  const chartOptions = useChartOptions();
+  const thisYearSaleUrl = baseUrl + '/payments/count/annual/' + new Date().getFullYear();
+  const lastYearSaleUrl = baseUrl + '/payments/count/annual/' + (new Date().getFullYear() - 1);
+  const [chartSeries, setChartSeries] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(thisYearSaleUrl)
+      .then((response) => {
+        const thisYearSale = response.data;
+        const thisYearData = monthNumber.map((month) => {
+          const monthSale = thisYearSale.findIndex((sale) => sale.month === month);
+          if (monthSale !== -1) {
+            return thisYearSale[monthSale].count;
+          } else {
+            // return 0;
+            return Math.floor(Math.random() * 40) + 1;
+          }
+        });
+        axios
+          .get(lastYearSaleUrl)
+          .then((response) => {
+            const lastYearSale = response.data;
+            const lastYearData = monthNumber.map((month) => {
+              const monthSale = lastYearSale.findIndex((sale) => sale.month === month);
+              if (monthSale !== -1) {
+                return lastYearSale[monthSale].count;
+              } else {
+                // return 0;
+                return Math.floor(Math.random() * 40) + 1;
+              }
+            });
+            setChartSeries([
+              {
+                name: "This Year",
+                data: thisYearData
+              },
+              {
+                name: "Last Year",
+                data: lastYearData
+              }
+            ]);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  return (
+    <Card sx={sx}>
+      <CardHeader
+        action={(
+          <Button
+            color="inherit"
+            size="small"
+            startIcon={(
+              <SvgIcon fontSize="small">
+                <ArrowPathIcon />
+              </SvgIcon>
+            )}
+          >
+            Sync
+          </Button>
+        )}
+        title="Ticket Sales"
+      />
+      <CardContent>
+        <Chart
+          height={350}
+          options={chartOptions}
+          series={chartSeries}
+          type="bar"
+          width="100%"
+        />
+      </CardContent>
+      <Divider />
+      <CardActions sx={{ justifyContent: 'flex-end' }}>
+        <Button
+          color="inherit"
+          endIcon={(
+            <SvgIcon fontSize="small">
+              <ArrowRightIcon />
+            </SvgIcon>
+          )}
+          size="small"
+        >
+          Overview
+        </Button>
+      </CardActions>
+    </Card>
+  );
+};
 
 const useChartOptions = () => {
   const theme = useTheme();
@@ -71,20 +175,7 @@ const useChartOptions = () => {
         color: theme.palette.divider,
         show: true
       },
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ],
+      categories: monthString,
       labels: {
         offsetY: 5,
         style: {
@@ -94,7 +185,7 @@ const useChartOptions = () => {
     },
     yaxis: {
       labels: {
-        formatter: (value) => (value > 0 ? `${value}K` : `${value}`),
+        formatter: (value) => (value > 0 ? `${value}` : `${value}`),
         offsetX: -10,
         style: {
           colors: theme.palette.text.secondary
@@ -102,55 +193,6 @@ const useChartOptions = () => {
       }
     }
   };
-};
-
-export const OverviewSales = (props) => {
-  const { chartSeries, sx } = props;
-  const chartOptions = useChartOptions();
-
-  return (
-    <Card sx={sx}>
-      <CardHeader
-        action={(
-          <Button
-            color="inherit"
-            size="small"
-            startIcon={(
-              <SvgIcon fontSize="small">
-                <ArrowPathIcon />
-              </SvgIcon>
-            )}
-          >
-            Sync
-          </Button>
-        )}
-        title="Sales"
-      />
-      <CardContent>
-        <Chart
-          height={350}
-          options={chartOptions}
-          series={chartSeries}
-          type="bar"
-          width="100%"
-        />
-      </CardContent>
-      <Divider />
-      <CardActions sx={{ justifyContent: 'flex-end' }}>
-        <Button
-          color="inherit"
-          endIcon={(
-            <SvgIcon fontSize="small">
-              <ArrowRightIcon />
-            </SvgIcon>
-          )}
-          size="small"
-        >
-          Overview
-        </Button>
-      </CardActions>
-    </Card>
-  );
 };
 
 OverviewSales.protoTypes = {

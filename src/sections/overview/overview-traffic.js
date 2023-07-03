@@ -8,7 +8,6 @@ import {
   Typography,
   useTheme
 } from '@mui/material';
-// import react and useState
 import React, { useState } from 'react';
 import { Chart } from 'src/components/chart';
 import { baseUrl } from 'src/utils/backend-url';
@@ -27,10 +26,10 @@ export const OverviewTraffic = (props) => {
 
   React.useEffect(() => {
     axios.get(spotPaymentsUrl)
-      .then((response) => {
-        const data = response.data;
-        setSpotDetails(data);
-        console.log(data);
+      .then((res) => {
+        setSpotDetails(res.data);
+        // console.log("spotDetails")
+        // console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
