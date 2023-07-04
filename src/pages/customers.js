@@ -82,7 +82,6 @@ const Page = () => {
     .get(url)
     .then((res) => {
       setData(res.data);
-      console.log("get customers data");
     })
     .catch((error) => {
       console.log(error);

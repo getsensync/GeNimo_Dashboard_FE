@@ -77,7 +77,6 @@ const Page = () => {
     .get(url)
     .then((res) => {
       setData(res.data);
-      console.log("get spots data");
     })
     .catch((error) => {
       console.log(error);

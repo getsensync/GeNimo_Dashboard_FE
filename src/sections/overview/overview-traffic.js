@@ -28,8 +28,6 @@ export const OverviewTraffic = (props) => {
     axios.get(spotPaymentsUrl)
       .then((res) => {
         setSpotDetails(res.data);
-        // console.log("spotDetails")
-        // console.log(res.data);
       })
       .catch((error) => {
         console.log(error);

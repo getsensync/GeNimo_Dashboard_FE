@@ -45,3 +45,14 @@ export const completeDayInMonth = (dayResponse, onMonth) => {
   });
   return completeDay;
 };
+
+// convert amount (number) to IDR currency
+export const toIDR = (number) => {
+  const size = ["K", "M", "B", "T"];
+  const sizeIndex = Math.floor(Math.log10(Math.abs(number)) / 3);
+  const scaledNumber = number / Math.pow(10, sizeIndex * 3);
+  const decimalNumber = scaledNumber.toFixed(3);
+  // change 1.234 to 1,234
+  const result = decimalNumber.replace(".", ",");
+  return `$ ${result}${size[sizeIndex]}`;
+}
