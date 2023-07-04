@@ -15,7 +15,7 @@ import axios from 'axios';
 
 export const OverviewTraffic = (props) => {
   const { sx } = props;
-  const spotPaymentsUrl = baseUrl + '/payments/count/all';
+  const spotPaymentsUrl = baseUrl + '/count/payments/all';
   // spotDetails is an array of objects
   // each object has attributes: spotid, spotname, price, count
   const [spotDetails, setSpotDetails] = React.useState([]);

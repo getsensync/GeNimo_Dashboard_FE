@@ -25,8 +25,8 @@ export const OverviewSales = (props) => {
   const [chartSeries, setChartSeries] = useState([]);
 
   const FetchMonthlyData = () => {
-    const thisMonthSaleUrl = baseUrl + '/payments/count/monthly/' + (new Date().getMonth() + 1);
-    const lastMonthSaleUrl = baseUrl + '/payments/count/monthly/' + (new Date().getMonth());
+    const thisMonthSaleUrl = baseUrl + '/count/payments/monthly/' + (new Date().getMonth() + 1);
+    const lastMonthSaleUrl = baseUrl + '/count/payments/monthly/' + (new Date().getMonth());
     axios
       .get(thisMonthSaleUrl)
       .then((response) => {
@@ -58,8 +58,8 @@ export const OverviewSales = (props) => {
   };
   
   const FetchAnnualData = () => {
-    const thisYearSaleUrl = baseUrl + '/payments/count/annual/' + new Date().getFullYear();
-    const lastYearSaleUrl = baseUrl + '/payments/count/annual/' + (new Date().getFullYear() - 1);
+    const thisYearSaleUrl = baseUrl + '/count/payments/annual/' + new Date().getFullYear();
+    const lastYearSaleUrl = baseUrl + '/count/payments/annual/' + (new Date().getFullYear() - 1);
     axios
       .get(thisYearSaleUrl)
       .then((response) => {
