@@ -4,16 +4,11 @@ import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/mate
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { baseUrl } from 'src/utils/backend-url';
-import { toIDR } from 'src/utils/function';
+import { toFormatted } from 'src/utils/function';
 
-import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
-import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
-
-export const OverviewTotalProfit = (props) => {
-  const { value, sx } = props;
+export const OverviewHoldAmount = (props) => {
+  const { sx } = props;
   const depositUrl = baseUrl + '/count/deposits/all';
-  const difference = 2;
-  const positive = true;
 
   // Fetch data from API
   const [data, setData] = useState([]);
@@ -50,7 +45,7 @@ export const OverviewTotalProfit = (props) => {
               Hold Amount
             </Typography>
             <Typography variant="h4">
-              {toIDR(data.amount)}
+              $ {toFormatted(data.amount)}
             </Typography>
           </Stack>
           <Avatar
@@ -95,7 +90,7 @@ export const OverviewTotalProfit = (props) => {
   );
 };
 
-OverviewTotalProfit.propTypes = {
+OverviewHoldAmount.propTypes = {
   value: PropTypes.string,
   sx: PropTypes.object
 };

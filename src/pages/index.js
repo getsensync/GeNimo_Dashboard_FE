@@ -8,7 +8,7 @@ import { OverviewLatestProducts } from 'src/sections/overview/overview-latest-pr
 import { OverviewSales } from 'src/sections/overview/overview-sales';
 import { OverviewTasksProgress } from 'src/sections/overview/overview-tasks-progress';
 import { OverviewTotalCustomers } from 'src/sections/overview/overview-total-customers';
-import { OverviewTotalProfit } from 'src/sections/overview/overview-total-profit';
+import { OverviewHoldAmount } from 'src/sections/overview/overview-hold-amount';
 import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
 
 const now = new Date();
@@ -71,7 +71,7 @@ const Page = () => (
             sm={6}
             lg={3}
           >
-            <OverviewTotalProfit
+            <OverviewHoldAmount
               sx={{ height: '100%' }}
               value="$15k"
             />
