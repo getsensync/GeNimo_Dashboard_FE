@@ -57,7 +57,7 @@ export const SpotsForm = (props) => {
           const editSpotUrl = editUrl + id;
           // edit using axios at editSpotUrl
           axios
-            .put(editSpotUrl, resultData)
+            .patch(editSpotUrl, resultData)
             .then((response) => {
               console.log(response);
             })

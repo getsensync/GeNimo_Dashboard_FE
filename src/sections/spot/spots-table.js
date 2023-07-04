@@ -77,7 +77,7 @@ export const SpotsTable = (props) => {
   const handleActivationClick = (spotid, current) => {
     const url = activationUrl + spotid;
     axios
-      .put(url, { new_status: !current })
+      .patch(url, { new_status: !current })
       .then((res) => {
         console.log(res);
         // window.location.reload();

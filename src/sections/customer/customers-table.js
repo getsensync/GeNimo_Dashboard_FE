@@ -80,7 +80,7 @@ export const CustomersTable = (props) => {
   const handleActivationClick = (customerid, current) => {
     const url = activationUrl + customerid;
     axios
-      .put(url, { new_status: !current })
+      .patch(url, { new_status: !current })
       .then((res) => {
         console.log(res);
         // window.location.reload();

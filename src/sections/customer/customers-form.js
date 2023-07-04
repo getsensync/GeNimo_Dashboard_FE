@@ -85,7 +85,7 @@ export const CustomersForm = (props) => {
           const editUserUrl = editUrl + id;
           // edit using axios at editUserUrl (put method)
           axios
-            .put(editUserUrl, resultData)
+            .patch(editUserUrl, resultData)
             .then((response) => {
               console.log(response);
             })
