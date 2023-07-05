@@ -45,7 +45,7 @@ export const OverviewHoldAmount = (props) => {
               Hold Amount
             </Typography>
             <Typography variant="h4">
-              $ {toFormatted(data.amount)}
+              $ {toFormatted(data.amount, true)}
             </Typography>
           </Stack>
           <Avatar

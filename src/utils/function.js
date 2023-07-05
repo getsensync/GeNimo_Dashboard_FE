@@ -47,19 +47,19 @@ export const completeDayInMonth = (dayResponse, onMonth) => {
 };
 
 // convert amount (number) to IDR currency
-export const toFormatted = (number) => {
-  if (number < 1000) {
-    return number;
-  } else {
-    const size = ["K", "M", "B", "T"];
-    const sizeIndex = Math.floor(Math.log10(Math.abs(number)) / 3);
-    const scaledNumber = number / Math.pow(10, sizeIndex * 3);
-    let result = scaledNumber;
-    if (sizeIndex === 0) {
-      result = scaledNumber.toFixed(0);
-    } else {
-      result = scaledNumber.toFixed(3).replace(".", ",");
-    }
-    return `${result}${size[sizeIndex]}`;  
+export const toFormatted = (number, isMoney = false) => {
+  // if isMoney the number should be times 1000
+  if (isMoney) {
+    number = number * 1000;
   }
+  const size = ["", "K", "M", "B", "T"];
+  const sizeIndex = Math.floor(Math.log10(Math.abs(number)) / 3);
+  const scaledNumber = number / Math.pow(10, sizeIndex * 3);
+  let result = scaledNumber;
+  if (sizeIndex === 0 || (isMoney && sizeIndex === 1)) {
+    result = scaledNumber.toFixed(0);
+  } else {
+    result = scaledNumber.toFixed(3).replace(".", ",");
+  }
+  return `${result}${size[sizeIndex]}`;
 }
