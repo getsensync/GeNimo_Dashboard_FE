@@ -12,6 +12,12 @@ export const toDateString = (date) => {
   return asDate.toLocaleDateString('en-GB', options);
 }
 
+export const toDateStrip = (date) => {
+  const asDate = new Date(date);
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit', };
+  return asDate.toLocaleDateString('en-GB', options).split('/').reverse().join('-');
+}
+
 export const completeMonthInYear = (monthResponse) => {
   const completeMonth = monthNumber.map((month) => {
     const monthSale = monthResponse.findIndex((sale) => sale.month === month);

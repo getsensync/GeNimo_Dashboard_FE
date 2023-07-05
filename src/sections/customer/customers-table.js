@@ -18,7 +18,7 @@ import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/ic
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 
-import { toFullString, toDateString } from 'src/utils/function';
+import { toFullString, toDateString, toDateStrip } from 'src/utils/function';
 import axios from 'axios';
 import { baseUrl } from 'src/utils/backend-url';
 
@@ -53,7 +53,7 @@ export const CustomersTable = (props) => {
       {
         uuid: edited.customeruuid,
         name: edited.customername,
-        dob: toDateString(edited.dateofbirth),
+        dob: toDateStrip(edited.dateofbirth),
         balance: edited.balance,
         type: edited.encryptiontype,
         active: edited.isactive,
