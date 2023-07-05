@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { subDays, subHours } from 'date-fns';
 import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { OverviewBudget } from 'src/sections/overview/overview-budget';
+import { OverviewTotalTickets } from 'src/sections/overview/overview-total-tickets';
 import { OverviewLatestOrders } from 'src/sections/overview/overview-latest-orders';
 import { OverviewLatestProducts } from 'src/sections/overview/overview-latest-products';
 import { OverviewSales } from 'src/sections/overview/overview-sales';
@@ -37,7 +37,7 @@ const Page = () => (
             sm={6}
             lg={3}
           >
-            <OverviewBudget
+            <OverviewTotalTickets
               difference={12}
               positive
               sx={{ height: '100%' }}
@@ -50,10 +50,7 @@ const Page = () => (
             lg={3}
           >
             <OverviewTotalCustomers
-              difference={16}
-              positive={false}
               sx={{ height: '100%' }}
-              value="1.6k"
             />
           </Grid>
           <Grid
@@ -73,7 +70,6 @@ const Page = () => (
           >
             <OverviewHoldAmount
               sx={{ height: '100%' }}
-              value="$15k"
             />
           </Grid>
           
