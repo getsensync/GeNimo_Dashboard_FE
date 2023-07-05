@@ -10,7 +10,7 @@ import { baseUrl } from 'src/utils/backend-url';
 import { toFormatted } from 'src/utils/function';
 
 export const OverviewTotalCustomers = (props) => {
-  const { difference, positive = false, sx, value } = props;
+  const { sx } = props;
 
   const todayPaymentsUrl = baseUrl + '/count/payments/today/spots';
   const [totalCustomers, setTotalCustomers] = useState(0);
@@ -101,9 +101,6 @@ export const OverviewTotalCustomers = (props) => {
 };
 
 OverviewTotalCustomers.propTypes = {
-  difference: PropTypes.number,
-  positive: PropTypes.bool,
-  value: PropTypes.string.isRequired,
   sx: PropTypes.object
 };
 
