@@ -13,20 +13,22 @@ export const OverviewTotalCustomers = (props) => {
   const { sx } = props;
 
   const todayPaymentsUrl = baseUrl + '/count/payments/today/spots';
-  const [totalCustomers, setTotalCustomers] = useState(0);
+  const todayDepositsUrl = baseUrl + '/count/deposits/today';
+  const [totalPayments, setTotalPayments] = useState(0);
+  const [totalDeposits, setTotalDeposits] = useState(0);
   const [totalSpots, setTotalSpots] = useState(0);
 
-  const fetchTotalCustomers = () => {
+  const fetchTotalPayments = () => {
     axios
       .get(todayPaymentsUrl)
       .then((res) => {
-        let customers = 0;
+        let payments = 0;
         let spots = 0;
         res.data.forEach((item) => {
-          customers += item.count;
+          payments += item.count;
           spots += 1;
         });
-        setTotalCustomers(customers);
+        setTotalPayments(payments);
         setTotalSpots(spots);
       })
       .catch((err) => {
@@ -34,8 +36,20 @@ export const OverviewTotalCustomers = (props) => {
       });
   };
 
+  const fetchTotalDeposits = () => {
+    axios
+      .get(todayDepositsUrl)
+      .then((res) => {
+        setTotalDeposits(res.data.count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
-    fetchTotalCustomers();
+    fetchTotalPayments();
+    fetchTotalDeposits();
   }, [todayPaymentsUrl]);
 
   return (
@@ -55,7 +69,7 @@ export const OverviewTotalCustomers = (props) => {
               Today Customers
             </Typography>
             <Typography variant="h4">
-              {toFormatted(totalCustomers)}
+              {toFormatted(totalPayments)} + {toFormatted(totalDeposits)}
             </Typography>
           </Stack>
           <Avatar
@@ -70,31 +84,39 @@ export const OverviewTotalCustomers = (props) => {
             </SvgIcon>
           </Avatar>
         </Stack>
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={2}
-          sx={{ mt: 2 }}
-        >
-          <Typography
-            color='text.secondary'
-            variant="subtitle2"
-          >
-            From
-          </Typography>
-          <Typography
-            color='success.main'
-            variant="subtitle2"
-          >
-            {totalSpots}
-          </Typography>
+        <Stack>
           <Typography
             color="text.secondary"
             variant="caption"
           >
-            Active Spots
+            sales + top up
           </Typography>
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={2}
+          >
+            <Typography
+              color='text.secondary'
+              variant="subtitle2"
+            >
+              From
+            </Typography>
+            <Typography
+              color='success.main'
+              variant="subtitle2"
+            >
+              {totalSpots}
+            </Typography>
+            <Typography
+              color="text.secondary"
+              variant="caption"
+            >
+              Active Spots
+            </Typography>
+          </Stack>
         </Stack>
+        
       </CardContent>
     </Card>
   );
