@@ -86,7 +86,7 @@ export const OverviewTotalCustomers = (props) => {
             color='success.main'
             variant="subtitle2"
           >
-            {toFormatted(totalSpots)}
+            {totalSpots}
           </Typography>
           <Typography
             color="text.secondary"

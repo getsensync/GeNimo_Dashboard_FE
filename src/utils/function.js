@@ -48,10 +48,10 @@ export const completeDayInMonth = (dayResponse, onMonth) => {
 
 // convert amount (number) to IDR currency
 export const toFormatted = (number) => {
-  if (number === 0) {
-    return 0;
+  if (number < 1000) {
+    return number;
   } else {
-    const size = ["", "K", "M", "B", "T"];
+    const size = ["K", "M", "B", "T"];
     const sizeIndex = Math.floor(Math.log10(Math.abs(number)) / 3);
     const scaledNumber = number / Math.pow(10, sizeIndex * 3);
     let result = scaledNumber;

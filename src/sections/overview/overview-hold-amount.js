@@ -8,14 +8,14 @@ import { toFormatted } from 'src/utils/function';
 
 export const OverviewHoldAmount = (props) => {
   const { sx } = props;
-  const depositUrl = baseUrl + '/count/deposits/all';
+  const holdAmountUrl = baseUrl + '/count/balance/all';
 
   // Fetch data from API
   const [data, setData] = useState([]);
 
   const fetchDeposits= () => {
     axios
-      .get(depositUrl)
+      .get(holdAmountUrl)
       .then((response) => {
         setData(response.data);
       })
@@ -26,7 +26,7 @@ export const OverviewHoldAmount = (props) => {
 
   useEffect(() => {
     fetchDeposits();
-  }, [depositUrl]);
+  }, [holdAmountUrl]);
 
   return (
     <Card sx={sx}>
@@ -91,6 +91,5 @@ export const OverviewHoldAmount = (props) => {
 };
 
 OverviewHoldAmount.propTypes = {
-  value: PropTypes.string,
   sx: PropTypes.object
 };
