@@ -4,8 +4,39 @@ import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { baseUrl } from 'src/utils/backend-url';
+import { toFormatted } from 'src/utils/function';
+
 export const OverviewTotalCustomers = (props) => {
   const { difference, positive = false, sx, value } = props;
+
+  const todayPaymentsUrl = baseUrl + '/count/payments/today/spots';
+  const [totalCustomers, setTotalCustomers] = useState(0);
+  const [totalSpots, setTotalSpots] = useState(0);
+
+  const fetchTotalCustomers = () => {
+    axios
+      .get(todayPaymentsUrl)
+      .then((res) => {
+        let customers = 0;
+        let spots = 0;
+        res.data.forEach((item) => {
+          customers += item.count;
+          spots += 1;
+        });
+        setTotalCustomers(customers);
+        setTotalSpots(spots);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchTotalCustomers();
+  }, [todayPaymentsUrl]);
 
   return (
     <Card sx={sx}>
@@ -21,10 +52,10 @@ export const OverviewTotalCustomers = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Customers
+              Today Customers
             </Typography>
             <Typography variant="h4">
-              {value}
+              {toFormatted(totalCustomers)}
             </Typography>
           </Stack>
           <Avatar
@@ -39,39 +70,31 @@ export const OverviewTotalCustomers = (props) => {
             </SvgIcon>
           </Avatar>
         </Stack>
-        {difference && (
-          <Stack
-            alignItems="center"
-            direction="row"
-            spacing={2}
-            sx={{ mt: 2 }}
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={2}
+          sx={{ mt: 2 }}
+        >
+          <Typography
+            color='text.secondary'
+            variant="subtitle2"
           >
-            <Stack
-              alignItems="center"
-              direction="row"
-              spacing={0.5}
-            >
-              <SvgIcon
-                color={positive ? 'success' : 'error'}
-                fontSize="small"
-              >
-                {positive ? <ArrowUpIcon /> : <ArrowDownIcon />}
-              </SvgIcon>
-              <Typography
-                color={positive ? 'success.main' : 'error.main'}
-                variant="body2"
-              >
-                {difference}%
-              </Typography>
-            </Stack>
-            <Typography
-              color="text.secondary"
-              variant="caption"
-            >
-              Since last month
-            </Typography>
-          </Stack>
-        )}
+            From
+          </Typography>
+          <Typography
+            color='success.main'
+            variant="subtitle2"
+          >
+            {toFormatted(totalSpots)}
+          </Typography>
+          <Typography
+            color="text.secondary"
+            variant="caption"
+          >
+            Active Spots
+          </Typography>
+        </Stack>
       </CardContent>
     </Card>
   );
