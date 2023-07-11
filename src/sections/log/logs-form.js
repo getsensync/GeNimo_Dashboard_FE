@@ -64,7 +64,7 @@ export const LogsForm = (props) => {
         if (type === 'create') {
           const url = readerUrl + "/createNewUser";
           axios
-          .post(url, {uuid: uuid})
+          .post(url, {user_uuid: uuid})
           .then((res) => {
             console.log(res.data);
           })
