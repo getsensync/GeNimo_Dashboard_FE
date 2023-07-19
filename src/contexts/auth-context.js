@@ -86,7 +86,7 @@ export const AuthProvider = (props) => {
     try {
       isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
       if(isAuthenticated) {
-        loggedUser = window.sessionStorage.getItem('loggedUser');
+        loggedUser = JSON.parse(window.sessionStorage.getItem('loggedUser'));
       }
     } catch (err) {
       console.error(err);
@@ -123,7 +123,7 @@ export const AuthProvider = (props) => {
 
     try {
       window.sessionStorage.setItem('authenticated', 'true');
-      window.sessionStorage.setItem('loggedUser', loggedUser);
+      window.sessionStorage.setItem('loggedUser', JSON.stringify(loggedUser));
     } catch (err) {
       console.error(err);
     }
@@ -157,7 +157,7 @@ export const AuthProvider = (props) => {
     };
     try {
       window.sessionStorage.setItem('authenticated', 'true');
-      window.sessionStorage.setItem('loggedUser', loggedUser);
+      window.sessionStorage.setItem('loggedUser', JSON.stringify(loggedUser));
     }
     catch (err) {
       console.error(err);
