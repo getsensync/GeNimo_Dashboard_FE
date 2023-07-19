@@ -9,9 +9,9 @@ import { LogsForm } from 'src/sections/log/logs-form';
 
 import axios from "axios";
 import { baseUrl } from 'src/utils/backend-url';
+import { Authorization } from 'src/author/authorization';
 
-
-const Page = () => {
+const RawPage = () => {
   // Inner Functions
   const handleAddClick = useCallback(() => {
     setFormData({
@@ -119,6 +119,14 @@ const Page = () => {
         </Container>
       </Box>
     </>
+  );
+};
+
+const Page = () => {
+  return (
+    <Authorization roles={['admin', 'operator']}>
+      <RawPage />
+    </Authorization>
   );
 };
 

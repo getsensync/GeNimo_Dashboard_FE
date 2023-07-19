@@ -12,6 +12,7 @@ import { applyPagination } from 'src/utils/apply-pagination';
 
 import axios from "axios";
 import { baseUrl } from 'src/utils/backend-url';
+import { Authorization } from 'src/author/authorization';
 
 const useSpots = (data, page, rowsPerPage) => {
   return useMemo(
@@ -31,7 +32,7 @@ const useSpotIds = (spots) => {
   );
 };
 
-const Page = () => {
+const RawPage = () => {
   // Inner Functions
     const handlePageChange = useCallback(
     (event, value) => {
@@ -197,6 +198,14 @@ const Page = () => {
         </Container>
       </Box>
     </>
+  );
+};
+
+const Page = () => {
+  return (
+    <Authorization roles={['admin']}>
+      <RawPage />
+    </Authorization>
   );
 };
 

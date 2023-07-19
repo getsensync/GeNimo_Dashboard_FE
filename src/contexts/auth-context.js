@@ -118,7 +118,7 @@ export const AuthProvider = (props) => {
       avatar: '/assets/avatars/avatar-anika-visser.png',
       name: 'Skip',
       email: 'Skip@email.com',
-      role: 'admin',
+      role: 'skip',
     };
 
     try {

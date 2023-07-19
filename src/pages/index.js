@@ -11,9 +11,11 @@ import { OverviewTotalCustomers } from 'src/sections/overview/overview-total-cus
 import { OverviewHoldAmount } from 'src/sections/overview/overview-hold-amount';
 import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
 
+import { Authorization } from 'src/author/authorization';
+
 const now = new Date();
 
-const Page = () => (
+const RawPage = () => (
   <>
     <Head>
       <title>
@@ -209,6 +211,14 @@ const Page = () => (
     </Box>
   </>
 );
+
+const Page = () => {
+  return (
+    <Authorization roles={['admin', 'operator']}>
+      <RawPage />
+    </Authorization>
+  );
+};
 
 Page.getLayout = (page) => (
   <DashboardLayout>
