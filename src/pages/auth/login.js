@@ -25,16 +25,15 @@ const Page = () => {
   const [method, setMethod] = useState('email');
   const formik = useFormik({
     initialValues: {
-      email: 'demo@devias.io',
-      password: 'Password123!',
+      email: 'admin@example.com',
+      password: 'ad',
       submit: null
     },
     validationSchema: Yup.object({
       email: Yup
         .string()
-        .email('Must be a valid email')
         .max(255)
-        .required('Email is required'),
+        .required('Email / Username is required'),
       password: Yup
         .string()
         .max(255)
@@ -121,7 +120,7 @@ const Page = () => {
               value={method}
             >
               <Tab
-                label="Email"
+                label="Email / Username"
                 value="email"
               />
               <Tab
@@ -139,11 +138,11 @@ const Page = () => {
                     error={!!(formik.touched.email && formik.errors.email)}
                     fullWidth
                     helperText={formik.touched.email && formik.errors.email}
-                    label="Email Address"
+                    label="Email / Username"
                     name="email"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
-                    type="email"
+                    type="text"
                     value={formik.values.email}
                   />
                   <TextField
@@ -193,7 +192,7 @@ const Page = () => {
                   sx={{ mt: 3 }}
                 >
                   <div>
-                    You can use <b>demo@devias.io</b> and password <b>Password123!</b>
+                    You can use <b>admin@example.com</b> and password <b>ad</b>
                   </div>
                 </Alert>
               </form>

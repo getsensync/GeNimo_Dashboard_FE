@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
-import userAuth from 'src/utils/userAuth';
+import axios from 'axios';
+import { baseUrl } from 'src/utils/backend-url';
 
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
@@ -74,24 +75,27 @@ export const AuthProvider = (props) => {
     initialized.current = true;
 
     let isAuthenticated = false;
+    let loggedUser = {
+      id: null,
+      avatar: null,
+      name: null,
+      email: null,
+      role: null,
+    }
 
     try {
       isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
+      if(isAuthenticated) {
+        loggedUser = window.sessionStorage.getItem('loggedUser');
+      }
     } catch (err) {
       console.error(err);
     }
 
     if (isAuthenticated) {
-      const user = {
-        id: '5e86809283e28b96d2d38537',
-        avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: 'Anika Visser',
-        email: 'anika.visser@devias.io'
-      };
-
       dispatch({
         type: HANDLERS.INITIALIZE,
-        payload: user
+        payload: loggedUser
       });
     } else {
       dispatch({
@@ -109,49 +113,61 @@ export const AuthProvider = (props) => {
   );
 
   const skip = () => {
+    const loggedUser = {
+      id: '5e86809283e28b96d2d38537',
+      avatar: '/assets/avatars/avatar-anika-visser.png',
+      name: 'Skip',
+      email: 'Skip@email.com',
+      role: 'admin',
+    };
+
     try {
       window.sessionStorage.setItem('authenticated', 'true');
+      window.sessionStorage.setItem('loggedUser', loggedUser);
     } catch (err) {
       console.error(err);
     }
 
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
-
     dispatch({
       type: HANDLERS.SIGN_IN,
-      payload: user
+      payload: loggedUser
     });
   };
 
   const signIn = async (email, password) => {
-    const userExist = userAuth.find((user) => user.email === email);
-    const samePassword = userExist && userExist.password === password;
-    if (!userExist || !samePassword) {
-      throw new Error('Please check your email and password');
+    const response = await axios.get(`${baseUrl}/credentials/certain/${email}`);
+    const userAuth = response.data;
+    const isExist = userAuth.length > 0;
+    if (!isExist) {
+      throw new Error('User not found, please check your email / username.');
     }
-
+    
+    const userExist = userAuth[0];
+    const samePassword = userExist && userExist.password === password;
+    if (!samePassword) {
+      throw new Error('Incorrect password, please re-entry correct password.');
+    } 
+    
+    const loggedUser = {
+      id: '5e86809283e28b96d2d38537',
+      avatar: '/assets/avatars/avatar-anika-visser.png',
+      name: userExist.username,
+      email: userExist.email,
+      role: userExist.role,
+    };
     try {
       window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
+      window.sessionStorage.setItem('loggedUser', loggedUser);
+    }
+    catch (err) {
       console.error(err);
     }
 
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
-
     dispatch({
       type: HANDLERS.SIGN_IN,
-      payload: user
+      payload: loggedUser
     });
+    
   };
 
   const signUp = async (email, name, password) => {
