@@ -170,7 +170,7 @@ export const LogsForm = (props) => {
                   name="uuid"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  type="uuid"
+                  type="text"
                   value={formik.values.uuid}
                   required
                 />

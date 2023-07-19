@@ -187,7 +187,7 @@ export const CustomersForm = (props) => {
                   name="uuid"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  type="uuid"
+                  type="text"
                   value={formik.values.uuid}
                   required
                 />
@@ -199,7 +199,7 @@ export const CustomersForm = (props) => {
                   name="name"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  type="name"
+                  type="text"
                   value={formik.values.name}
                   required
                 />

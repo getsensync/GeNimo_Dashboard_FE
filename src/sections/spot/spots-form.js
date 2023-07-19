@@ -157,7 +157,7 @@ export const SpotsForm = (props) => {
                   name="name"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  type="name"
+                  type="text"
                   value={formik.values.name}
                   required
                 />
