@@ -31,7 +31,7 @@ const RawPage = () => {
     type: 'create',
   });
   const logs = data;
-  const url = baseUrl + "/management/customers/all";
+  const url = baseUrl + "/logs/all";
   
   useEffect(() => {
     axios

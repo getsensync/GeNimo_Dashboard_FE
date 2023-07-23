@@ -10,26 +10,15 @@ import {
   TableHead,
   TableRow,
   Typography,
-  IconButton,
 } from '@mui/material';
-import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/icons-material';
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
 
-import { toFullString, toDateString, toDateStrip } from 'src/utils/function';
-import axios from 'axios';
-import { baseUrl } from 'src/utils/backend-url';
-
-const deleteUrl = baseUrl + "/management/customers/delete/";
-const activationUrl = baseUrl + "/activation/customer/";
+import { toFullString } from 'src/utils/function';
 
 export const LogsTable = (props) => {
   const {
     items = [],
-    isFormOpen,
-    setIsFormOpen,
-    formData,
-    setFormData,
   } = props;
 
   return (
@@ -45,15 +34,14 @@ export const LogsTable = (props) => {
                 <TableCell align="center">
                   Name
                 </TableCell>
-                {/* make cell for spot */}
-                <TableCell align='center'>
-                  Spot
+                <TableCell align="center">
+                  Type
                 </TableCell>
                 <TableCell align="center">
                   Amount
                 </TableCell>
-                <TableCell align="center">
-                  Type
+                <TableCell align='center'>
+                  Spot
                 </TableCell>
                 <TableCell align="center">
                   Timestamp
@@ -62,16 +50,13 @@ export const LogsTable = (props) => {
             </TableHead>
             <TableBody>
               {items.map((item, index) => {
-                const dOB = item.dateofbirth ? toDateString(item.dateofbirth) : 'N/A';
-                const createdAT = item.createdat ? toDateString(item.createdat) : 'N/A';
-                const lastModified = item.lastmodified ? toFullString(item.lastmodified) : 'N/A';
                 return (
                   <TableRow
                     hover
                     key={index}
                   >
                     <TableCell>
-                      {item.customeruuid}
+                      {item.uuid}
                     </TableCell>
                     <TableCell>
                       <Stack
@@ -80,24 +65,24 @@ export const LogsTable = (props) => {
                         spacing={2}
                       >
                         <Avatar src={item.avatar}>
-                          {getInitials(item.customername)}
+                          {getInitials(item.name)}
                         </Avatar>
                         <Typography variant="subtitle2">
-                          {item.customername}
+                          {item.name}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell align="right">
-                      Reed-o-wheel
+                    <TableCell align="center">
+                      {item.type}
                     </TableCell>
                     <TableCell align="right">
-                      {item.balance}
+                      {item.amount === 0 ? '' : item.amount + '.000'}
+                    </TableCell>
+                    <TableCell align="left">
+                      {item.spot === '-' ? '' : item.spot}
                     </TableCell>
                     <TableCell align="center">
-                      K
-                    </TableCell>
-                    <TableCell align="center">
-                      {lastModified}
+                      {toFullString(item.timestamp)}
                     </TableCell>
                   </TableRow>
                 );
@@ -112,8 +97,4 @@ export const LogsTable = (props) => {
 
 LogsTable.propTypes = {
   items: PropTypes.array,
-  isFormOpen: PropTypes.object.isRequired,
-  setIsFormOpen: PropTypes.func.isRequired,
-  formData: PropTypes.object.isRequired,
-  setFormData: PropTypes.func.isRequired,
 };
