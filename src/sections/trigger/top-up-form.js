@@ -125,7 +125,7 @@ export const TopUpForm = (props) => {
                 variant="body2"
                 align="center"
               >
-                Please fill in the amount you want to top up <br/> Make sure it is a positive number 
+                Please fill in the amount you want to top up <br/> Make sure it is a positive
               </Typography>
             </Stack>
             <form

@@ -1,35 +1,18 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
-import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { LogsTable } from 'src/sections/log/logs-table';
-import { LogsForm } from 'src/sections/log/logs-form';
 
 import axios from "axios";
 import { baseUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
 
 const RawPage = () => {
-  // Inner Functions
-  const handleAddClick = useCallback(() => {
-    setFormData({
-      uuid: '00000000',
-      amount: '0',
-      type: 'create',
-    });
-    setIsFormOpen({ status: true });
-  }, []);
 
   // Inner States & Logics
   const [data, setData] = useState([]);
-  const [isFormOpen, setIsFormOpen] = useState({ status: false });
-  const [formData, setFormData] = useState({
-    uuid: '00000000',
-    amount: '0',
-    type: 'create',
-  });
   const logs = data;
   const url = baseUrl + "/logs/all";
   
@@ -87,33 +70,10 @@ const RawPage = () => {
                 >
                   Refresh
                 </Button>
-                <Button
-                  startIcon={(
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  )}
-                  variant="contained"
-                  onClick={handleAddClick}
-                >
-                  Add
-                </Button>
               </Stack>
             </Stack>
-            {isFormOpen.status && (
-              <LogsForm 
-                isFormOpen={isFormOpen}
-                setIsFormOpen={setIsFormOpen}
-                formData={formData}
-                setFormData={setFormData}
-              />
-            )}
             <LogsTable
               items={logs}
-              isFormOpen={isFormOpen}
-              setIsFormOpen={setIsFormOpen}
-              formData={formData}
-              setFormData={setFormData}
             />
           </Stack>
         </Container>
