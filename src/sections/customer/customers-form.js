@@ -51,6 +51,7 @@ export const CustomersForm = (props) => {
       // balance is a number
       balance: Yup
         .number('Must be a number')
+        .min(0, 'Must be greater than or equal to 0')
         .required('Balance is required'),
       // type is a select with 3 options
       type: Yup

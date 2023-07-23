@@ -34,6 +34,7 @@ export const SpotsForm = (props) => {
       // price is a number
       price: Yup
         .number('Must be a number')
+        .min(0, 'Must be greater than or equal to 0')
         .required('Price is required'),
     }),
     onChange: (event) => {
