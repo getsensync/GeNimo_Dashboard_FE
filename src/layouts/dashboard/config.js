@@ -51,6 +51,16 @@ export const items = [
     )
   },
   {
+    title: 'Triggers',
+    path: '/trigger',
+    roles: ['admin', 'operator'],
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    )
+  },
+  {
     title: 'Account',
     path: '/account',
     roles:[],
