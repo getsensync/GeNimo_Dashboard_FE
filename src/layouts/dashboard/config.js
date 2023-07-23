@@ -1,13 +1,15 @@
 import ChartBarIcon from '@heroicons/react/24/solid/ChartBarIcon';
 import CogIcon from '@heroicons/react/24/solid/CogIcon';
 import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon';
-import ShoppingBagIcon from '@heroicons/react/24/solid/ShoppingBagIcon';
+import WrenchScrewdriverIcon from '@heroicons/react/24/solid/WrenchScrewdriverIcon';
+import BookOpenIcon from '@heroicons/react/24/solid/BookOpenIcon';
 import UserIcon from '@heroicons/react/24/solid/UserIcon';
 import UserPlusIcon from '@heroicons/react/24/solid/UserPlusIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import MapIcon from '@mui/icons-material/Map';
 import { SvgIcon } from '@mui/material';
+import ShoppingBagIcon from '@heroicons/react/24/solid/ShoppingBagIcon';
 
 export const items = [
   {
@@ -46,7 +48,7 @@ export const items = [
     roles: ['admin', 'operator'],
     icon: (
       <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
+        <BookOpenIcon />
       </SvgIcon>
     )
   },
@@ -56,7 +58,7 @@ export const items = [
     roles: ['admin', 'operator'],
     icon: (
       <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
+        <WrenchScrewdriverIcon />
       </SvgIcon>
     )
   },
