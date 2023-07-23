@@ -13,6 +13,7 @@ export const items = [
   {
     title: 'Overview',
     path: '/',
+    roles: ['admin', 'operator'],
     icon: (
       <SvgIcon fontSize="small">
         <ChartBarIcon />
@@ -22,6 +23,7 @@ export const items = [
   {
     title: 'Customers',
     path: '/customers',
+    roles: ['admin'],
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
@@ -31,6 +33,7 @@ export const items = [
   {
     title: 'Spots',
     path: '/spots',
+    roles: ['admin'],
     icon: (
       <SvgIcon fontSize="small">
         <MapIcon />
@@ -40,24 +43,17 @@ export const items = [
   {
     title: 'Logs',
     path: '/logs',
+    roles: ['admin', 'operator'],
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />
       </SvgIcon>
     )
   },
-  // {
-  //   title: 'Companies',
-  //   path: '/companies',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <ShoppingBagIcon />
-  //     </SvgIcon>
-  //   )
-  // },
   {
     title: 'Account',
     path: '/account',
+    roles:[],
     icon: (
       <SvgIcon fontSize="small">
         <UserIcon />
@@ -67,6 +63,7 @@ export const items = [
   {
     title: 'Settings',
     path: '/settings',
+    roles:[],
     icon: (
       <SvgIcon fontSize="small">
         <CogIcon />
@@ -76,6 +73,7 @@ export const items = [
   {
     title: 'Login',
     path: '/auth/login',
+    roles:[],
     icon: (
       <SvgIcon fontSize="small">
         <LockClosedIcon />
@@ -85,6 +83,7 @@ export const items = [
   {
     title: 'Register',
     path: '/auth/register',
+    roles:[],
     icon: (
       <SvgIcon fontSize="small">
         <UserPlusIcon />
@@ -94,6 +93,7 @@ export const items = [
   {
     title: 'Error',
     path: '/404',
+    roles:[],
     icon: (
       <SvgIcon fontSize="small">
         <XCircleIcon />

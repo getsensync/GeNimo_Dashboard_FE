@@ -18,7 +18,10 @@ import { Scrollbar } from 'src/components/scrollbar';
 import { items } from './config';
 import { SideNavItem } from './side-nav-item';
 
+import { useAuthContext } from 'src/contexts/auth-context'
+
 export const SideNav = (props) => {
+  const { user } = useAuthContext();
   const { open, onClose } = props;
   const pathname = usePathname();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
@@ -108,7 +111,10 @@ export const SideNav = (props) => {
           >
             {items.map((item) => {
               const active = item.path ? (pathname === item.path) : false;
-
+              // check if user.role is in item.roles
+              if (user && item.roles && !item.roles.includes(user.role)) {
+                return null;
+              }
               return (
                 <SideNavItem
                   active={active}
