@@ -1,5 +1,5 @@
 # Genimo Dashboard (FE)
-A **Resposive** Dashboard Web App built with **React** using *Material-UI* and *Styled-component*. This App is used to utilize business process in Nimo Highland.
+A **Responsive** Dashboard Web App built with **React** using *Material-UI* and *Styled-component*. This App is used to utilize business processes in Nimo Highland.
 
 ### Stack
 - Node JS
@@ -24,7 +24,7 @@ A **Resposive** Dashboard Web App built with **React** using *Material-UI* and *
 
 ## Installation
 
-Note : You should install Node.Js before run this app
+Note : You should install Node.Js before running this app
 ```bash
 # Clone this project
 git clone https://github.com/getsensync/GeNimo_Dashboard_FE
@@ -32,7 +32,7 @@ git clone https://github.com/getsensync/GeNimo_Dashboard_FE
 -- Dependencies Installation
 # Cd to 'GeNimo_Dashboard_FE' Folder
 cd "GeNimo_Dashboard_FE"
-# Install Depencies Using Node
+# Install Dependencies Using Node
 npm install
 
 -- Development Mode
@@ -44,7 +44,7 @@ npm run dev
 npm build
 ```
 
-## Directory sturcture code
+## Directory structure code
 
 ````
 GeNimo_Dashboard_FE
