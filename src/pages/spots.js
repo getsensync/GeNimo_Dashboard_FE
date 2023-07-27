@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Container, Stack, SvgIcon, Typography, Grid } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { SpotsTable } from 'src/sections/spot/spots-table';
@@ -102,70 +102,46 @@ const RawPage = () => {
             <Stack
               direction="row"
               justifyContent="space-between"
-              spacing={4}
             >
-              <Stack spacing={1}>
-                <Typography variant="h4">
-                  Spots
-                </Typography>
-                {/* Import & Export Data */}
-                {/* <Stack
-                  alignItems="center"
-                  direction="row"
-                  spacing={1}
-                >
-                  <Button
-                    color="inherit"
-                    startIcon={(
-                      <SvgIcon fontSize="small">
-                        <ArrowUpOnSquareIcon />
-                      </SvgIcon>
-                    )}
-                  >
-                    Import
-                  </Button>
-                  <Button
-                    color="inherit"
-                    startIcon={(
-                      <SvgIcon fontSize="small">
-                        <ArrowDownOnSquareIcon />
-                      </SvgIcon>
-                    )}
-                  >
-                    Export
-                  </Button>
-                </Stack> */}
-              </Stack>
-              <Stack
+              <Typography variant="h4">
+                Spots
+              </Typography>
+              {/* add Refresh button that will load window */}
+              <Grid
+                container
                 direction="row"
-                spacing={2}
+                justifyContent="flex-end"
+                spacing={1}
               >
-                {/* add Refresh button that will load window */}
-                <Button
-                  color="secondary"
-                  startIcon={(
-                    <SvgIcon fontSize="small">
-                      {/* arrow-path icon */}
-                      <ArrowPathIcon />
-                    </SvgIcon>
-                  )}
-                  variant="contained"
-                  onClick={() => window.location.reload()}
-                >
-                  Refresh
-                </Button>
-                <Button
-                  startIcon={(
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  )}
-                  variant="contained"
-                  onClick={handleAddClick}
-                >
-                  Add
-                </Button>
-              </Stack>
+                <Grid item>
+                  <Button
+                    color="secondary"
+                    startIcon={(
+                      <SvgIcon fontSize="small">
+                        {/* arrow-path icon */}
+                        <ArrowPathIcon />
+                      </SvgIcon>
+                    )}
+                    variant="contained"
+                    onClick={() => window.location.reload()}
+                  >
+                    Refresh
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    startIcon={(
+                      <SvgIcon fontSize="small">
+                        <PlusIcon />
+                      </SvgIcon>
+                    )}
+                    variant="contained"
+                    onClick={handleAddClick}
+                  >
+                    Add
+                  </Button>
+                </Grid>
+              </Grid>
             </Stack>
             {isFormOpen.status && (
               <SpotsForm 
