@@ -45,7 +45,7 @@ const RawPage = () => {
             return false;
           }
           if (!first) {
-            return item['type'] !== 'C' ? true : false;
+            return item['type'] !== 'C';
           }
           else if (first && item['amount'].toString().includes(first)) {
             return true;

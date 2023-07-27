@@ -3,34 +3,16 @@ import Head from 'next/head';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
-import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { CustomersTable } from 'src/sections/customer/customers-table';
 import { CustomersSearch } from 'src/sections/customer/customers-search';
 import { CustomersForm } from 'src/sections/customer/customers-form';
 import { applyPagination } from 'src/utils/apply-pagination';
+import { toFullString, toDateString } from 'src/utils/function';
 
 import axios from "axios";
 import { baseUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
-
-const useCustomers = (data, page, rowsPerPage) => {
-  return useMemo(
-    () => {
-      return applyPagination(data, page, rowsPerPage);
-    },
-    [data, page, rowsPerPage]
-  );
-};
-
-const useCustomerIds = (customers) => {
-  return useMemo(
-    () => {
-      return customers.map((item) => item.customerid);
-    },
-    [customers]
-  );
-};
 
 const RawPage = () => {
   // Inner Functions
@@ -61,9 +43,13 @@ const RawPage = () => {
   }, []);
 
   // Inner States & Logics
+  const [query, setQuery] = useState(''); // Search query
+  const [type, setType] = useState('All'); // Search type
+  const [active, setActive] = useState('All'); // Search active
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [data, setData] = useState([]);
+  const [count, setCount] = useState(data.length); // Total Customers
   const [isFormOpen, setIsFormOpen] = useState({ status: false, editOrAdd: null, id: null });
   const [formData, setFormData] = useState({
     uuid: '',
@@ -73,16 +59,60 @@ const RawPage = () => {
     type: '',
     active: false,
   });
-  const customers = useCustomers(data, page, rowsPerPage);
-  const customersIds = useCustomerIds(customers);
-  const customersSelection = useSelection(customersIds);
   const url = baseUrl + "/management/customers/all";
+  const keys = ['customeruuid', 'customername', 'balance', 'lastmodified'];
+
+  const FilteredCustomers = (data, page, rowsPerPage, query, type, active) => {
+    return useMemo(() => {
+      let filtered = data;
+      if (query) {
+        filtered = filtered.filter((item) => {
+          if (query.includes('/')) {
+            const date = toDateString(item['dateofbirth']);
+            return date.includes(query);
+          }
+
+          for (const key of keys) {
+            if (key === 'lastmodified') {
+              if (toFullString(item[key]).toLowerCase().includes(query.toLowerCase())) {
+                return true;
+              }
+            }
+            else if (item[key].toString().toLowerCase().includes(query.toLowerCase())) {
+              return true;
+            }
+          }
+          return false;
+        });
+      }
+      if (type !== 'All') {
+        filtered = filtered.filter((item) => {
+          if (item['encryptiontype'] === type) {
+            return true;
+          }
+          return false;
+        });
+      }
+      if (active !== 'All') {
+        filtered = filtered.filter((item) => {
+          console.log(item['isactive'].toString());
+          if (item['isactive'].toString() === active) {
+            return true;
+          }
+          return false;
+        });
+      }
+      setCount(filtered.length);
+      return applyPagination(filtered, page, rowsPerPage);
+    }, [data, page, rowsPerPage, query, type, active]);
+  };
   
   useEffect(() => {
     axios
     .get(url)
     .then((res) => {
       setData(res.data);
+      setCount(res.data.length);
     })
     .catch((error) => {
       console.log(error);
@@ -103,7 +133,7 @@ const RawPage = () => {
         }}
       >
         <Container maxWidth="xl">
-          <Stack spacing={3}>
+          <Stack spacing={1}>
             <Stack
               direction="row"
               justifyContent="space-between"
@@ -113,33 +143,6 @@ const RawPage = () => {
                 <Typography variant="h4">
                   Customers
                 </Typography>
-                {/* Import & Export Data */}
-                {/* <Stack
-                  alignItems="center"
-                  direction="row"
-                  spacing={1}
-                >
-                  <Button
-                    color="inherit"
-                    startIcon={(
-                      <SvgIcon fontSize="small">
-                        <ArrowUpOnSquareIcon />
-                      </SvgIcon>
-                    )}
-                  >
-                    Import
-                  </Button>
-                  <Button
-                    color="inherit"
-                    startIcon={(
-                      <SvgIcon fontSize="small">
-                        <ArrowDownOnSquareIcon />
-                      </SvgIcon>
-                    )}
-                  >
-                    Export
-                  </Button>
-                </Stack> */}
               </Stack>
               <Stack
                 direction="row"
@@ -181,19 +184,21 @@ const RawPage = () => {
               />
             )}
             {/* Search */}
-            {/* <CustomersSearch /> */}
+            <CustomersSearch
+              query={query}
+              setQuery={setQuery}
+              type={type}
+              setType={setType}
+              active={active}
+              setActive={setActive}
+            />
             <CustomersTable
-              count={data.length}
-              items={customers}
-              onDeselectAll={customersSelection.handleDeselectAll}
-              onDeselectOne={customersSelection.handleDeselectOne}
+              count={count}
+              items={FilteredCustomers(data, page, rowsPerPage, query, type, active)}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={customersSelection.handleSelectAll}
-              onSelectOne={customersSelection.handleSelectOne}
               page={page}
               rowsPerPage={rowsPerPage}
-              selected={customersSelection.selected}
               isFormOpen={isFormOpen}
               setIsFormOpen={setIsFormOpen}
               formData={formData}
