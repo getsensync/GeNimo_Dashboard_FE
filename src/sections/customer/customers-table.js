@@ -14,6 +14,7 @@ import {
   Typography,
   IconButton,
 } from '@mui/material';
+import React, { useState } from 'react';
 import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/icons-material';
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
@@ -21,8 +22,8 @@ import { getInitials } from 'src/utils/get-initials';
 import { toFullString, toDateString, toDateStrip } from 'src/utils/function';
 import axios from 'axios';
 import { baseUrl } from 'src/utils/backend-url';
+import { CustomersConfirmDelete } from './customers-confirm-delete';
 
-const deleteUrl = baseUrl + "/management/customers/delete/";
 const activationUrl = baseUrl + "/activation/customer/";
 
 export const CustomersTable = (props) => {
@@ -38,6 +39,8 @@ export const CustomersTable = (props) => {
     formData,
     setFormData,
   } = props;
+
+  const [isDeleting, setIsDeleting] = useState({ status: false, id: null });
 
   const handleEditClick = (customerid) => {
     const edited = items.find((item) => item.customerid === customerid);
@@ -56,17 +59,7 @@ export const CustomersTable = (props) => {
   };
 
   const handleDeleteClick = (customerid) => {
-    const deleteUserUrl = deleteUrl + customerid;
-    axios
-      .delete(deleteUserUrl)
-      .then((res) => {
-        console.log(res);
-        // window.location.reload();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    console.log('Delete customer', customerid);
+    setIsDeleting({ status: true, id: customerid });
   };
 
   const handleActivationClick = (customerid, current) => {
@@ -214,6 +207,13 @@ export const CustomersTable = (props) => {
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[5, 10, 25]}
       />
+      {isDeleting.status && (
+        <CustomersConfirmDelete
+          isDeleting={isDeleting}
+          setIsDeleting={setIsDeleting}
+          id={isDeleting.id}
+        />
+      )}
     </Card>
   );
 };
