@@ -24,8 +24,8 @@ export const completeMonthInYear = (monthResponse) => {
     if (monthSale !== -1) {
       return monthResponse[monthSale];
     } else {
-      // return {month: month, count: 0};
-      return {month: month, count: Math.floor(Math.random() * 30) + 1};
+      return {month: month, count: 0};
+      // return {month: month, count: Math.floor(Math.random() * 30) + 1};
     }
   });
   return completeMonth;
@@ -46,7 +46,8 @@ export const completeDayInMonth = (dayResponse, onMonth) => {
     if (daySale !== -1) {
       return dayResponse[daySale];
     } else {
-      return {day: day, count: Math.floor(Math.random() * 30) + 1};
+      return {day: day, count: 0};
+      // return {day: day, count: Math.floor(Math.random() * 30) + 1};
     }
   });
   return completeDay;
