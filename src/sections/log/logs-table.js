@@ -14,8 +14,14 @@ import {
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
 import { getInitials } from 'src/utils/get-initials';
-
+import { SeverityPill } from 'src/components/severity-pill';
 import { toFullString } from 'src/utils/function';
+
+const statusMap = {
+  D: 'info',
+  K: 'success',
+  C: 'primary'
+};
 
 export const LogsTable = (props) => {
   const {
@@ -79,7 +85,16 @@ export const LogsTable = (props) => {
                       </Stack>
                     </TableCell>
                     <TableCell align="center">
-                      {item.type}
+                      <SeverityPill
+                        color={statusMap[item.type]}
+                        sx={{
+                          textTransform: 'capitalize',
+                          px: 2.5,
+                          py: 0.5,
+                        }}
+                      >
+                        {item.type}
+                      </SeverityPill>
                     </TableCell>
                     <TableCell align="right">
                       {item.amount === 0 ? '' : item.amount + '.000'}

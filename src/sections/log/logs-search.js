@@ -62,9 +62,9 @@ export const LogsSearch = ({query, setQuery, type, setType}) => {
               value={type}
             >
               <MenuItem value="All">All</MenuItem>
-              <MenuItem value="D">Deposit</MenuItem>
-              <MenuItem value="K">Payment</MenuItem>
-              <MenuItem value="C">Create User</MenuItem>
+              <MenuItem value="D">( D ) - Deposit</MenuItem>
+              <MenuItem value="K">( K ) - Payment</MenuItem>
+              <MenuItem value="C">( C ) - Create User</MenuItem>
             </Select>
           </FormControl>
         </Grid>
