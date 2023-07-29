@@ -17,9 +17,8 @@ import {
 import React, { useState } from 'react';
 import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/icons-material';
 import { Scrollbar } from 'src/components/scrollbar';
-import { getInitials } from 'src/utils/get-initials';
 
-import { toFullString, toDateString, toDateStrip } from 'src/utils/function';
+import { toFullString, toDateString, toDateStrip, getInitials } from 'src/utils/function';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { serverUrl } from 'src/utils/backend-url';

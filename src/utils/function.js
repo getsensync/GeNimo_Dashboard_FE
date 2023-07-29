@@ -73,3 +73,11 @@ export const toFormatted = (number, isMoney = false) => {
     return `${result}${size[sizeIndex]}`;
   }
 }
+
+export const getInitials = (name = '') => name
+  .replace(/\s+/, ' ')
+  .split(' ')
+  .slice(0, 2)
+  .map((v) => v && v[0].toUpperCase())
+  .join('');
+  

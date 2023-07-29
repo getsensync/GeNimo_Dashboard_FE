@@ -13,9 +13,8 @@ import {
   Typography,
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
-import { getInitials } from 'src/utils/get-initials';
 import { SeverityPill } from 'src/components/severity-pill';
-import { toFullString } from 'src/utils/function';
+import { toFullString, getInitials } from 'src/utils/function';
 
 const statusMap = {
   D: 'info',

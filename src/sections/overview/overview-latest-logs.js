@@ -23,8 +23,7 @@ import NextLink from 'next/link';
 import { Scrollbar } from 'src/components/scrollbar';
 import { SeverityPill } from 'src/components/severity-pill';
 import { serverUrl } from 'src/utils/backend-url';
-import { getInitials } from 'src/utils/get-initials';
-import { toFullString } from 'src/utils/function';
+import { toFullString, getInitials } from 'src/utils/function';
 
 import axios from 'axios';
 

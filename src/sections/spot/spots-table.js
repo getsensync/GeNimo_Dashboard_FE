@@ -17,9 +17,8 @@ import {
 } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/icons-material';
 import { Scrollbar } from 'src/components/scrollbar';
-import { getInitials } from 'src/utils/get-initials';
 
-import { toFullString, toDateString } from 'src/utils/function';
+import { toFullString, getInitials } from 'src/utils/function';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { serverUrl } from 'src/utils/backend-url';
