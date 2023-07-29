@@ -14,15 +14,6 @@ import axios from "axios";
 import { serverUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
 
-const useSpots = (data, page, rowsPerPage) => {
-  return useMemo(
-    () => {
-      return applyPagination(data, page, rowsPerPage);
-    },
-    [data, page, rowsPerPage]
-  );
-};
-
 const RawPage = () => {
   // Inner Functions
     const handlePageChange = useCallback(

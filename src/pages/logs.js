@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { LogsTable } from 'src/sections/log/logs-table';
 import { LogsSearch } from 'src/sections/log/log-search';
+import { applyPagination } from 'src/utils/apply-pagination';
 import { toFullString } from 'src/utils/function';
 
 import axios from "axios";
@@ -12,70 +13,80 @@ import { serverUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
 
 const RawPage = () => {
+  // Inner Functions
+  const handlePageChange = useCallback(
+    (event, value) => {
+      setPage(value);
+    },
+    []
+  );
+
+  const handleRowsPerPageChange = useCallback(
+    (event) => {
+      setRowsPerPage(event.target.value);
+    },
+    []
+  );
 
   // Inner States & Logics
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [data, setData] = useState([]);
+  const [count, setCount] = useState(data.length); // Total Logs
   const [query, setQuery] = useState(''); // Search query
   const [type, setType] = useState('All'); // Search type
   const keys = ['uuid', 'name', 'amount', 'spot', 'timestamp'];
   const logs = data;
   const url = serverUrl + "/logs/all";
   
-  useEffect(() => {
-    axios
-    .get(url)
-    .then((res) => {
-      setData(res.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }, [url]);
-
-  const filter = (items) => {
-    if (query) {
-      const allowed = ['0', '00', '000'];
-      const period = query.includes('.');
-      const [first, second] = query.split('.');
-      items = items.filter((item) => {
-        // Period Handler
-        if (period) {
-          // if first and second are both empty, return true
-          if (second && !allowed.includes(second)) {
-            return false;
-          }
-          if (!first) {
-            return item['type'] !== 'C';
-          }
-          else if (first && item['amount'].toString().includes(first)) {
-            return true;
-          }
-        }
-        // Normal Handler
-        for (const key of keys) {
-          if (key === 'timestamp') {
-            if (toFullString(item[key]).toLowerCase().includes(query.toLowerCase())) {
+  const FilteredLogs = (data, page, rowsPerPage, query, type) => {
+    return useMemo(() => {
+      let items = data;
+      if (query) {
+        const allowed = ['0', '00', '000'];
+        const period = query.includes('.');
+        const [first, second] = query.split('.');
+        items = items.filter((item) => {
+          // Period Handler
+          if (period) {
+            // if first and second are both empty, return true
+            if (second && !allowed.includes(second)) {
+              return false;
+            }
+            if (!first) {
+              return item['type'] !== 'C';
+            }
+            else if (first && item['amount'].toString() === first) {
               return true;
             }
           }
-          else if (key === 'amount' && allowed.includes(query)) {
-            if (item['type'] === 'D' || item['type'] === 'K') {
+          // Normal Handler
+          for (const key of keys) {
+            if (key === 'timestamp') {
+              if (toFullString(item[key]).toLowerCase().includes(query.toLowerCase())) {
+                return true;
+              }
+            }
+            else if (key === 'amount' && allowed.includes(query)) {
+              if (item['type'] === 'D' || item['type'] === 'K') {
+                return true;
+              }
+            }
+            else if (item[key].toString().toLowerCase().includes(query.toLowerCase())) {
               return true;
             }
           }
-          else if (item[key].toString().toLowerCase().includes(query.toLowerCase())) {
-            return true;
-          }
-        }
-        return false;
-      });
-    }
-    if (type !== 'All') {
-      items = items.filter((item) => item.type === type);
-    }
-    return items;
+          return false;
+        });
+      }
+      if (type !== 'All') {
+        items = items.filter((item) => item.type === type);
+      }
+      setCount(items.length);
+      return applyPagination(items, page, rowsPerPage);
+    }, [data, page, rowsPerPage, query, type]);
   };
-
+  
   const refresh = () => {
     setQuery('');
     setType('All');
@@ -89,6 +100,17 @@ const RawPage = () => {
     });
   };
 
+  useEffect(() => {
+    axios
+    .get(url)
+    .then((res) => {
+      setData(res.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }, [url]);
+  
   return (
     <>
       <Head>
@@ -133,7 +155,12 @@ const RawPage = () => {
               setType={setType}
             />
             <LogsTable
-              items={filter(logs)}
+              count={count}
+              items={FilteredLogs(logs, page, rowsPerPage, query, type)}
+              onPageChange={handlePageChange}
+              onRowsPerPageChange={handleRowsPerPageChange}
+              page={page}
+              rowsPerPage={rowsPerPage}
             />
           </Stack>
         </Container>

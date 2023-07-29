@@ -8,6 +8,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
+  TablePagination,
   TableRow,
   Typography,
 } from '@mui/material';
@@ -18,7 +19,12 @@ import { toFullString } from 'src/utils/function';
 
 export const LogsTable = (props) => {
   const {
+    count = 0,
     items = [],
+    onPageChange = () => {},
+    onRowsPerPageChange,
+    page = 0,
+    rowsPerPage = 0,
   } = props;
 
   return (
@@ -91,10 +97,24 @@ export const LogsTable = (props) => {
           </Table>
         </Box>
       </Scrollbar>
+      <TablePagination
+        component="div"
+        count={count}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onRowsPerPageChange}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        rowsPerPageOptions={[5, 10, 25, 50, 100]}
+      />
     </Card>
   );
 };
 
 LogsTable.propTypes = {
+  count: PropTypes.number,
   items: PropTypes.array,
+  onPageChange: PropTypes.func,
+  onRowsPerPageChange: PropTypes.func,
+  page: PropTypes.number,
+  rowsPerPage: PropTypes.number,
 };
