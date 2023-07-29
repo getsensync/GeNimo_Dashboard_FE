@@ -5,7 +5,7 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { OverviewTotalTickets } from 'src/sections/overview/overview-total-tickets';
 import { OverviewLatestLogs } from 'src/sections/overview/overview-latest-logs';
 import { OverviewSales } from 'src/sections/overview/overview-sales';
-import { OverviewTasksProgress } from 'src/sections/overview/overview-tasks-progress';
+// import { OverviewTasksProgress } from 'src/sections/overview/overview-tasks-progress';
 import { OverviewTotalCustomers } from 'src/sections/overview/overview-total-customers';
 import { OverviewHoldAmount } from 'src/sections/overview/overview-hold-amount';
 import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
@@ -36,7 +36,7 @@ const RawPage = () => (
           <Grid
             xs={12}
             sm={6}
-            lg={3}
+            lg={4}
           >
             <OverviewTotalTickets
               difference={12}
@@ -48,13 +48,13 @@ const RawPage = () => (
           <Grid
             xs={12}
             sm={6}
-            lg={3}
+            lg={4}
           >
             <OverviewTotalCustomers
               sx={{ height: '100%' }}
             />
           </Grid>
-          <Grid
+          {/* <Grid
             xs={12}
             sm={6}
             lg={3}
@@ -63,11 +63,11 @@ const RawPage = () => (
               sx={{ height: '100%' }}
               value={75.5}
             />
-          </Grid>
+          </Grid> */}
           <Grid
             xs={12}
             sm={6}
-            lg={3}
+            lg={4}
           >
             <OverviewHoldAmount
               sx={{ height: '100%' }}
