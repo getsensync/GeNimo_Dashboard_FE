@@ -29,23 +29,15 @@ export const SpotsTable = (props) => {
   const {
     count = 0,
     items = [],
-    onDeselectAll,
-    onDeselectOne,
     onPageChange = () => {},
     onRowsPerPageChange,
-    onSelectAll,
-    onSelectOne,
     page = 0,
     rowsPerPage = 0,
-    selected = [],
     isFormOpen,
     setIsFormOpen,
     formData,
     setFormData,
   } = props;
-
-  const selectedSome = (selected.length > 0) && (selected.length < items.length);
-  const selectedAll = (items.length > 0) && (selected.length === items.length);
 
   const handleEditClick = (spotid) => {
     const edited = items.find((item) => item.spotid === spotid);
@@ -93,20 +85,7 @@ export const SpotsTable = (props) => {
         <Box sx={{ minWidth: 800 }}>
           <Table>
             <TableHead>
-              <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedAll}
-                    indeterminate={selectedSome}
-                    onChange={(event) => {
-                      if (event.target.checked) {
-                        onSelectAll?.();
-                      } else {
-                        onDeselectAll?.();
-                      }
-                    }}
-                  />
-                </TableCell>
+              <TableRow>                
                 <TableCell align="center">
                   Name
                 </TableCell>                
@@ -126,26 +105,12 @@ export const SpotsTable = (props) => {
             </TableHead>
             <TableBody>
               {items.map((item, index) => {
-                const isSelected = selected.includes(item.spotid);
                 const lastModified = item.lastmodified ? toFullString(item.lastmodified) : 'N/A';
                 return (
                   <TableRow
                     hover
                     key={index}
-                    selected={isSelected}
                   >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={isSelected}
-                        onChange={(event) => {
-                          if (event.target.checked) {
-                            onSelectOne?.(item.spotid);
-                          } else {
-                            onDeselectOne?.(item.spotid);
-                          }
-                        }}
-                      />
-                    </TableCell>
                     <TableCell>
                       <Stack
                         alignItems="center"
@@ -161,11 +126,17 @@ export const SpotsTable = (props) => {
                       </Stack>
                     </TableCell>
                     <TableCell align="right">
-                      {item.price}
+                      {item.price}.000 IDR
                     </TableCell>
-                    <TableCell align="center">
-                      {/* Use &#x2705; as Yes and &#x274C; as No */}
-                      {item.isactive ? <span>&#x2705;</span> : <span>&#x274C;</span>}
+                    <TableCell
+                      align="center"
+                      padding='checkbox'
+                    >
+                      {/* Use checkbox to show active/inactive but cant be selected */}
+                      <Checkbox
+                        checked={item.isactive}
+                        disabled
+                      />
                     </TableCell>
                     <TableCell align="center">
                       {lastModified}
@@ -231,15 +202,10 @@ export const SpotsTable = (props) => {
 SpotsTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
-  onDeselectAll: PropTypes.func,
-  onDeselectOne: PropTypes.func,
   onPageChange: PropTypes.func,
   onRowsPerPageChange: PropTypes.func,
-  onSelectAll: PropTypes.func,
-  onSelectOne: PropTypes.func,
   page: PropTypes.number,
   rowsPerPage: PropTypes.number,
-  selected: PropTypes.array,
   isFormOpen: PropTypes.object.isRequired,
   setIsFormOpen: PropTypes.func.isRequired,
   formData: PropTypes.object.isRequired,

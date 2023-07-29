@@ -3,12 +3,12 @@ import Head from 'next/head';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography, Grid } from '@mui/material';
-import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { SpotsTable } from 'src/sections/spot/spots-table';
-// import { SpotsSearch } from 'src/sections/spot/spots-search';
+import { SpotsSearch } from 'src/sections/spot/spots-search';
 import { SpotsForm } from 'src/sections/spot/spots-form';
 import { applyPagination } from 'src/utils/apply-pagination';
+import { toFullString } from 'src/utils/function';
 
 import axios from "axios";
 import { serverUrl } from 'src/utils/backend-url';
@@ -20,15 +20,6 @@ const useSpots = (data, page, rowsPerPage) => {
       return applyPagination(data, page, rowsPerPage);
     },
     [data, page, rowsPerPage]
-  );
-};
-
-const useSpotIds = (spots) => {
-  return useMemo(
-    () => {
-      return spots.map((item) => item.spotid);
-    },
-    [spots]
   );
 };
 
@@ -58,9 +49,12 @@ const RawPage = () => {
   }, []);
 
   // Inner States & Logics
+  const [query, setQuery] = useState(''); // Search query
+  const [active, setActive] = useState('All'); // Search active 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [data, setData] = useState([]);
+  const [count, setCount] = useState(data.length); // Total Spots
   const [isFormOpen, setIsFormOpen] = useState({ status: false, editOrAdd: null, id: null });
   const [formData, setFormData] = useState({
     name: '',
@@ -68,10 +62,56 @@ const RawPage = () => {
     active: false,
   });
 
-  const spots = useSpots(data, page, rowsPerPage);
-  const spotsIds = useSpotIds(spots);
-  const spotsSelection = useSelection(spotsIds);
   const url = serverUrl + "/management/spots/all";
+  const keys = ['spotname', 'price', 'lastmodified'];
+
+  const FilteredSpots = (data, page, rowsPerPage, query, active) => {
+    return useMemo(() => {
+      let filteredData = data;
+      if (query) {
+        const allowed = ['0', '00', '000'];
+        const period = query.includes('.');
+        const [first, second] = query.split('.');
+        filteredData = filteredData.filter((item) => {
+          // Period Handler
+          if (period) {
+            // if first and second are both empty, return true
+            if (second && !allowed.includes(second)) {
+              return false;
+            }
+            if (!first) {
+              return true;
+            }
+            else if (first && item['price'].toString() === first) {
+              return true;
+            }
+          }
+          // Normal Handler
+          for (const key of keys) {
+            if (key === 'lastmodified') {
+              if (toFullString(item[key]).toLowerCase().includes(query.toLowerCase())) {
+                return true;
+              }
+            }
+            else if (item[key].toString().toLowerCase().includes(query.toLowerCase())) {
+              return true;
+            }
+          }
+          return false;
+        });
+      }
+      if (active !== 'All') {
+        filteredData = filteredData.filter((item) => {
+          if (item['isactive'].toString() === active) {
+            return true;
+          }
+          return false;
+        });
+      }
+      setCount(filteredData.length);
+      return applyPagination(filteredData, page, rowsPerPage);
+    }, [data, page, rowsPerPage, query, active]);
+  };
 
   useEffect(() => {
     axios
@@ -152,19 +192,19 @@ const RawPage = () => {
               />
             )}
             {/* Search */}
-            {/* <SpotsSearch /> */}
+            <SpotsSearch
+              query={query}
+              setQuery={setQuery}
+              active={active}
+              setActive={setActive}
+            />
             <SpotsTable
-              count={data.length}
-              items={spots}
-              onDeselectAll={spotsSelection.handleDeselectAll}
-              onDeselectOne={spotsSelection.handleDeselectOne}
+              count={count}
+              items={FilteredSpots(data, page, rowsPerPage, query, active)}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={spotsSelection.handleSelectAll}
-              onSelectOne={spotsSelection.handleSelectOne}
               page={page}
               rowsPerPage={rowsPerPage}
-              selected={spotsSelection.selected}
               isFormOpen={isFormOpen}
               setIsFormOpen={setIsFormOpen}
               formData={formData}
