@@ -95,7 +95,6 @@ const RawPage = () => {
       }
       if (active !== 'All') {
         filtered = filtered.filter((item) => {
-          console.log(item['isactive'].toString());
           if (item['isactive'].toString() === active) {
             return true;
           }
