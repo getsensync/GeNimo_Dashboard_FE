@@ -138,12 +138,15 @@ export const CustomersTable = (props) => {
                       {dOB}
                     </TableCell>
                     <TableCell align="right">
-                      {item.balance}
+                      {item.balance}.000
                     </TableCell>
                     <TableCell align="center">
                       {item.encryptiontype}
                     </TableCell>
-                    <TableCell align="center" padding='checkbox'>
+                    <TableCell
+                      align="center"
+                      padding='checkbox'
+                    >
                       {/* Use checkbox to show active/inactive but cant be selected */}
                       <Checkbox
                         checked={item.isactive}

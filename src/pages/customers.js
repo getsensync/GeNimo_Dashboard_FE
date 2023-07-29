@@ -66,12 +66,30 @@ const RawPage = () => {
     return useMemo(() => {
       let filtered = data;
       if (query) {
+        const allowed = ['0', '00', '000'];
+        const period = query.includes('.');
+        const slash = query.includes('/');
+        const [first, second] = query.split('.');
         filtered = filtered.filter((item) => {
-          if (query.includes('/')) {
+          // Slash Handler
+          if (slash) {
             const date = toDateString(item['dateofbirth']);
             return date.includes(query);
           }
-
+          // Period Handler
+          if (period) {
+            // if first and second are both empty, return true
+            if (second && !allowed.includes(second)) {
+              return false;
+            }
+            if (!first) {
+              return true;
+            }
+            else if (first && item['price'].toString() === first) {
+              return true;
+            }
+          }
+          // Normal Handler
           for (const key of keys) {
             if (key === 'lastmodified') {
               if (toFullString(item[key]).toLowerCase().includes(query.toLowerCase())) {
