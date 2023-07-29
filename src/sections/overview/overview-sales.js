@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import NextLink from 'next/link';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import {
@@ -15,6 +16,7 @@ import React, { useEffect, useState } from 'react';
 import { Chart } from 'src/components/chart';
 import { serverUrl } from 'src/utils/backend-url';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import { configMonthly, configAnnual } from 'src/utils/chart-options/overview-sales';
 import { completeMonthInYear, completeDayInMonth } from 'src/utils/function';
@@ -47,13 +49,16 @@ export const OverviewSales = (props) => {
                 data: lastMonthData
               }
             ]);
+            toast.success('Displaying Monthly Data over Days!');
           })
           .catch((error) => {
             console.log(error);
+            toast.error('Failed to Fetch Last Month Data!');
           });
       })
       .catch((error) => {
         console.log(error);
+        toast.error('Failed to Fetch This Month Data!');
       });
   };
   
@@ -80,18 +85,20 @@ export const OverviewSales = (props) => {
                 data: lastYearData
               }
             ]);
+            toast.success('Displaying Annual Data over Months!');
           })
           .catch((error) => {
             console.log(error);
+            toast.error('Failed to Fetch Last Year Data!');
           });
       })
       .catch((error) => {
         console.log(error);
+        toast.error('Failed to Fetch This Year Data!');
       });
   };
 
   const handleType = () => {
-    setIsMonthly(!isMonthly);
     if (isMonthly) {
       FetchMonthlyData();
     } else {
@@ -99,13 +106,20 @@ export const OverviewSales = (props) => {
     }
   };
 
-  useEffect(() => {
+  const handleTypeChange = () => {
+    setIsMonthly(!isMonthly);
     if (isMonthly) {
-      FetchMonthlyData();
-    } else {
       FetchAnnualData();
+    } else {
+      FetchMonthlyData();
     }
-  }, [isMonthly]);
+  };
+
+  // First Fetch, isMonthly ? fetch monthly data : fetch annual data
+  // based on isMonthly initial value
+  useEffect(() => {
+    FetchAnnualData();
+  }, []);
 
   return (
     <Card sx={sx}>
@@ -128,7 +142,7 @@ export const OverviewSales = (props) => {
                   <ArrowPathIcon />
                 </SvgIcon>
               )}
-              onClick={handleType}
+              onClick={handleTypeChange}
             >
               {isMonthly ? 'Annual' : 'Monthly'}
             </Button>
@@ -140,7 +154,7 @@ export const OverviewSales = (props) => {
                 <ArrowPathIcon />
               </SvgIcon>
             )}
-            onClick={isMonthly ? FetchMonthlyData : FetchAnnualData}
+            onClick={handleType}
           >
             Sync
           </Button>
@@ -167,6 +181,12 @@ export const OverviewSales = (props) => {
             </SvgIcon>
           )}
           size="small"
+          component={NextLink}
+          // href is "/logs" with params type=payment
+          href={{
+            pathname: '/logs',
+            query: { type: 'K' }
+          }}
         >
           Overview
         </Button>

@@ -86,30 +86,35 @@ const RawPage = () => {
       return applyPagination(items, page, rowsPerPage);
     }, [data, page, rowsPerPage, query, type]);
   };
+
+  const fetchLogs = () => {
+    axios
+      .get(url)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   
   const refresh = () => {
     setQuery('');
     setType('All');
-    axios
-    .get(url)
-    .then((res) => {
-      setData(res.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    fetchLogs();
   };
 
   useEffect(() => {
-    axios
-    .get(url)
-    .then((res) => {
-      setData(res.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }, [url]);
+    fetchLogs();
+    // i.e http://localhost:3000/logs
+    // if http://localhost:3000/logs?type=payment
+    // set type to payment
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type');
+    if (type) {
+      setType(type);
+    }
+  }, []);
   
   return (
     <>
