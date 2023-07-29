@@ -123,8 +123,8 @@ const RawPage = () => {
       return applyPagination(filtered, page, rowsPerPage);
     }, [data, page, rowsPerPage, query, type, active]);
   };
-  
-  useEffect(() => {
+
+  const fetchCustomers = () => {
     axios
     .get(url)
     .then((res) => {
@@ -134,7 +134,11 @@ const RawPage = () => {
     .catch((error) => {
       console.log(error);
     });
-  }, [url]);
+  };
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
 
   return (
     <>
@@ -175,7 +179,7 @@ const RawPage = () => {
                       </SvgIcon>
                     )}
                     variant="contained"
-                    onClick={() => window.location.reload()}
+                    onClick={fetchCustomers}
                   >
                     Refresh
                   </Button>
@@ -201,6 +205,7 @@ const RawPage = () => {
                 setIsFormOpen={setIsFormOpen}
                 formData={formData}
                 setFormData={setFormData}
+                fetchCustomers={fetchCustomers}
               />
             )}
             {/* Search */}
@@ -223,6 +228,7 @@ const RawPage = () => {
               setIsFormOpen={setIsFormOpen}
               formData={formData}
               setFormData={setFormData}
+              fetchCustomers={fetchCustomers}
             />
           </Stack>
         </Container>

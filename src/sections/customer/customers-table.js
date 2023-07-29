@@ -21,6 +21,7 @@ import { getInitials } from 'src/utils/get-initials';
 
 import { toFullString, toDateString, toDateStrip } from 'src/utils/function';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { serverUrl } from 'src/utils/backend-url';
 import { CustomersConfirmDelete } from './customers-confirm-delete';
 
@@ -38,6 +39,7 @@ export const CustomersTable = (props) => {
     setIsFormOpen,
     formData,
     setFormData,
+    fetchCustomers,
   } = props;
 
   const [isDeleting, setIsDeleting] = useState({ status: false, id: null });
@@ -68,10 +70,13 @@ export const CustomersTable = (props) => {
       .patch(url, { new_status: !current })
       .then((res) => {
         console.log(res);
-        // window.location.reload();
+        fetchCustomers();
+        const newStatus = !current ? 'activated' : 'deactivated';
+        toast.success(`Customer ${newStatus} successfully`);
       })
       .catch((error) => {
         console.log(error);
+        toast.error(`Customer ${newStatus} failed`);
       });
   };
 
@@ -215,6 +220,7 @@ export const CustomersTable = (props) => {
           isDeleting={isDeleting}
           setIsDeleting={setIsDeleting}
           id={isDeleting.id}
+          fetchCustomers={fetchCustomers}
         />
       )}
     </Card>
@@ -232,4 +238,5 @@ CustomersTable.propTypes = {
   setIsFormOpen: PropTypes.func.isRequired,
   formData: PropTypes.object.isRequired,
   setFormData: PropTypes.func.isRequired,
+  fetchCustomers: PropTypes.func.isRequired,
 };

@@ -8,6 +8,7 @@ import {
 
 import { serverUrl } from 'src/utils/backend-url';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const deleteUrl = serverUrl + "/management/customers/delete/";
 
@@ -16,6 +17,7 @@ export const CustomersConfirmDelete = (props) => {
     id,
     isDeleting,
     setIsDeleting,
+    fetchCustomers,
   } = props;
   
   const handleDelete = () => {
@@ -24,11 +26,13 @@ export const CustomersConfirmDelete = (props) => {
       .delete(deleteUserUrl)
       .then((res) => {
         console.log(res);
+        fetchCustomers();
+        toast.success('Customer deleted successfully');
       })
       .catch((error) => {
         console.log(error);
+        toast.error('Customer deleted failed');
       });
-    console.log('Delete customer', id);
     setIsDeleting({ status: false, id: null });
   };
 
@@ -130,4 +134,5 @@ CustomersConfirmDelete.propTypes = {
   id: PropTypes.string.isRequired,
   isDeleting: PropTypes.bool.isRequired,
   setIsDeleting: PropTypes.func.isRequired,
+  fetchCustomers: PropTypes.func.isRequired,
 };

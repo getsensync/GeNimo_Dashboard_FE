@@ -15,6 +15,7 @@ import {
 
 import { serverUrl } from 'src/utils/backend-url';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const addUserUrl = serverUrl + "/management/customers/add";
 const editUrl = serverUrl + "/management/customers/update/";
@@ -25,6 +26,7 @@ export const CustomersForm = (props) => {
     setIsFormOpen,
     formData,
     setFormData,
+    fetchCustomers,
   } = props;
   
   const formik = useFormik({
@@ -89,25 +91,29 @@ export const CustomersForm = (props) => {
             .patch(editUserUrl, resultData)
             .then((response) => {
               console.log(response);
+              toast.success('Customer updated successfully!');
             })
             .catch((error) => {
               console.log(error);
+              toast.error('Error updating customer!');
             });
         } else if (isFormOpen.editOrAdd === 'add') {
           axios
             .post(addUserUrl, resultData)
             .then((response) => {
               console.log(response);
+              toast.success('Customer added successfully!');
             })
             .catch((error) => {
               console.log(error);
+              toast.error('Error adding customer!');
             }
             );
         }
+        fetchCustomers();
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
         resetForm();
-        // window.location.reload();
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -171,7 +177,7 @@ export const CustomersForm = (props) => {
                 variant="h5"
                 align="center"
               >
-                New User
+                New Customer
               </Typography>              
             </Stack>            
             <form
@@ -302,4 +308,5 @@ CustomersForm.propTypes = {
   setIsFormOpen: PropTypes.func.isRequired,
   formData: PropTypes.object.isRequired,
   setFormData: PropTypes.func.isRequired,
+  fetchCustomers: PropTypes.func.isRequired,
 };
