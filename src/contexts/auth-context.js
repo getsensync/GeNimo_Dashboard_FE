@@ -155,6 +155,12 @@ export const AuthProvider = (props) => {
       email: userExist.email,
       role: userExist.role,
     };
+
+    const anotherResponse = await axios.patch(`${serverUrl}/credentials/last_login/${userExist.username}`);
+    if (!anotherResponse.data.includes('success')) {
+      throw new Error('Failed to login, please try again.');
+    }
+
     try {
       window.sessionStorage.setItem('authenticated', 'true');
       window.sessionStorage.setItem('loggedUser', JSON.stringify(loggedUser));

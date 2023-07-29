@@ -97,7 +97,7 @@ const Page = () => {
           sx={{
             maxWidth: 550,
             px: 3,
-            py: '100px',
+            py: '70px',
             width: '100%'
           }}
         >
