@@ -76,12 +76,14 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signUp(values.email, values.username, values.password);
+        await auth.signUp(values.username, values.email, values.password, "operator", values.firstName, values.lastName, values.gender);
         router.push('/auth/login');
+        toast.success('Register success');
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
+        toast.error('Register failed');
       }
     }
   });

@@ -170,8 +170,22 @@ export const AuthProvider = (props) => {
     
   };
 
-  const signUp = async (email, name, password) => {
-    throw new Error('Sign up is not implemented');
+  const signUp = async (username, email, password, role, first_name, last_name, gender) => {
+    // throw new Error('Sign up is not implemented');
+    const body = {
+      username,
+      email,
+      password,
+      role,
+      first_name,
+      last_name,
+      gender,
+    };
+    const response = await axios.post(`${serverUrl}/credentials/add`, body);
+    const failed = response.data.includes('Failed');
+    if (failed) {
+      throw new Error('Username/email already exist! Please try another one');
+    }
   };
 
   const signOut = () => {
