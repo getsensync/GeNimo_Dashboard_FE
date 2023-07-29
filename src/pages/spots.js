@@ -104,7 +104,7 @@ const RawPage = () => {
     }, [data, page, rowsPerPage, query, active]);
   };
 
-  useEffect(() => {
+  const fetchSpots = () => {
     axios
     .get(url)
     .then((res) => {
@@ -113,7 +113,12 @@ const RawPage = () => {
     .catch((error) => {
       console.log(error);
     });
-  }, [url]);
+  };
+
+
+  useEffect(() => {
+    fetchSpots();
+  }, []);
 
   return (
     <>
@@ -154,7 +159,7 @@ const RawPage = () => {
                       </SvgIcon>
                     )}
                     variant="contained"
-                    onClick={() => window.location.reload()}
+                    onClick={fetchSpots}
                   >
                     Refresh
                   </Button>
@@ -180,6 +185,7 @@ const RawPage = () => {
                 setIsFormOpen={setIsFormOpen}
                 formData={formData}
                 setFormData={setFormData}
+                fetchSpots={fetchSpots}
               />
             )}
             {/* Search */}
@@ -200,6 +206,7 @@ const RawPage = () => {
               setIsFormOpen={setIsFormOpen}
               formData={formData}
               setFormData={setFormData}
+              fetchSpots={fetchSpots}
             />
           </Stack>
         </Container>

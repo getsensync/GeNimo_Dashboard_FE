@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import {
   Avatar,
   Box,
@@ -20,7 +21,9 @@ import { getInitials } from 'src/utils/get-initials';
 
 import { toFullString, toDateString } from 'src/utils/function';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { serverUrl } from 'src/utils/backend-url';
+import { SpotsConfirmDelete } from './spots-confirm-delete';
 
 const deleteUrl = serverUrl + "/management/spots/delete/";
 const activationUrl = serverUrl + "/activation/spot/";
@@ -37,7 +40,10 @@ export const SpotsTable = (props) => {
     setIsFormOpen,
     formData,
     setFormData,
+    fetchSpots,
   } = props;
+
+  const [isDeleting, setIsDeleting] = useState({ status: false, id: null });
 
   const handleEditClick = (spotid) => {
     const edited = items.find((item) => item.spotid === spotid);
@@ -53,17 +59,7 @@ export const SpotsTable = (props) => {
   };
 
   const handleDeleteClick = (spotid) => {
-    const deleteUserUrl = deleteUrl + spotid;
-    axios
-      .delete(deleteUserUrl)
-      .then((res) => {
-        console.log(res);
-        // window.location.reload();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    console.log('Delete spot', spotid);
+    setIsDeleting({ status: true, id: spotid });
   };
 
   const handleActivationClick = (spotid, current) => {
@@ -72,10 +68,13 @@ export const SpotsTable = (props) => {
       .patch(url, { new_status: !current })
       .then((res) => {
         console.log(res);
-        // window.location.reload();
+        fetchSpots();
+        const newStatus = !current ? 'activated' : 'deactivated';
+        toast.success(`Spot ${newStatus} successfully!`);
       })
       .catch((error) => {
         console.log(error);
+        toast.error(`Spot ${newStatus} failed!`);
       });
   };
 
@@ -195,6 +194,13 @@ export const SpotsTable = (props) => {
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[5, 10, 25]}
       />
+      {isDeleting.status && (
+        <SpotsConfirmDelete
+          isDeleting={isDeleting}
+          setIsDeleting={setIsDeleting}
+          fetchSpots={fetchSpots}
+        />
+      )}
     </Card>
   );
 };
@@ -210,4 +216,5 @@ SpotsTable.propTypes = {
   setIsFormOpen: PropTypes.func.isRequired,
   formData: PropTypes.object.isRequired,
   setFormData: PropTypes.func.isRequired,
+  fetchSpots: PropTypes.func.isRequired,
 };

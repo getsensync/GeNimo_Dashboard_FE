@@ -11,6 +11,7 @@ import {
 
 import { serverUrl } from 'src/utils/backend-url';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const addSpotUrl = serverUrl + "/management/spots/add";
 const editUrl = serverUrl + "/management/spots/update/";
@@ -21,6 +22,7 @@ export const SpotsForm = (props) => {
     setIsFormOpen,
     formData,
     setFormData,
+    fetchSpots,
   } = props;
   
   const formik = useFormik({
@@ -61,9 +63,12 @@ export const SpotsForm = (props) => {
             .patch(editSpotUrl, resultData)
             .then((response) => {
               console.log(response);
+              fetchSpots();
+              toast.success('Spot updated successfully!');
             })
             .catch((error) => {
               console.log(error);
+              toast.error('Updating spot failed!');
             });
         } else if (isFormOpen.editOrAdd === 'add') {
           // add using axios at addSpotUrl
@@ -71,9 +76,12 @@ export const SpotsForm = (props) => {
             .post(addSpotUrl, resultData)
             .then((response) => {
               console.log(response);
+              fetchSpots();
+              toast.success('Spot added successfully!');
             })
             .catch((error) => {
               console.log(error);
+              toast.error('Adding spot failed!');
             }
             );
         }
@@ -225,4 +233,5 @@ SpotsForm.propTypes = {
   setIsFormOpen: PropTypes.func.isRequired,
   formData: PropTypes.object.isRequired,
   setFormData: PropTypes.func.isRequired,
+  fetchSpots: PropTypes.func.isRequired,
 };
