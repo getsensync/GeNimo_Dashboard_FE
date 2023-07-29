@@ -4,7 +4,7 @@ import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { LogsTable } from 'src/sections/log/logs-table';
-import { LogsSearch } from 'src/sections/log/log-search';
+import { LogsSearch } from 'src/sections/log/logs-search';
 import { applyPagination } from 'src/utils/apply-pagination';
 import { toFullString } from 'src/utils/function';
 
