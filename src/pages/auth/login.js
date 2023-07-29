@@ -1,3 +1,5 @@
+import EyeIcons from '@heroicons/react/24/solid/EyeIcon';
+import EyeSlashIcon from '@heroicons/react/24/solid/EyeSlashIcon';
 import { useCallback, useState } from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
@@ -14,7 +16,10 @@ import {
   Tab,
   Tabs,
   TextField,
-  Typography
+  Typography,
+  InputAdornment,
+  IconButton,
+  SvgIcon,
 } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
@@ -69,6 +74,8 @@ const Page = () => {
     },
     [auth, router]
   );
+
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <>
@@ -157,8 +164,25 @@ const Page = () => {
                     name="password"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     value={formik.values.password}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            <SvgIcon
+                              color="action"
+                              fontSize="small"
+                            >
+                              {showPassword ? <EyeSlashIcon /> : <EyeIcons />}
+                            </SvgIcon>
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                  }}
                   />
                 </Stack>
                 <FormHelperText sx={{ mt: 1 }}>
