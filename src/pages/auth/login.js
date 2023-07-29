@@ -19,6 +19,8 @@ import {
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 
+import { toast } from 'react-toastify';
+
 const Page = () => {
   const router = useRouter();
   const auth = useAuth();
@@ -43,10 +45,12 @@ const Page = () => {
       try {
         await auth.signIn(values.email, values.password);
         router.push('/');
+        toast.success('Login success');
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
+        toast.error('Login failed');
       }
     }
   });

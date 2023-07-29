@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { Box, Divider, MenuItem, MenuList, Popover, Typography } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 
+import { toast } from 'react-toastify';
+
 export const AccountPopover = (props) => {
   const { anchorEl, onClose, open } = props;
   const router = useRouter();
@@ -14,8 +16,9 @@ export const AccountPopover = (props) => {
       onClose?.();
       auth.signOut();
       router.push('/auth/login');
+      toast.success('Logout success');
     },
-    [onClose, auth, router]
+    [auth, onClose, router]
   );
 
   return (
