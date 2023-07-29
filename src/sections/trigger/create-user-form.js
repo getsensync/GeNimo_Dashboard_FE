@@ -10,13 +10,13 @@ import {
   Typography
 } from '@mui/material';
 
-import { readerUrl } from 'src/utils/backend-url';
 import axios from 'axios';
 
 export const CreateUserForm = (props) => {
   const {
     isFormOpen,
     setIsFormOpen,
+    readerUrl,
   } = props;
   
   const [formData, setFormData] = useState({
@@ -190,4 +190,5 @@ export const CreateUserForm = (props) => {
 CreateUserForm.propTypes = {
   isFormOpen: PropTypes.object.isRequired,
   setIsFormOpen: PropTypes.func.isRequired,
+  readerUrl: PropTypes.string.isRequired,
 };

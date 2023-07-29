@@ -6,17 +6,23 @@ import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/materia
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { CreateUserForm } from 'src/sections/trigger/create-user-form';
 import { TopUpForm } from 'src/sections/trigger/top-up-form';
+import { IPSelector } from 'src/sections/trigger/trigger-ip-selector';
 
-import axios from "axios";
-import { serverUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
+import { readerUrl } from 'src/utils/backend-url';
+
+const changeUrl = (url, ip) => {
+  // the url is a string : http://localhost:8080/commandTrigger
+  // we need to change the url to http://ip:8080/commandTrigger
+  // so we split the url into 3 parts
+  const afterIP = url.split(":")[2];
+  const newUrl = `http://${ip}:${afterIP}`;
+  console.log(newUrl);
+  return newUrl;
+};
 
 const RawPage = () => {
   // Inner Functions
-  const handleAddClick = useCallback(() => {
-    setIsFormOpen({ status: true });
-  }, []);
-
   const handleCreateUserClick = useCallback(() => {
     setIsCreateUser(true);
   }, []);
@@ -26,9 +32,9 @@ const RawPage = () => {
   }, []);
 
   // Inner States & Logics
-  const [isFormOpen, setIsFormOpen] = useState({ status: false });
   const [isCreateUser, setIsCreateUser] = useState(false);
   const [isTopUp, setIsTopUp] = useState(false);
+  const [ip, setIp] = useState('');
 
   return (
     <>
@@ -52,11 +58,15 @@ const RawPage = () => {
             <Typography variant="h4">
               Trigger - A Reader
             </Typography>
+            <IPSelector
+              ip={ip}
+              setIP={setIp}
+            />
             <Stack
-              minHeight='80vh'
+              flex={1}
               justifyContent='center'
               spacing={3}
-              pb="15%"
+              pb="10%"
             >
               <Typography
                 variant="h6"
@@ -98,12 +108,14 @@ const RawPage = () => {
               <CreateUserForm 
                 isFormOpen={isCreateUser}
                 setIsFormOpen={setIsCreateUser}
+                readerUrl={changeUrl(readerUrl, ip)}
               />
             )}
             {isTopUp && (
               <TopUpForm
                 isFormOpen={isTopUp}
                 setIsFormOpen={setIsTopUp}
+                readerUrl={changeUrl(readerUrl, ip)}
               />
             )}
           </Stack>
