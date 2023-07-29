@@ -27,7 +27,7 @@ export const LogsSearch = ({query, setQuery, type, setType}) => {
           md = {8}
         >          
           <OutlinedInput
-            defaultValue=""
+            // defaultValue=""
             fullWidth
             placeholder="Search activity"
             value={query}

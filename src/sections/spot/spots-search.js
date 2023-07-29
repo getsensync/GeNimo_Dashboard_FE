@@ -27,7 +27,7 @@ export const SpotsSearch = ({query, setQuery, active, setActive}) => {
           md = {8}
         >          
           <OutlinedInput
-            defaultValue=""
+            // defaultValue=""
             fullWidth
             placeholder="Search spot"
             value={query}

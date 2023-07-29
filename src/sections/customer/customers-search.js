@@ -27,7 +27,7 @@ export const CustomersSearch = ({query, setQuery, type, setType, active, setActi
           md = {7}
         >          
           <OutlinedInput
-            defaultValue=""
+            // defaultValue=""
             fullWidth
             placeholder="Search customer"
             value={query}

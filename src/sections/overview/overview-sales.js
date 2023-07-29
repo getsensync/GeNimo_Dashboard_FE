@@ -182,11 +182,7 @@ export const OverviewSales = (props) => {
           )}
           size="small"
           component={NextLink}
-          // href is "/logs" with params type=payment
-          href={{
-            pathname: '/logs',
-            query: { type: 'K' }
-          }}
+          href="/logs?type=K"
         >
           Overview
         </Button>

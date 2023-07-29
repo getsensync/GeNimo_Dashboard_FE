@@ -53,7 +53,6 @@ const RawPage = () => {
           <Stack
             spacing={1}
             minHeight='90vh'
-            component="content"
           >
             <Typography variant="h4">
               Trigger - A Reader

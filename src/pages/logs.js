@@ -107,7 +107,7 @@ const RawPage = () => {
   useEffect(() => {
     fetchLogs();
     // i.e http://localhost:3000/logs
-    // if http://localhost:3000/logs?type=payment
+    // if http://localhost:3000/logs?type=K
     // set type to payment
     const params = new URLSearchParams(window.location.search);
     const type = params.get('type');
