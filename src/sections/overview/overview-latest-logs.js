@@ -56,7 +56,7 @@ export const OverviewLatestLogs = (props) => {
     const interval = setInterval(() => {
       fetchLatestLogs();
     }
-    , 2 * 60 * 1000);
+    , 1.5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
   

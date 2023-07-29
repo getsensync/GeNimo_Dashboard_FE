@@ -39,13 +39,24 @@ export const OverviewTraffic = (props) => {
     <Card sx={sx}>
       <CardHeader title="Traffic Source" />
       <CardContent>
-        <Chart
-          height={400}
-          options={chartOptions}
-          series={chartSeries}
-          type="donut"
-          width="100%"
-        />
+        <Grid
+          container
+          justifyContent="space-between"
+          spacing={2}
+        >
+          <Grid
+            item
+            xs={12}
+          >
+            <Chart
+              height={400}
+              options={chartOptions}
+              series={chartSeries}
+              type="donut"
+              width="100%"
+            />
+          </Grid>
+        </Grid>
         {/* use grid and grid item in center of grid container row */}
         <Grid
           container
@@ -64,7 +75,7 @@ export const OverviewTraffic = (props) => {
                 lg={2.4}
                 md={3}
                 sm={4}
-                xs={12}
+                xs={6}
               >
                 <Box
                   sx={{

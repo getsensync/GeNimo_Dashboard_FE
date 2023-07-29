@@ -31,6 +31,7 @@ const RawPage = () => (
         <Grid
           container
           spacing={3}
+          justifyContent="center"
         >
           {/* First Row */}
           <Grid
