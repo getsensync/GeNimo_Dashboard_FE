@@ -11,7 +11,7 @@ import { applyPagination } from 'src/utils/apply-pagination';
 import { toFullString, toDateString } from 'src/utils/function';
 
 import axios from "axios";
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
 
 const RawPage = () => {
@@ -59,7 +59,7 @@ const RawPage = () => {
     type: '',
     active: false,
   });
-  const url = baseUrl + "/management/customers/all";
+  const url = serverUrl + "/management/customers/all";
   const keys = ['customeruuid', 'customername', 'balance', 'lastmodified'];
 
   const FilteredCustomers = (data, page, rowsPerPage, query, type, active) => {

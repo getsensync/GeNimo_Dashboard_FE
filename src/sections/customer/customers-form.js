@@ -13,11 +13,11 @@ import {
   Typography
 } from '@mui/material';
 
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import axios from 'axios';
 
-const addUserUrl = baseUrl + "/management/customers/add";
-const editUrl = baseUrl + "/management/customers/update/";
+const addUserUrl = serverUrl + "/management/customers/add";
+const editUrl = serverUrl + "/management/customers/update/";
 
 export const CustomersForm = (props) => {
   const {

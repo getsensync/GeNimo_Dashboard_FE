@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
@@ -135,7 +135,7 @@ export const AuthProvider = (props) => {
   };
 
   const signIn = async (email, password) => {
-    const response = await axios.get(`${baseUrl}/credentials/certain/${email}`);
+    const response = await axios.get(`${serverUrl}/credentials/certain/${email}`);
     const userAuth = response.data;
     const isExist = userAuth.length > 0;
     if (!isExist) {

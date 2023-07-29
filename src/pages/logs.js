@@ -8,7 +8,7 @@ import { LogsSearch } from 'src/sections/log/log-search';
 import { toFullString } from 'src/utils/function';
 
 import axios from "axios";
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
 
 const RawPage = () => {
@@ -19,7 +19,7 @@ const RawPage = () => {
   const [type, setType] = useState('All'); // Search type
   const keys = ['uuid', 'name', 'amount', 'spot', 'timestamp'];
   const logs = data;
-  const url = baseUrl + "/logs/all";
+  const url = serverUrl + "/logs/all";
   
   useEffect(() => {
     axios

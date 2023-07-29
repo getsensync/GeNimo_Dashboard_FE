@@ -3,7 +3,7 @@ const HTTP = "http://";
 const server_host = "localhost";
 const server_port = "5000";
 const server_base = "/api";
-export const baseUrl = HTTP + server_host + ":" + server_port + server_base;
+export const serverUrl = HTTP + server_host + ":" + server_port + server_base;
 
 const reader_host = "localhost";
 const reader_port = ":8080";

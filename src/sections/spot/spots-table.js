@@ -20,10 +20,10 @@ import { getInitials } from 'src/utils/get-initials';
 
 import { toFullString, toDateString } from 'src/utils/function';
 import axios from 'axios';
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 
-const deleteUrl = baseUrl + "/management/spots/delete/";
-const activationUrl = baseUrl + "/activation/spot/";
+const deleteUrl = serverUrl + "/management/spots/delete/";
+const activationUrl = serverUrl + "/activation/spot/";
 
 export const SpotsTable = (props) => {
   const {

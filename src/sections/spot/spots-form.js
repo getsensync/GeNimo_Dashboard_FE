@@ -9,11 +9,11 @@ import {
   Typography
 } from '@mui/material';
 
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import axios from 'axios';
 
-const addSpotUrl = baseUrl + "/management/spots/add";
-const editUrl = baseUrl + "/management/spots/update/";
+const addSpotUrl = serverUrl + "/management/spots/add";
+const editUrl = serverUrl + "/management/spots/update/";
 
 export const SpotsForm = (props) => {
   const {

@@ -6,14 +6,14 @@ import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/mate
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import { toFormatted } from 'src/utils/function';
 
 export const OverviewTotalCustomers = (props) => {
   const { sx } = props;
 
-  const todayPaymentsUrl = baseUrl + '/count/payments/today/spots';
-  const todayDepositsUrl = baseUrl + '/count/deposits/today';
+  const todayPaymentsUrl = serverUrl + '/count/payments/today/spots';
+  const todayDepositsUrl = serverUrl + '/count/deposits/today';
   const [totalPayments, setTotalPayments] = useState(0);
   const [totalDeposits, setTotalDeposits] = useState(0);
   const [totalSpots, setTotalSpots] = useState(0);

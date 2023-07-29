@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Chart } from 'src/components/chart';
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import axios from 'axios';
 
 import { configMonthly, configAnnual } from 'src/utils/chart-options/overview-sales';
@@ -25,8 +25,8 @@ export const OverviewSales = (props) => {
   const [chartSeries, setChartSeries] = useState([]);
 
   const FetchMonthlyData = () => {
-    const thisMonthSaleUrl = baseUrl + '/count/payments/monthly/' + (new Date().getMonth() + 1);
-    const lastMonthSaleUrl = baseUrl + '/count/payments/monthly/' + (new Date().getMonth());
+    const thisMonthSaleUrl = serverUrl + '/count/payments/monthly/' + (new Date().getMonth() + 1);
+    const lastMonthSaleUrl = serverUrl + '/count/payments/monthly/' + (new Date().getMonth());
     axios
       .get(thisMonthSaleUrl)
       .then((response) => {
@@ -58,8 +58,8 @@ export const OverviewSales = (props) => {
   };
   
   const FetchAnnualData = () => {
-    const thisYearSaleUrl = baseUrl + '/count/payments/annual/' + new Date().getFullYear();
-    const lastYearSaleUrl = baseUrl + '/count/payments/annual/' + (new Date().getFullYear() - 1);
+    const thisYearSaleUrl = serverUrl + '/count/payments/annual/' + new Date().getFullYear();
+    const lastYearSaleUrl = serverUrl + '/count/payments/annual/' + (new Date().getFullYear() - 1);
     axios
       .get(thisYearSaleUrl)
       .then((response) => {

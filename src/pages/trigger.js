@@ -8,7 +8,7 @@ import { CreateUserForm } from 'src/sections/trigger/create-user-form';
 import { TopUpForm } from 'src/sections/trigger/top-up-form';
 
 import axios from "axios";
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
 
 const RawPage = () => {

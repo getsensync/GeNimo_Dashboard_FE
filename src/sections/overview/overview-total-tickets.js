@@ -3,13 +3,13 @@ import TicketIcon from '@heroicons/react/24/solid/TicketIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import { toFormatted } from 'src/utils/function';
 
 export const OverviewTotalTickets = (props) => {
   const { sx } = props;
   
-  const todayPaymentsUrl = baseUrl + '/count/payments/today/spots';
+  const todayPaymentsUrl = serverUrl + '/count/payments/today/spots';
   const [totalCustomers, setTotalCustomers] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
 

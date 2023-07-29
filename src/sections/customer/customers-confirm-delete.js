@@ -6,10 +6,10 @@ import {
   Typography
 } from '@mui/material';
 
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import axios from 'axios';
 
-const deleteUrl = baseUrl + "/management/customers/delete/";
+const deleteUrl = serverUrl + "/management/customers/delete/";
 
 export const CustomersConfirmDelete = (props) => {
   const {

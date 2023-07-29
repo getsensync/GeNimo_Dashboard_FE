@@ -11,7 +11,7 @@ import { SpotsForm } from 'src/sections/spot/spots-form';
 import { applyPagination } from 'src/utils/apply-pagination';
 
 import axios from "axios";
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
 
 const useSpots = (data, page, rowsPerPage) => {
@@ -71,7 +71,7 @@ const RawPage = () => {
   const spots = useSpots(data, page, rowsPerPage);
   const spotsIds = useSpotIds(spots);
   const spotsSelection = useSelection(spotsIds);
-  const url = baseUrl + "/management/spots/all";
+  const url = serverUrl + "/management/spots/all";
 
   useEffect(() => {
     axios

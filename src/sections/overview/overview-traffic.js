@@ -10,12 +10,12 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { Chart } from 'src/components/chart';
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import axios from 'axios';
 
 export const OverviewTraffic = (props) => {
   const { sx } = props;
-  const spotPaymentsUrl = baseUrl + '/count/payments/all';
+  const spotPaymentsUrl = serverUrl + '/count/payments/all';
   // spotDetails is an array of objects
   // each object has attributes: spotid, spotname, price, count
   const [spotDetails, setSpotDetails] = React.useState([]);

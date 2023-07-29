@@ -21,10 +21,10 @@ import { getInitials } from 'src/utils/get-initials';
 
 import { toFullString, toDateString, toDateStrip } from 'src/utils/function';
 import axios from 'axios';
-import { baseUrl } from 'src/utils/backend-url';
+import { serverUrl } from 'src/utils/backend-url';
 import { CustomersConfirmDelete } from './customers-confirm-delete';
 
-const activationUrl = baseUrl + "/activation/customer/";
+const activationUrl = serverUrl + "/activation/customer/";
 
 export const CustomersTable = (props) => {
   const {
