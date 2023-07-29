@@ -72,11 +72,11 @@ export const CustomersTable = (props) => {
         console.log(res);
         fetchCustomers();
         const newStatus = !current ? 'activated' : 'deactivated';
-        toast.success(`Customer ${newStatus} successfully`);
+        toast.success(`Customer ${newStatus} successfully!`);
       })
       .catch((error) => {
         console.log(error);
-        toast.error(`Customer ${newStatus} failed`);
+        toast.error(`Customer ${newStatus} failed!`);
       });
   };
 
@@ -219,7 +219,6 @@ export const CustomersTable = (props) => {
         <CustomersConfirmDelete
           isDeleting={isDeleting}
           setIsDeleting={setIsDeleting}
-          id={isDeleting.id}
           fetchCustomers={fetchCustomers}
         />
       )}

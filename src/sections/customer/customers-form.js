@@ -91,6 +91,7 @@ export const CustomersForm = (props) => {
             .patch(editUserUrl, resultData)
             .then((response) => {
               console.log(response);
+              fetchCustomers();
               toast.success('Customer updated successfully!');
             })
             .catch((error) => {
@@ -102,6 +103,7 @@ export const CustomersForm = (props) => {
             .post(addUserUrl, resultData)
             .then((response) => {
               console.log(response);
+              fetchCustomers();
               toast.success('Customer added successfully!');
             })
             .catch((error) => {
@@ -110,7 +112,6 @@ export const CustomersForm = (props) => {
             }
             );
         }
-        fetchCustomers();
         helpers.setStatus({ success: true });
         helpers.setSubmitting(false);
         resetForm();
