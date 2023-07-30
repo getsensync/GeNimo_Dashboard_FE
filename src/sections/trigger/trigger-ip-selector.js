@@ -18,13 +18,12 @@ import { ip_byReaders } from 'src/utils/ip-addresses/ip-addresses-by-readers';
 
 const create_readers = ip_byReaders.readers[0].spots;
 const topup_readers = ip_byReaders.readers[1].spots;
-const checkin_readers = ip_byReaders.readers[2].spots;
+// const checkin_readers = ip_byReaders.readers[2].spots;
 
-const keys = ['create', 'topup', 'checkin'];
 const readers = {
   create: create_readers,
   topup: topup_readers,
-  checkin: checkin_readers,
+  // checkin: checkin_readers,
 };
 
 
@@ -67,7 +66,7 @@ export const IPSelector = (props) => {
             >
               <MenuItem value="create">Create</MenuItem>
               <MenuItem value="topup">Top Up</MenuItem>
-              <MenuItem value="checkin">Check In</MenuItem>
+              {/* <MenuItem value="checkin">Check In</MenuItem> */}
             </Select>
           </FormControl>
         </Grid>
