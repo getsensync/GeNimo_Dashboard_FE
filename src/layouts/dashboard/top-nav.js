@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
-import BellIcon from '@heroicons/react/24/solid/BellIcon';
-import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
+import CogIcon from '@heroicons/react/24/solid/CogIcon';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import {
   Avatar,
-  Badge,
   Box,
   IconButton,
   Stack,
@@ -16,6 +14,7 @@ import { alpha } from '@mui/material/styles';
 import { usePopover } from 'src/hooks/use-popover';
 import { AccountPopover } from './account-popover';
 import { useAuth } from 'src/hooks/use-auth';
+import NextLink from 'next/link';
 
 // source path : assets of profile images
 const maleAvatar = '/assets/avatars/avatar-marcus-finn.png';
@@ -75,26 +74,21 @@ export const TopNav = (props) => {
             alignItems="center"
             direction="row"
             spacing={2}
+            sx={{ pr: 1 }}
           >
-            <Tooltip title="Contacts">
-              <IconButton>
-                <SvgIcon fontSize="small">
-                  <UsersIcon />
-                </SvgIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Notifications">
-              <IconButton>
-                <Badge
-                  badgeContent={4}
-                  color="success"
-                  variant="dot"
-                >
-                  <SvgIcon fontSize="small">
-                    <BellIcon />
+            <Tooltip title="Account Setting">
+              <Box
+                component={NextLink}
+                href="/account"
+              >
+                <IconButton>
+                  <SvgIcon
+                    fontSize="large"
+                  >
+                    <CogIcon />
                   </SvgIcon>
-                </Badge>
-              </IconButton>
+                </IconButton>
+              </Box>
             </Tooltip>
             <Avatar
               onClick={accountPopover.handleOpen}

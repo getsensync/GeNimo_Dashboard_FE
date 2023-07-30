@@ -5,11 +5,15 @@ import { Box, Divider, MenuItem, MenuList, Popover, Typography } from '@mui/mate
 import { useAuth } from 'src/hooks/use-auth';
 
 import { toast } from 'react-toastify';
+import { toCapitalCase } from 'src/utils/function';
 
 export const AccountPopover = (props) => {
   const { anchorEl, onClose, open } = props;
   const router = useRouter();
   const auth = useAuth();
+  const user = auth.user;
+  const name = (user?.firstName || user?.lastName) ?
+    `${toCapitalCase(user?.firstName)} ${toCapitalCase(user?.lastName)}` : '';
 
   const handleSignOut = useCallback(
     () => {
@@ -45,13 +49,13 @@ export const AccountPopover = (props) => {
           color="text.primary"
           variant="subtitle1"
         >
-          {auth.user?.username}
+          {user?.username}
         </Typography>
         <Typography
           color="text.secondary"
           variant="body2"
         >
-          {auth.user?.name}
+          {name}
         </Typography>
       </Box>
       <Divider />

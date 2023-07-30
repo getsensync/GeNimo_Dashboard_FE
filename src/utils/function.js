@@ -75,6 +75,19 @@ export const toFormatted = (number, isMoney = false) => {
   }
 }
 
+export const toCapitalCase = (string) => {
+  // if undefined or null
+  if (!string || string === '') {
+    return '';
+  } else {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  }
+}
+
+export const toCapitalCaseAll = (string) => {
+  return string.split(' ').map((word) => toCapitalCase(word)).join(' ');
+}
+
 export const getInitials = (name = '') => name
   .replace(/\s+/, ' ')
   .split(' ')

@@ -80,7 +80,8 @@ export const AuthProvider = (props) => {
       username: null,
       email: null,
       role: null,
-      name: null,
+      firstName: null,
+      lastName: null,
       phone: null,
       gender: null,
     }
@@ -133,8 +134,8 @@ export const AuthProvider = (props) => {
       username: userExist.username,
       email: userExist.email,
       role: userExist.role,
-      // name is first_name + last_name with space
-      name: `${userExist.first_name || ''} ${userExist.last_name || ''}`,
+      firstName: userExist.first_name,
+      lastName: userExist.last_name,
       phone: userExist.phone,
       gender: userExist.gender,
     };
