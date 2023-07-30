@@ -1,7 +1,6 @@
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import PropTypes from 'prop-types';
-import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
 import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import {
   Box,
@@ -15,7 +14,7 @@ import {
 } from '@mui/material';
 import { Logo } from 'src/components/logo';
 import { Scrollbar } from 'src/components/scrollbar';
-import { items } from './config';
+import { sideNav_config } from 'src/utils/side-nav-config';
 import { SideNavItem } from './side-nav-item';
 
 import { useAuthContext } from 'src/contexts/auth-context'
@@ -109,7 +108,7 @@ export const SideNav = (props) => {
               m: 0
             }}
           >
-            {items.map((item) => {
+            {sideNav_config.map((item) => {
               const active = item.path ? (pathname === item.path) : false;
               // check if user.role is in item.roles
               if (user && item.roles && !item.roles.includes(user.role)) {

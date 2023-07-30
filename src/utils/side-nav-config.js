@@ -1,5 +1,4 @@
 import ChartBarIcon from '@heroicons/react/24/solid/ChartBarIcon';
-import CogIcon from '@heroicons/react/24/solid/CogIcon';
 import LockClosedIcon from '@heroicons/react/24/solid/LockClosedIcon';
 import WrenchScrewdriverIcon from '@heroicons/react/24/solid/WrenchScrewdriverIcon';
 import BookOpenIcon from '@heroicons/react/24/solid/BookOpenIcon';
@@ -9,9 +8,8 @@ import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import MapIcon from '@heroicons/react/24/solid/MapIcon';
 import { SvgIcon } from '@mui/material';
-import ShoppingBagIcon from '@heroicons/react/24/solid/ShoppingBagIcon';
 
-export const items = [
+export const sideNav_config = [
   {
     title: 'Overview',
     path: '/',
@@ -69,16 +67,6 @@ export const items = [
     icon: (
       <SvgIcon fontSize="small">
         <UserIcon />
-      </SvgIcon>
-    )
-  },
-  {
-    title: 'Settings',
-    path: '/settings',
-    roles:[],
-    icon: (
-      <SvgIcon fontSize="small">
-        <CogIcon />
       </SvgIcon>
     )
   },
