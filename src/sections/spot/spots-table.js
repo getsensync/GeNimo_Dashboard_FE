@@ -14,8 +14,12 @@ import {
   TableRow,
   Typography,
   IconButton,
+  SvgIcon,
 } from '@mui/material';
-import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/icons-material';
+import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
+import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
+import PlayIcon from '@heroicons/react/24/solid/PlayIcon';
+import StopIcon from '@heroicons/react/24/solid/StopIcon';
 import { Scrollbar } from 'src/components/scrollbar';
 
 import { toFullString, getInitials } from 'src/utils/function';
@@ -150,7 +154,9 @@ export const SpotsTable = (props) => {
                             color="success"
                             onClick={() => handleActivationClick(item.spotid, item.isactive)}
                           >
-                            <PlayArrow />
+                            <SvgIcon fontSize="small">
+                              <PlayIcon />
+                            </SvgIcon>
                           </IconButton>
                         )}
                         {item.isactive && (
@@ -159,7 +165,9 @@ export const SpotsTable = (props) => {
                             color="error"
                             onClick={() => handleActivationClick(item.spotid, item.isactive)}
                           >
-                            <Stop />
+                            <SvgIcon fontSize="small">
+                              <StopIcon />
+                            </SvgIcon>
                           </IconButton>
                         )}
                         <IconButton
@@ -167,13 +175,17 @@ export const SpotsTable = (props) => {
                           color='warning'
                           onClick={() => handleEditClick(item.spotid)}
                         >
-                          <EditIcon />
+                          <SvgIcon fontSize="small">
+                            <PencilIcon />
+                          </SvgIcon>
                         </IconButton>
                         <IconButton
                           aria-label="delete"
                           onClick={() => handleDeleteClick(item.spotid)}
                         >
-                          <DeleteIcon />
+                          <SvgIcon fontSize="small">
+                            <TrashIcon />
+                          </SvgIcon>
                         </IconButton>
                       </Stack>
                     </TableCell>

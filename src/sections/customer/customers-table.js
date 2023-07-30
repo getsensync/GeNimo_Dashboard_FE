@@ -13,9 +13,13 @@ import {
   TableRow,
   Typography,
   IconButton,
+  SvgIcon,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { Edit as EditIcon, Delete as DeleteIcon, PlayArrow, Stop } from '@mui/icons-material';
+import PencilIcon from '@heroicons/react/24/solid/PencilIcon';
+import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
+import PlayIcon from '@heroicons/react/24/solid/PlayIcon';
+import StopIcon from '@heroicons/react/24/solid/StopIcon';
 import { Scrollbar } from 'src/components/scrollbar';
 
 import { toFullString, toDateString, toDateStrip, getInitials } from 'src/utils/function';
@@ -171,7 +175,9 @@ export const CustomersTable = (props) => {
                             color="success"
                             onClick={() => handleActivationClick(item.customerid, item.isactive)}
                           >
-                            <PlayArrow />
+                            <SvgIcon fontSize="small">
+                              <PlayIcon />
+                            </SvgIcon>
                           </IconButton>
                         )}
                         {item.isactive && (
@@ -180,7 +186,9 @@ export const CustomersTable = (props) => {
                             color="error"
                             onClick={() => handleActivationClick(item.customerid, item.isactive)}
                           >
-                            <Stop />
+                            <SvgIcon fontSize="small">
+                              <StopIcon />
+                            </SvgIcon>
                           </IconButton>
                         )}
                         <IconButton
@@ -188,13 +196,17 @@ export const CustomersTable = (props) => {
                           color='warning'
                           onClick={() => handleEditClick(item.customerid)}
                         >
-                          <EditIcon />
+                          <SvgIcon fontSize="small">
+                            <PencilIcon />
+                          </SvgIcon>
                         </IconButton>
                         <IconButton
                           aria-label="delete"
                           onClick={() => handleDeleteClick(item.customerid)}
                         >
-                          <DeleteIcon />
+                          <SvgIcon fontSize="small">
+                            <TrashIcon />
+                          </SvgIcon>
                         </IconButton>
                       </Stack>
                     </TableCell>
