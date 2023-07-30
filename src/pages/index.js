@@ -88,7 +88,7 @@ const RawPage = () => (
           <Grid
             xs={12}
           >
-            <OverviewTraffic
+            <OverviewLatestLogs
               sx={{ height: '100%' }}
             />
           </Grid>
@@ -97,7 +97,7 @@ const RawPage = () => (
           <Grid
             xs={12}
           >
-            <OverviewLatestLogs              
+            <OverviewTraffic
               sx={{ height: '100%' }}
             />
           </Grid>

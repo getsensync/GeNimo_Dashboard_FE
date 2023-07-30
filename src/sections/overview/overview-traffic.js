@@ -6,6 +6,7 @@ import {
   CardHeader,
   Grid,
   Typography,
+  Divider,
   useTheme
 } from '@mui/material';
 import React, { useState } from 'react';
@@ -49,7 +50,8 @@ export const OverviewTraffic = (props) => {
             xs={12}
           >
             <Chart
-              height={400}
+            // if in desktop view, set height to 400, in mobile view, set height to 300
+              height={window.innerWidth <= 600 ? 590 : 400}
               options={chartOptions}
               series={chartSeries}
               type="donut"
@@ -57,6 +59,10 @@ export const OverviewTraffic = (props) => {
             />
           </Grid>
         </Grid>
+        <Divider
+          variant='middle'
+          sx={{ mt: 2 }}
+        />
         {/* use grid and grid item in center of grid container row */}
         <Grid
           container
@@ -120,7 +126,8 @@ const useChartOptions = (labels) => {
         colors: theme.palette.text.primary
       },
       show: true,
-      position: 'right',
+      // if in mobile view, position legend on bottom side, else right side
+      position: window.innerWidth <= 600 ? 'bottom' : 'right',
       fontSize: '16px',
       fontWeight: 600,
       itemMargin: {
