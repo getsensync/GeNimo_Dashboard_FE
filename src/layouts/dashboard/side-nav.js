@@ -8,7 +8,6 @@ import {
   Divider,
   Drawer,
   Stack,
-  SvgIcon,
   Typography,
   useMediaQuery
 } from '@mui/material';
@@ -46,22 +45,11 @@ export const SideNav = (props) => {
       >
         <Box sx={{ p: 3 }}>
           <Box
-            component={NextLink}
-            href="/"
-            sx={{
-              display: 'inline-flex',
-              height: 32,
-              width: 32
-            }}
-          >
-            <Logo />
-          </Box>
-          <Box
             sx={{
               alignItems: 'center',
               backgroundColor: 'rgba(255, 255, 255, 0.04)',
               borderRadius: 1,
-              cursor: 'pointer',
+              pointerEvents: 'none',
               display: 'flex',
               justifyContent: 'space-between',
               mt: 2,
@@ -82,12 +70,17 @@ export const SideNav = (props) => {
                 Production
               </Typography>
             </div>
-            <SvgIcon
-              fontSize="small"
-              sx={{ color: 'neutral.500' }}
+            <Box
+              component={NextLink}
+              href="/"
+              sx={{
+                display: 'inline-flex',
+                height: 32,
+                width: 32
+              }}
             >
-              <ChevronUpDownIcon />
-            </SvgIcon>
+              <Logo />
+            </Box>
           </Box>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
@@ -129,7 +122,9 @@ export const SideNav = (props) => {
           </Stack>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
-        <Box
+        
+        {/* Change with Genimo Logo */}
+        {/* <Box
           sx={{
             px: 2,
             py: 3
@@ -163,7 +158,7 @@ export const SideNav = (props) => {
               src="/assets/devias-kit-pro.png"
             />
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Scrollbar>
   );

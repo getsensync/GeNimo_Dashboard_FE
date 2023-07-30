@@ -137,7 +137,7 @@ const RawPage = () => {
               spacing={4}
             >
               <Typography variant="h4">
-                Activities
+                Activity Logs 
               </Typography>
               <Button
                 color="secondary"
