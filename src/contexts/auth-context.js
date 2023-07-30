@@ -112,28 +112,6 @@ export const AuthProvider = (props) => {
     []
   );
 
-  const skip = () => {
-    const loggedUser = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Skip',
-      email: 'Skip@email.com',
-      role: 'skip',
-    };
-
-    try {
-      window.sessionStorage.setItem('authenticated', 'true');
-      window.sessionStorage.setItem('loggedUser', JSON.stringify(loggedUser));
-    } catch (err) {
-      console.error(err);
-    }
-
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: loggedUser
-    });
-  };
-
   const signIn = async (email, password) => {
     const response = await axios.get(`${serverUrl}/credentials/certain/${email}`);
     const userAuth = response.data;
@@ -204,7 +182,6 @@ export const AuthProvider = (props) => {
     <AuthContext.Provider
       value={{
         ...state,
-        skip,
         signIn,
         signUp,
         signOut

@@ -7,10 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
-  Alert,
   Box,
   Button,
-  FormHelperText,
   Link,
   Stack,
   Tab,
@@ -65,14 +63,6 @@ const Page = () => {
       setMethod(value);
     },
     []
-  );
-
-  const handleSkip = useCallback(
-    () => {
-      auth.skip();
-      router.push('/');
-    },
-    [auth, router]
   );
 
   const [showPassword, setShowPassword] = useState(false);
@@ -185,9 +175,6 @@ const Page = () => {
                   }}
                   />
                 </Stack>
-                <FormHelperText sx={{ mt: 1 }}>
-                  Optionally you can skip.
-                </FormHelperText>
                 {formik.errors.submit && (
                   <Typography
                     color="error"
@@ -206,23 +193,6 @@ const Page = () => {
                 >
                   Continue
                 </Button>
-                <Button
-                  fullWidth
-                  size="large"
-                  sx={{ mt: 3 }}
-                  onClick={handleSkip}
-                >
-                  Skip authentication
-                </Button>
-                <Alert
-                  color="primary"
-                  severity="info"
-                  sx={{ mt: 3 }}
-                >
-                  <div>
-                    You can use <b>admin@example.com</b> and password <b>ad</b>
-                  </div>
-                </Alert>
               </form>
             )}
             {method === 'phoneNumber' && (
