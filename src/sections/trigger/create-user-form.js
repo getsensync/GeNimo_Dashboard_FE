@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const CreateUserForm = (props) => {
   const {
@@ -48,9 +49,14 @@ export const CreateUserForm = (props) => {
           .post(url, {user_uuid: uuid})
           .then((res) => {
             console.log(res.data);
+            if (res.data.status === "success") {
+              toast.success(`Bracelet: UUID ${uuid} Granted`);
+              toast.success('Trigger Create User Success');
+            }
           })
           .catch((error) => {
             console.log(error);
+            toast.error('Trigger Create User Failed');
           });
         // ...............................................
         helpers.setStatus({ success: true });

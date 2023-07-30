@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const HighlightSpan = ({color, text}) => (
   <span
@@ -63,9 +64,14 @@ export const TopUpForm = (props) => {
           .post(url, {amount: amount})
           .then((res) => {
             console.log(res.data);
+            if (res.data.status === "success") {
+              toast.success(`Bracelet: Top Up ${amount} K`);
+              toast.success(`Top Up Success`);
+            }
           })
           .catch((error) => {
             console.log(error);
+            toast.error('Top Up Failed');
           });
         // ...............................................
         helpers.setStatus({ success: true });
