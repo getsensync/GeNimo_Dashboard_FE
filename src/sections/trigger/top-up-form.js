@@ -16,6 +16,17 @@ import {
 
 import axios from 'axios';
 
+const HighlightSpan = ({color, text}) => (
+  <span
+    style={{
+      color: color,
+      fontWeight: 'bold',
+    }}
+  >
+    {text}
+  </span>
+);
+
 export const TopUpForm = (props) => {
   const {
     isFormOpen,
@@ -125,8 +136,15 @@ export const TopUpForm = (props) => {
                 variant="body2"
                 align="center"
               >
-                Please fill in the amount you want to top up <br/> Make sure it is a positive
+                Please fill in the amount in <HighlightSpan color='blue' text='thousand' /> (<HighlightSpan color='red' text='K' />) <HighlightSpan color='blue' text='multiplication' />.
               </Typography>
+              <Typography
+                variant="body2"
+                align="center"
+              >
+                <HighlightSpan color='green' text='Example' /> : Amount = <HighlightSpan color='blue' text='100' /> <HighlightSpan color='black' text='&raquo;' /> Rp.<HighlightSpan color='red' text='100' />.000.
+              </Typography>
+
             </Stack>
             <form
               noValidate

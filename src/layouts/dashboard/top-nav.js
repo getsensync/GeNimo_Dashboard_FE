@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
-import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import {
   Avatar,
   Badge,
@@ -16,6 +15,11 @@ import {
 import { alpha } from '@mui/material/styles';
 import { usePopover } from 'src/hooks/use-popover';
 import { AccountPopover } from './account-popover';
+import { useAuth } from 'src/hooks/use-auth';
+
+// source path : assets of profile images
+const maleAvatar = '/assets/avatars/avatar-marcus-finn.png';
+const femaleAvatar = '/assets/avatars/avatar-neha-punita.png';
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -24,6 +28,7 @@ export const TopNav = (props) => {
   const { onNavOpen } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const accountPopover = usePopover();
+  const { user } = useAuth();
 
   return (
     <>
@@ -65,13 +70,6 @@ export const TopNav = (props) => {
                 </SvgIcon>
               </IconButton>
             )}
-            {/* <Tooltip title="Search">
-              <IconButton>
-                <SvgIcon fontSize="small">
-                  <MagnifyingGlassIcon />
-                </SvgIcon>
-              </IconButton>
-            </Tooltip> */}
           </Stack>
           <Stack
             alignItems="center"
@@ -106,7 +104,7 @@ export const TopNav = (props) => {
                 height: 40,
                 width: 40
               }}
-              src="/assets/avatars/avatar-anika-visser.png"
+              src={user?.gender === "male" ? maleAvatar : femaleAvatar}
             />
           </Stack>
         </Stack>

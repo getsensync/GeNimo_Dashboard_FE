@@ -77,10 +77,12 @@ export const AuthProvider = (props) => {
     let isAuthenticated = false;
     let loggedUser = {
       id: null,
-      avatar: null,
-      name: null,
+      username: null,
       email: null,
       role: null,
+      name: null,
+      phone: null,
+      gender: null,
     }
 
     try {
@@ -124,14 +126,17 @@ export const AuthProvider = (props) => {
     const samePassword = userExist && userExist.password === password;
     if (!samePassword) {
       throw new Error('Incorrect password, please re-entry correct password.');
-    } 
+    }
     
     const loggedUser = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: userExist.username,
+      id: userExist.id,
+      username: userExist.username,
       email: userExist.email,
       role: userExist.role,
+      // name is first_name + last_name with space
+      name: `${userExist.first_name || ''} ${userExist.last_name || ''}`,
+      phone: userExist.phone,
+      gender: userExist.gender,
     };
 
     const anotherResponse = await axios.patch(`${serverUrl}/credentials/last_login/${userExist.username}`);

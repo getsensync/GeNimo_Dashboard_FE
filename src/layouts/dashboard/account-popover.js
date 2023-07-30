@@ -42,6 +42,12 @@ export const AccountPopover = (props) => {
           Account
         </Typography>
         <Typography
+          color="text.primary"
+          variant="subtitle1"
+        >
+          {auth.user?.username}
+        </Typography>
+        <Typography
           color="text.secondary"
           variant="body2"
         >
