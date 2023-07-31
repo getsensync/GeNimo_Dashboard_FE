@@ -31,7 +31,7 @@ const RawPage = () => {
 
   // Inner States & Logics
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [data, setData] = useState([]);
   const [count, setCount] = useState(data.length); // Total Logs
   const [query, setQuery] = useState(''); // Search query
@@ -157,6 +157,7 @@ const RawPage = () => {
               </Button>
             </Stack>
             <LogsSearch
+              setPage={setPage}
               query={query}
               setQuery={setQuery}
               type={type}

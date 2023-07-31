@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from '@mui/material';
 
-export const SpotsSearch = ({query, setQuery, active, setActive}) => {
+export const SpotsSearch = ({setPage, query, setQuery, active, setActive}) => {
 
   return (
     <Card sx={{ p: 1 }}>
@@ -31,7 +31,10 @@ export const SpotsSearch = ({query, setQuery, active, setActive}) => {
             fullWidth
             placeholder="Search spot"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              setQuery(event.target.value)
+              setPage(0);
+            }}
             startAdornment={(
               <InputAdornment position="start">
                 <SvgIcon
@@ -58,7 +61,10 @@ export const SpotsSearch = ({query, setQuery, active, setActive}) => {
               labelId="active"
               label="Active"
               name="active"
-              onChange={(event) => setActive(event.target.value)}
+              onChange={(event) => {
+                setActive(event.target.value)
+                setPage(0);
+              }}
               value={active}
             >
               <MenuItem value="All">All</MenuItem>

@@ -220,6 +220,7 @@ const RawPage = () => {
             )}
             {/* Search */}
             <CustomersSearch
+              setPage={setPage}
               query={query}
               setQuery={setQuery}
               type={type}

@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from '@mui/material';
 
-export const CustomersSearch = ({query, setQuery, type, setType, active, setActive}) => {
+export const CustomersSearch = ({setPage, query, setQuery, type, setType, active, setActive}) => {
 
   return (
     <Card sx={{ p: 1 }}>
@@ -31,7 +31,10 @@ export const CustomersSearch = ({query, setQuery, type, setType, active, setActi
             fullWidth
             placeholder="Search customer"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setPage(0);
+            }}
             startAdornment={(
               <InputAdornment position="start">
                 <SvgIcon
@@ -58,7 +61,10 @@ export const CustomersSearch = ({query, setQuery, type, setType, active, setActi
               labelId="type"
               label="Type"
               name="type"
-              onChange={(event) => setType(event.target.value)}
+              onChange={(event) => {
+                setType(event.target.value);
+                setPage(0);
+              }}
               value={type}
             >
               <MenuItem value="All">All</MenuItem>
@@ -82,7 +88,10 @@ export const CustomersSearch = ({query, setQuery, type, setType, active, setActi
               labelId="active"
               label="Active"
               name="active"
-              onChange={(event) => setActive(event.target.value)}
+              onChange={(event) => {
+                setActive(event.target.value);
+                setPage(0);
+              }}
               value={active}
             >
               <MenuItem value="All">All</MenuItem>

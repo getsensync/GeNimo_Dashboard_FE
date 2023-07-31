@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from '@mui/material';
 
-export const LogsSearch = ({query, setQuery, type, setType}) => {
+export const LogsSearch = ({setPage, query, setQuery, type, setType}) => {
 
   return (
     <Card sx={{ p: 1 }}>
@@ -31,7 +31,10 @@ export const LogsSearch = ({query, setQuery, type, setType}) => {
             fullWidth
             placeholder="Search activity"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              setQuery(event.target.value)
+              setPage(0);
+            }}
             startAdornment={(
               <InputAdornment position="start">
                 <SvgIcon
@@ -58,7 +61,10 @@ export const LogsSearch = ({query, setQuery, type, setType}) => {
               labelId="type"
               label="Type"
               name="type"
-              onChange={(event) => setType(event.target.value)}
+              onChange={(event) => {
+                setType(event.target.value)
+                setPage(0);
+              }}
               value={type}
             >
               <MenuItem value="All">All</MenuItem>

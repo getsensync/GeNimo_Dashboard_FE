@@ -198,6 +198,7 @@ const RawPage = () => {
             )}
             {/* Search */}
             <SpotsSearch
+              setPage={setPage}
               query={query}
               setQuery={setQuery}
               active={active}
