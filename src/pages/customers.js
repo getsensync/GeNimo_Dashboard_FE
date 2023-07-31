@@ -27,6 +27,7 @@ const RawPage = () => {
   const handleRowsPerPageChange = useCallback(
     (event) => {
       setRowsPerPage(event.target.value);
+      setPage(0);
     },
     []
   );
