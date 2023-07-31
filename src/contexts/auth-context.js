@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useReducer, useRef } from 'react'
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { serverUrl } from 'src/utils/backend-url';
+import bcrypt from 'bcryptjs';
 
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
@@ -79,6 +80,7 @@ export const AuthProvider = (props) => {
       id: null,
       username: null,
       email: null,
+      password: null,
       role: null,
       firstName: null,
       lastName: null,
@@ -124,7 +126,7 @@ export const AuthProvider = (props) => {
     }
     
     const userExist = userAuth[0];
-    const samePassword = userExist && userExist.password === password;
+    const samePassword = userExist && bcrypt.compareSync(password, userExist.password);
     if (!samePassword) {
       throw new Error('Incorrect password, please re-entry correct password.');
     }
@@ -133,6 +135,7 @@ export const AuthProvider = (props) => {
       id: userExist.id,
       username: userExist.username,
       email: userExist.email,
+      password: userExist.password,
       role: userExist.role,
       firstName: userExist.first_name,
       lastName: userExist.last_name,

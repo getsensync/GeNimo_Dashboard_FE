@@ -22,6 +22,7 @@ import * as Yup from 'yup';
 import { serverUrl } from 'src/utils/backend-url';
 import { useAuth } from 'src/hooks/use-auth';
 import { toast } from 'react-toastify';
+import bcrypt from 'bcryptjs';
 
 export const UpdatePassword = () => {
   const { user } = useAuth();
@@ -51,24 +52,29 @@ export const UpdatePassword = () => {
         .required('Confirm password is required')
     }),
     onSubmit: async (values, helpers) => {
-      try {
-        const data = {
-          username: user?.username,
-          old_password: values.oldPassword,
-          new_password: values.password,
-        };
-        axios.patch(`${serverUrl}/credentials/changePassword`, data)
-          .then((response) => {
-            toast.success('Password changed successfully!');
-          }
-          ).catch((error) => {
-            toast.error('Old password is incorrect. Failed to change password!');
-          });
-      } catch (err) {
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-        toast.error('Failed to change password!');
+      const hashedPassword = bcrypt.hashSync(values.password, 10);
+      const sameOld = bcrypt.compareSync(values.oldPassword, user?.password);
+      if (sameOld) {
+        try {
+          const data = {
+            username: user?.username,
+            new_password: hashedPassword,
+          };
+          axios.patch(`${serverUrl}/credentials/changePassword`, data)
+            .then((response) => {
+              toast.success('Password changed successfully!');
+            }
+            ).catch((error) => {
+              console.log(error);
+            });
+        } catch (err) {
+          helpers.setStatus({ success: false });
+          helpers.setErrors({ submit: err.message });
+          helpers.setSubmitting(false);
+          toast.error('Failed to change password!');
+        }
+      } else {
+        toast.error(<div>Old password is incorrect! <br/> Failed to change password!</div>);
       }
     }
   });

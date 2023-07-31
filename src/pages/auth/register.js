@@ -26,6 +26,7 @@ import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import bcrypt from 'bcryptjs';
 
 const Page = () => {
   const router = useRouter();
@@ -75,8 +76,9 @@ const Page = () => {
         .required('Gender is required')
     }),
     onSubmit: async (values, helpers) => {
+      const hashedPassword = bcrypt.hashSync(values.password, 10);
       try {
-        await auth.signUp(values.username, values.email, values.password, "operator", values.firstName, values.lastName, values.gender);
+        await auth.signUp(values.username, values.email, hashedPassword, "operator", values.firstName, values.lastName, values.gender);
         router.push('/auth/login');
         toast.success('Register success');
       } catch (err) {

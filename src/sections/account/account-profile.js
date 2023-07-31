@@ -17,7 +17,7 @@ import { toCapitalCase } from 'src/utils/function';
 
 export const AccountProfile = () => {
   const { user } = useAuth();
-  const name = (user.firstName || user.lastName) ?
+  const name = (user?.firstName || user?.lastName) ?
     `${toCapitalCase(user?.firstName)} ${toCapitalCase(user?.lastName)}` : '';
 
   return (
