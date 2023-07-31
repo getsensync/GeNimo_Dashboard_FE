@@ -11,6 +11,7 @@ import { applyPagination } from 'src/utils/apply-pagination';
 import { toFullString, toDateString } from 'src/utils/function';
 
 import axios from "axios";
+import { toast } from 'react-toastify';
 import { serverUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
 
@@ -136,6 +137,15 @@ const RawPage = () => {
     });
   };
 
+  const refresh = () => {
+    setQuery('');
+    setType('All');
+    setActive('All');
+    setPage(0);
+    fetchCustomers();
+    toast.success('Customers Refreshed');
+  };
+
   useEffect(() => {
     fetchCustomers();
   }, []);
@@ -179,7 +189,7 @@ const RawPage = () => {
                       </SvgIcon>
                     )}
                     variant="contained"
-                    onClick={fetchCustomers}
+                    onClick={refresh}
                   >
                     Refresh
                   </Button>

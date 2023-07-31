@@ -9,6 +9,7 @@ import { applyPagination } from 'src/utils/apply-pagination';
 import { toFullString } from 'src/utils/function';
 
 import axios from "axios";
+import { toast } from 'react-toastify';
 import { serverUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
 
@@ -101,7 +102,9 @@ const RawPage = () => {
   const refresh = () => {
     setQuery('');
     setType('All');
+    setPage(0);
     fetchLogs();
+    toast.success('Activity Logs Refreshed');
   };
 
   useEffect(() => {

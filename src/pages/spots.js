@@ -11,6 +11,7 @@ import { applyPagination } from 'src/utils/apply-pagination';
 import { toFullString } from 'src/utils/function';
 
 import axios from "axios";
+import { toast } from 'react-toastify';
 import { serverUrl } from 'src/utils/backend-url';
 import { Authorization } from 'src/author/authorization';
 
@@ -115,6 +116,13 @@ const RawPage = () => {
     });
   };
 
+  const refresh = () => {
+    setQuery('');
+    setActive('All');
+    setPage(0);
+    fetchSpots();
+    toast.success('Spots Refreshed');
+  };
 
   useEffect(() => {
     fetchSpots();
@@ -159,7 +167,7 @@ const RawPage = () => {
                       </SvgIcon>
                     )}
                     variant="contained"
-                    onClick={fetchSpots}
+                    onClick={refresh}
                   >
                     Refresh
                   </Button>
