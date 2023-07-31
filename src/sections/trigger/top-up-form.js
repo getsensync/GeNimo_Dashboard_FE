@@ -16,17 +16,7 @@ import {
 
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
-const HighlightSpan = ({color, text}) => (
-  <span
-    style={{
-      color: color,
-      fontWeight: 'bold',
-    }}
-  >
-    {text}
-  </span>
-);
+import { HighlightSpan } from 'src/components/highlighted-span';
 
 export const TopUpForm = (props) => {
   const {

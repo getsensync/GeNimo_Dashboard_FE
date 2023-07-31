@@ -10,6 +10,7 @@ import { IPSelector } from 'src/sections/trigger/trigger-ip-selector';
 
 import { Authorization } from 'src/author/authorization';
 import { readerUrl } from 'src/utils/backend-url';
+import { HighlightSpan } from 'src/components/highlighted-span';
 
 const changeUrl = (url, ip) => {
   // the url is a string : http://localhost:8080/commandTrigger
@@ -71,7 +72,13 @@ const RawPage = () => {
                 variant="h6"
                 align='center'
               >
-                Trigger a reader to create a new user or top up
+                || Top Up || Create User ||
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                align='center'
+              >
+                Ensure that the <HighlightSpan color='blue' text='IP address' /> is <HighlightSpan color='red' text='correct' /> and the <HighlightSpan color='green' text='Reader' /> is <HighlightSpan color='red' text='connected' /> to network.
               </Typography>
               <Stack
                 direction="row"
