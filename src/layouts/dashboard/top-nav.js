@@ -90,6 +90,7 @@ export const TopNav = (props) => {
                 </IconButton>
               </Box>
             </Tooltip>
+            <Tooltip title="Account">
             <Avatar
               onClick={accountPopover.handleOpen}
               ref={accountPopover.anchorRef}
@@ -100,6 +101,7 @@ export const TopNav = (props) => {
               }}
               src={user?.gender === "male" ? maleAvatar : femaleAvatar}
             />
+            </Tooltip>
           </Stack>
         </Stack>
       </Box>

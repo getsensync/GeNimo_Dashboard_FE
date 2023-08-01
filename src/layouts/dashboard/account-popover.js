@@ -6,6 +6,7 @@ import { useAuth } from 'src/hooks/use-auth';
 
 import { toast } from 'react-toastify';
 import { toCapitalCase } from 'src/utils/function';
+import { HighlightSpan } from 'src/components/highlighted-span';
 
 export const AccountPopover = (props) => {
   const { anchorEl, onClose, open } = props;
@@ -70,7 +71,7 @@ export const AccountPopover = (props) => {
         }}
       >
         <MenuItem onClick={handleSignOut}>
-          Sign out
+          <HighlightSpan color="red" text='Sign Out' style={{letterSpacing: '0.6px'}}/>
         </MenuItem>
       </MenuList>
     </Popover>
