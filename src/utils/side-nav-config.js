@@ -42,7 +42,7 @@ export const sideNav_config = [
     )
   },
   {
-    title: 'Logs',
+    title: 'Activity Logs',
     path: '/logs',
     roles: ['admin', 'operator'],
     icon: (
@@ -62,7 +62,7 @@ export const sideNav_config = [
     )
   },
   {
-    title: 'Requests',
+    title: 'Operator Requests',
     path: '/requests',
     roles: ['admin'],
     icon: (

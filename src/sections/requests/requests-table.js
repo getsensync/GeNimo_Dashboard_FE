@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
 import CheckCircleIcon from '@heroicons/react/24/solid/CheckCircleIcon';
+import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import { toFullString, toCapitalCase, getInitials } from 'src/utils/function';
 
 import axios from 'axios';
@@ -47,11 +48,26 @@ export const RequestsTable = (props) => {
       .then((response) => {
         console.log(response);
         fetchRequests();
-        toast.success(<div>Approved request for <b>{username}</b>!</div>);
+        toast.success(<div><span style={{color: "green"}}>Approved</span> request for <b>{username}</b>!</div>);
       })
       .catch((error) => {
         console.log(error);
         toast.error('Error approving request!');
+      });
+  };
+
+  const handleRejectClick = (userId, username) => {
+    const url = serverUrl + "/requests/reject/" + userId;
+    axios
+      .delete(url)
+      .then((response) => {
+        console.log(response);
+        fetchRequests();
+        toast.success(<div><span style={{color: "red"}}>Rejected</span> request for <b>{username}</b>!</div>);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error('Error rejecting request!');
       });
   };
 
@@ -107,16 +123,33 @@ export const RequestsTable = (props) => {
                       {toFullString(item.request_timestamp)}
                     </TableCell>
                     <TableCell align='center'>
-                      <IconButton
-                        aria-label="activate"
-                        color="success"
-                        onClick={() => handleApproveClick(item.id, item.username)}
-                        sx={{ p: 0 }}
+                      <Stack
+                        alignItems="center"
+                        justifyContent="center"
+                        direction="row"
+                        spacing={2}
                       >
-                        <SvgIcon fontSize="large">
-                          <CheckCircleIcon />
-                        </SvgIcon>
-                      </IconButton>
+                        <IconButton
+                          aria-label="approve"
+                          color="success"
+                          onClick={() => handleApproveClick(item.id, item.username)}
+                          sx={{ p: 0 }}
+                        >
+                          <SvgIcon fontSize="large">
+                            <CheckCircleIcon />
+                          </SvgIcon>
+                        </IconButton>
+                        <IconButton
+                          aria-label="reject"
+                          color="error"
+                          onClick={() => handleRejectClick(item.id, item.username)}
+                          sx={{ p: 0 }}
+                        >
+                          <SvgIcon fontSize="large">
+                            <XCircleIcon />
+                          </SvgIcon>
+                        </IconButton>
+                      </Stack>
                     </TableCell>
                   </TableRow>
                 );
