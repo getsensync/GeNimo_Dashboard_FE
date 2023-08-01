@@ -7,6 +7,7 @@ import UserPlusIcon from '@heroicons/react/24/solid/UserPlusIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 import MapIcon from '@heroicons/react/24/solid/MapIcon';
+import ArrowDownOnSquareStackIcon from '@heroicons/react/24/solid/ArrowDownOnSquareStackIcon';
 import { SvgIcon } from '@mui/material';
 
 export const sideNav_config = [
@@ -61,43 +62,53 @@ export const sideNav_config = [
     )
   },
   {
-    title: 'Account',
-    path: '/account',
-    roles:[],
+    title: 'Requests',
+    path: '/requests',
+    roles: ['admin'],
     icon: (
       <SvgIcon fontSize="small">
-        <UserIcon />
+        <ArrowDownOnSquareStackIcon />
       </SvgIcon>
     )
   },
-  {
-    title: 'Login',
-    path: '/auth/login',
-    roles:[],
-    icon: (
-      <SvgIcon fontSize="small">
-        <LockClosedIcon />
-      </SvgIcon>
-    )
-  },
-  {
-    title: 'Register',
-    path: '/auth/register',
-    roles:[],
-    icon: (
-      <SvgIcon fontSize="small">
-        <UserPlusIcon />
-      </SvgIcon>
-    )
-  },
-  {
-    title: 'Error',
-    path: '/404',
-    roles:[],
-    icon: (
-      <SvgIcon fontSize="small">
-        <XCircleIcon />
-      </SvgIcon>
-    )
-  }
+  // {
+  //   title: 'Account',
+  //   path: '/account',
+  //   roles:[],
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <UserIcon />
+  //     </SvgIcon>
+  //   )
+  // },
+  // {
+  //   title: 'Login',
+  //   path: '/auth/login',
+  //   roles:[],
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <LockClosedIcon />
+  //     </SvgIcon>
+  //   )
+  // },
+  // {
+  //   title: 'Register',
+  //   path: '/auth/register',
+  //   roles:[],
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <UserPlusIcon />
+  //     </SvgIcon>
+  //   )
+  // },
+  // {
+  //   title: 'Error',
+  //   path: '/404',
+  //   roles:[],
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <XCircleIcon />
+  //     </SvgIcon>
+  //   )
+  // }
 ];

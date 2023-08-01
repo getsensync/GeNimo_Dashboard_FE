@@ -13,16 +13,37 @@ import { useAuth } from 'src/hooks/use-auth';
 const maleAvatar = '/assets/avatars/avatar-marcus-finn.png';
 const femaleAvatar = '/assets/avatars/avatar-neha-punita.png';
 
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import { toCapitalCase } from 'src/utils/function';
+import { HighlightSpan } from 'src/components/highlighted-span';
+import { serverUrl } from 'src/utils/backend-url';
 
 export const AccountProfile = () => {
   const { user } = useAuth();
   const name = (user?.firstName || user?.lastName) ?
     `${toCapitalCase(user?.firstName)} ${toCapitalCase(user?.lastName)}` : '';
 
+  const requestToBeAdmin = () => {
+    axios
+      .post(`${serverUrl}/requests/update`, { userId: user?.id })
+      .then((res) => {
+        console.log(res.data);
+        toast.success(<div>Request Sent Successfully <br/> Tell Admin to Approve it!</div>);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error('Error sending request!');
+      });
+  };
+
   return (
     <Card>
-      <CardContent>
+      <CardContent
+        sx={{
+          p: 3.5
+        }}
+      >
         <Box
           sx={{
             alignItems: 'center',
@@ -67,13 +88,22 @@ export const AccountProfile = () => {
         </Box>
       </CardContent>
       <Divider />
-      <CardActions>
-        <Button
-          fullWidth
-          variant="text"
-          disabled
+      <CardActions
+        sx={{
+          justifyContent: 'center',
+        }}
+      >
+        <Button          
+          variant="contained"
+          disabled={user?.role === 'admin'}
+          onClick={requestToBeAdmin}
         >
-          Upload picture
+          <Typography
+            variant="subtitle"
+            sx={{ letterSpacing: 0.6 }}
+          >
+            Request to be <HighlightSpan color={user?.role === 'admin' ? "#bbb" : "yellow"} text="Admin" />
+          </Typography>
         </Button>
       </CardActions>
     </Card>
