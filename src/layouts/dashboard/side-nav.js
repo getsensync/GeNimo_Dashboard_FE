@@ -43,48 +43,35 @@ export const SideNav = (props) => {
           height: '100%'
         }}
       >
-        <Box sx={{ p: 3 }}>
+        <Box
+          component={NextLink}
+          href="/"
+          sx={{
+            alignItems: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.04)',
+            borderRadius: 1,
+            display: 'flex',
+            justifyContent: 'space-between',
+            m: 3,
+            mt: 5,
+            p: '12px',
+          }}
+        >
+          <img
+            alt="Genimo Logo"
+            src="/assets/genimo.svg"
+            style={{
+              width: 160
+            }}
+          />
           <Box
             sx={{
-              alignItems: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
-              borderRadius: 1,
-              display: 'flex',
-              justifyContent: 'space-between',
-              mt: 2,
-              p: '12px'
+              display: 'inline-flex',
+              height: 40,
+              width: 40
             }}
           >
-            <Box
-              sx={{
-                pointerEvents: 'none',
-                userSelect: 'none'
-              }}
-            >
-              <Typography
-                color="inherit"
-                variant="subtitle1"
-              >
-                GeNimo
-              </Typography>
-              <Typography
-                color="neutral.400"
-                variant="body2"
-              >
-                Production
-              </Typography>
-            </Box>
-            <Box
-              component={NextLink}
-              href="/"
-              sx={{
-                display: 'inline-flex',
-                height: 32,
-                width: 32
-              }}
-            >
-              <Logo />
-            </Box>
+            <Logo />
           </Box>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
