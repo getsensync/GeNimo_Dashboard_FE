@@ -28,9 +28,9 @@ import { toFullString, getInitials } from 'src/utils/function';
 import axios from 'axios';
 
 const statusMap = {
-  pending: 'warning',
-  delivered: 'success',
-  refunded: 'error'
+  D: 'info',
+  K: 'success',
+  C: 'primary'
 };
 
 export const OverviewLatestLogs = (props) => {
