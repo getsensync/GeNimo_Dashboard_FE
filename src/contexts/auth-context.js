@@ -151,6 +151,8 @@ export const AuthProvider = (props) => {
     try {
       window.sessionStorage.setItem('authenticated', 'true');
       window.sessionStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+      window.sessionStorage.setItem('type', 'create');
+      window.sessionStorage.setItem('ip', '192.168.0.23');
     }
     catch (err) {
       console.error(err);

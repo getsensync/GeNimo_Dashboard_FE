@@ -1,44 +1,23 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
-  Box,
   Card,
-  Stack,
   Grid,
-  Typography,
-  TextField,
   InputLabel,
   FormControl,
   Select,
   MenuItem,
 } from '@mui/material';
 
-import { ip_byReaders } from 'src/utils/ip-addresses/ip-addresses-by-readers';
-
-const create_readers = ip_byReaders.readers[0].spots;
-const topup_readers = ip_byReaders.readers[1].spots;
-// const checkin_readers = ip_byReaders.readers[2].spots;
-
-const readers = {
-  create: create_readers,
-  topup: topup_readers,
-  // checkin: checkin_readers,
-};
-
-
 export const IPSelector = (props) => {
 
   const {
     ip,
-    setIP,
+    setIp,
+    type,
+    setType,
+    readers,
   } = props;
-
-  const [type, setType] = useState('create');
-
-  useEffect(() => {
-    setIP(readers[type][0].ip);
-  }, [type]);
 
   return (
     <Card sx={{pt:5}}>
@@ -86,7 +65,7 @@ export const IPSelector = (props) => {
               label="IP"
               name="ip"
               value={ip}
-              onChange={(event) => setIP(event.target.value)}
+              onChange={(event) => setIp(event.target.value)}
             >
               {readers[type].map((reader) => (
                 <MenuItem
@@ -102,6 +81,9 @@ export const IPSelector = (props) => {
 };
 
 IPSelector.propTypes = {
+  type: PropTypes.string,
+  setType: PropTypes.func,
   ip: PropTypes.string,
-  setIP: PropTypes.func,
+  setIp: PropTypes.func,
+  readers: PropTypes.object,
 };

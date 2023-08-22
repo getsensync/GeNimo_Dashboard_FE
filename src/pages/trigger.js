@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import Head from 'next/head';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
@@ -12,6 +12,19 @@ import { Authorization } from 'src/author/authorization';
 import { readerUrl } from 'src/utils/backend-url';
 import { HighlightSpan } from 'src/components/highlighted-span';
 
+import { ip_byReaders } from 'src/utils/ip-addresses/ip-addresses-by-readers';
+
+const create_readers = ip_byReaders.readers[0].spots;
+const topup_readers = ip_byReaders.readers[1].spots;
+// const checkin_readers = ip_byReaders.readers[2].spots;
+// -->
+const readers = {
+  create: create_readers,
+  topup: topup_readers,
+  // checkin: checkin_readers,
+};
+
+
 const changeUrl = (url, ip) => {
   // the url is a string : http://localhost:8080/commandTrigger
   // we need to change the url to http://ip:8080/commandTrigger
@@ -21,6 +34,7 @@ const changeUrl = (url, ip) => {
   console.log(newUrl);
   return newUrl;
 };
+
 
 const RawPage = () => {
   // Inner Functions
@@ -35,7 +49,20 @@ const RawPage = () => {
   // Inner States & Logics
   const [isCreateUser, setIsCreateUser] = useState(false);
   const [isTopUp, setIsTopUp] = useState(false);
-  const [ip, setIp] = useState('');
+  const [type, setType] = useState(window.sessionStorage.getItem('type') || 'create');
+  const [ip, setIp] = useState(window.sessionStorage.getItem('ip') || '192.168.0.23');
+
+  const handleSetIp = (val) => {
+    setIp(val);
+    window.sessionStorage.setItem('ip', val);
+  };
+
+  const handleSetType = (val) => {
+    setType(val);
+    window.sessionStorage.setItem('type', val);
+    // also set the ip to the first ip of the selected type
+    handleSetIp(readers[val][0].ip);
+  };
 
   return (
     <>
@@ -60,7 +87,10 @@ const RawPage = () => {
             </Typography>
             <IPSelector
               ip={ip}
-              setIP={setIp}
+              setIp={handleSetIp}
+              type={type}
+              setType={handleSetType}
+              readers={readers}
             />
             <Stack
               flex={1}
@@ -93,6 +123,7 @@ const RawPage = () => {
                   )}
                   variant="contained"
                   onClick={handleTopUpClick}
+                  disabled={type !== 'topup'}
                 >
                   Top Up
                 </Button>
@@ -105,6 +136,7 @@ const RawPage = () => {
                   )}
                   variant="contained"
                   onClick={handleCreateUserClick}
+                  disabled={type !== 'create'}
                 >
                   Create User
                 </Button>
