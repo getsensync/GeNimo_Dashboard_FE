@@ -15,7 +15,6 @@ import { toast } from 'react-toastify';
 
 export const CreateUserForm = (props) => {
   const {
-    isFormOpen,
     setIsFormOpen,
     readerUrl,
   } = props;
@@ -49,7 +48,7 @@ export const CreateUserForm = (props) => {
           .post(url, {user_uuid: uuid})
           .then((res) => {
             console.log(res.data);
-            if (res.data.status === "success") {
+            if (res.status === 202) {
               toast.success(`Bracelet: UUID ${uuid} Granted`);
               toast.success('Trigger Create User Success');
             }
@@ -194,7 +193,6 @@ export const CreateUserForm = (props) => {
 };
 
 CreateUserForm.propTypes = {
-  isFormOpen: PropTypes.object.isRequired,
   setIsFormOpen: PropTypes.func.isRequired,
   readerUrl: PropTypes.string.isRequired,
 };

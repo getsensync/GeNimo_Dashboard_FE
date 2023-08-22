@@ -7,10 +7,6 @@ import {
   Button,
   Stack,
   TextField,
-  InputLabel,
-  FormControl,
-  Select,
-  MenuItem,
   Typography
 } from '@mui/material';
 
@@ -20,7 +16,6 @@ import { HighlightSpan } from 'src/components/highlighted-span';
 
 export const TopUpForm = (props) => {
   const {
-    isFormOpen,
     setIsFormOpen,
     readerUrl,
   } = props;
@@ -54,7 +49,7 @@ export const TopUpForm = (props) => {
           .post(url, {amount: amount})
           .then((res) => {
             console.log(res.data);
-            if (res.data.status === "success") {
+            if (res.status === 202) {
               toast.success(`Bracelet: Top Up ${amount} K`);
               toast.success(`Top Up Success`);
             }
@@ -206,7 +201,6 @@ export const TopUpForm = (props) => {
 };
 
 TopUpForm.propTypes = {
-  isFormOpen: PropTypes.object.isRequired,
   setIsFormOpen: PropTypes.func.isRequired,
   readerUrl: PropTypes.string.isRequired,
 };
