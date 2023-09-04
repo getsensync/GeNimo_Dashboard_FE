@@ -102,9 +102,9 @@ export const CustomersTable = (props) => {
                 <TableCell align="center">
                   Balance
                 </TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   Type
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="center">
                   Active
                 </TableCell>
@@ -148,9 +148,9 @@ export const CustomersTable = (props) => {
                     <TableCell align="right">
                       {item.balance}.000
                     </TableCell>
-                    <TableCell align="center">
+                    {/* <TableCell align="center">
                       {item.encryptiontype}
-                    </TableCell>
+                    </TableCell> */}
                     <TableCell
                       align="center"
                       padding='checkbox'
