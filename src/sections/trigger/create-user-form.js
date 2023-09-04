@@ -49,8 +49,9 @@ export const CreateUserForm = (props) => {
           .then((res) => {
             console.log(res.data);
             if (res.status === 202) {
-              toast.success(`Bracelet: UUID ${uuid} Granted`);
-              toast.success('Trigger Create User Success');
+              toast.success(<p>Command CreateUser sent to Reader<br/>Please check the Reader</p>);
+              // toast.success(`Bracelet: UUID ${uuid} Granted`);
+              // toast.success('Trigger Create User Success');
             }
           })
           .catch((error) => {

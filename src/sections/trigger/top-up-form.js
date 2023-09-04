@@ -50,8 +50,9 @@ export const TopUpForm = (props) => {
           .then((res) => {
             console.log(res.data);
             if (res.status === 202) {
-              toast.success(`Bracelet: Top Up ${amount} K`);
-              toast.success(`Top Up Success`);
+              toast.success(<p>Command TopUp sent to Reader<br/>Please check the Reader</p>);
+              // toast.success(`Bracelet: Top Up ${amount} K`);
+              // toast.success(`Top Up Success`);
             }
           })
           .catch((error) => {
